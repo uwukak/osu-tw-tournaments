@@ -22,7 +22,7 @@ GitHub Actions（每 30 分鐘）
       ├─ 產生 docs/index.html       → GitHub Pages 線上看板
       └─ 產生 drafts/{id}.md        → 你複製到 Facebook
               │
-              └─ 有變更才 git commit + push（沒變更不會產生假提交）
+              └─ 資料或看板內容有變更才 git commit + push（沒變更不會產生假提交）
 ```
 
 ### 為什麼是關鍵字規則而不是 AI
@@ -89,6 +89,7 @@ pip install -r requirements.txt
 
 python tests/test_rules.py              # 規則測試（不須 pytest）
 python tests/test_store.py              # 資料合併與「有變更才提交」的測試
+python tests/test_render.py             # 報名狀態校正（標題沒改、內文已截止）
 python -m osu_tourney.scrape --offline  # 用 fixtures/ 跑，完全不碰網路
 python -m osu_tourney.scrape --no-push  # 真的去抓，但只寫本機檔案、不提交
 python -m osu_tourney.scrape --push     # 抓完並提交推送
@@ -138,6 +139,7 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `fixtures/` | 真實 osu! 快照，供測試用 |
 | `tests/test_rules.py` | 黃金測試：規則與分類分布 |
 | `tests/test_store.py` | 黃金測試：資料合併與變更偵測 |
+| `tests/test_render.py` | 黃金測試：報名狀態校正與草稿標題 |
 
 ---
 
@@ -148,6 +150,7 @@ python -m osu_tourney.scrape --seed-only --no-push
 ```bash
 python tests/test_rules.py
 python tests/test_store.py
+python tests/test_render.py
 ```
 
 測試會斷言真實語料上的分類分布。若你**刻意**改了規則，測試會失敗並印出新的分布 ——
@@ -209,5 +212,9 @@ python tests/test_store.py
 - **區域判定靠標題**。區域限制詳細寫在首帖內文時，規則看不到 —— 這類會被判成「無區域限制」而收錄。
 - **截止時間只能低信心猜測**。句子抓得到，但裡面的日期常常夾帶賽程日期、又沒寫年份。
   猜不出來時草稿會顯示原句，不會編一個時間給你。
+- **報名狀態以標題為準，但會用內文的截止時間校正**。主辦忘了把 `[Open]` 改掉時
+  （真實案例：SMST 83，標題寫開放、內文 9/25 就截止，過了兩週還顯示「報名開放中」），
+  看板與草稿會改標成 **「表定已截止」**。反過來，若內文的截止時間猜錯，也可能誤標 ——
+  所以這種卡片不會被藏起來，只會變灰並附上提示，請點進原帖確認。
 - **每週系列賽**（例如 `#51 week ... cup (weekly)`）會每週產生一篇草稿。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。

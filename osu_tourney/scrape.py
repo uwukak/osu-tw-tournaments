@@ -103,6 +103,7 @@ def _write_drafts(
     tournaments: dict[str, Any],
     baseline: Optional[int],
     drafts_dir: Path,
+    now_iso: str,
 ) -> list[str]:
     """為 baseline 之後的收錄／待確認賽事產生草稿。
 
@@ -118,7 +119,8 @@ def _write_drafts(
         if baseline is not None and tid <= baseline:
             continue
 
-        content = render.render_draft(record)
+        # 傳 now_iso：草稿是要貼出去的，標題的報名狀態必須先被截止時間校正過。
+        content = render.render_draft(record, now_iso)
         path = drafts_dir / f"{tid}.md"
         digest = _sha(content)
 
@@ -238,10 +240,27 @@ def run(args: argparse.Namespace) -> int:
     if args.seed_only:
         baseline = max([r.topic_id for r in rows] + ([baseline] if baseline else [0]))
 
+    # 看板本身也要算進「有沒有變更」。
+    #
+    # 為什麼：只改 render.py（例如修正報名狀態的判定）而資料一個字都沒動時，光看資料
+    # 會回報「無變更」→ 不寫檔 → 修正永遠不生效，看板停在舊版直到隔天 heartbeat 才換。
+    # 用看板內容的雜湊把產物納入判斷，改 render 就會在下一個回合反映出來。
+    #
+    # meta 傳空的：last_run_utc 每個回合都不同，留在裡面會變成每 30 分鐘一次假提交。
+    # 但 now_iso 要照傳 —— 它會經由 effective_status 影響內容，代表「截止時間一到，
+    # 看板自己就會更新」，這正是我們要的行為。
+    #
+    # 前提是 build_payload 對相同輸入必須產生位元組相同的輸出（render.py 是純函式，
+    # 排序也補了 topic_id 這個 tiebreaker），否則這裡會變成假提交製造機。
+    dashboard_sha = _sha(
+        render.render_dashboard(render.build_payload(tournaments, meta={}, now_iso=now_iso))
+    )
+
     new_data = {
         "schema_version": store.SCHEMA_VERSION,
         "last_run_utc": now_iso,
         "heartbeat_date": now.date().isoformat(),
+        "dashboard_sha": dashboard_sha,
         "draft_baseline_topic_id": baseline,
         "tournaments": tournaments,
     }
@@ -274,7 +293,7 @@ def run(args: argparse.Namespace) -> int:
     if args.seed_only:
         log.info("--seed-only：不產生草稿（baseline topic id = %s）。", baseline)
     else:
-        written = _write_drafts(tournaments, baseline, DRAFTS_DIR)
+        written = _write_drafts(tournaments, baseline, DRAFTS_DIR, now_iso)
         if written:
             log.info("產生 %d 份草稿：%s", len(written), ", ".join(written))
         with (DRAFTS_DIR / "README.md").open("w", encoding="utf-8", newline="\n") as fh:

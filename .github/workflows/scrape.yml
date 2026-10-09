@@ -28,10 +28,11 @@ jobs:
       - name: 安裝相依套件
         run: pip install -r requirements.txt
 
-      - name: 跑單元測試（規則或變更偵測壞掉就不要提交）
+      - name: 跑單元測試（規則、變更偵測或狀態校正壞掉就不要提交）
         run: |
           python tests/test_rules.py
           python tests/test_store.py
+          python tests/test_render.py
 
       - name: 抓取並更新
         run: python -m osu_tourney.scrape --push
