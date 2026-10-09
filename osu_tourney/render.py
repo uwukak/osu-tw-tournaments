@@ -412,7 +412,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   <div class="controls">
     <div class="group" id="f-mode" role="group" aria-label="依模式篩選"></div>
     <div class="group" id="f-status" role="group" aria-label="依報名狀態篩選"></div>
-    <label class="toggle"><input type="checkbox" id="f-review" checked> 顯示待確認</label>
+    <label class="toggle"><input type="checkbox" id="f-review" autocomplete="off" checked> 顯示待確認</label>
   </div>
 
   <div class="grid" id="grid"></div>
@@ -431,7 +431,13 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 (function(){
   var payload = JSON.parse(document.getElementById('data').textContent);
   var rows = payload.tournaments || [];
-  var state = { mode: 'all', status: 'all', showReview: true };
+  // 「顯示待確認」這一格刻意**不放進 state**，一律直接讀 DOM 的 checkbox。
+  // 原因：瀏覽器重新載入時會還原表單控制項的狀態，而且是在這支 inline script
+  // 跑完之後才還原。若用 JS 變數另外記一份，兩者就會分岔 —— 勾勾看起來是取消的，
+  // 卡片卻還在（變數仍是 true）；再點一下反而變成「已勾選」，畫面毫無反應，
+  // 整個開關就像壞掉。讓真相只剩一個地方，就不會分岔。
+  var state = { mode: 'all', status: 'all' };
+  var reviewToggle = document.getElementById('f-review');
 
   var STATUS = {open:'報名開放中', closed:'報名已截止', unknown:'報名狀態未標明', expired:'表定已截止'};
   var MODES = [['all','全部'],['std','Standard'],['taiko','Taiko'],['catch','Catch'],['mania','Mania']];
@@ -459,7 +465,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   function visible(){
     return rows.filter(function(r){
-      if(r.decision==='review' && !state.showReview) return false;
+      if(r.decision==='review' && !reviewToggle.checked) return false;
       if(state.mode!=='all' && r.mode!==state.mode) return false;
       if(state.status!=='all' && statusBucket(r.status)!==state.status) return false;
       return true;
@@ -527,9 +533,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   buildGroup(document.getElementById('f-mode'), MODES, 'mode');
   buildGroup(document.getElementById('f-status'), STATUSES, 'status');
-  var cb = document.getElementById('f-review');
-  cb.checked = true;
-  cb.addEventListener('change', function(){ state.showReview = cb.checked; render(); });
+  // 不再用 JS 把 checked 設回 true：那會跟瀏覽器還原的狀態打架，而且誰贏要看時機。
+  // 交給 HTML 的 checked 屬性決定預設值就好。
+  reviewToggle.addEventListener('change', render);
 
   render();
 })();
