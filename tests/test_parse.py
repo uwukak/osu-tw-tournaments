@@ -1,8 +1,11 @@
-"""parse.py 的黃金測試：首帖摘要（看板「簡要說明」用的 excerpt）。
+"""parse.py 的黃金測試：首帖內文的範圍，以及看板「簡要說明」用的 excerpt。
 
-摘要有兩個容易寫錯的地方，各釘一條：
-1. 短內文不該被加上「…」—— 加了會讓人以為後面還有字。
-2. 長內文要切在句尾，而不是剛好第 180 個字元（切在半句話中間讀起來像壞掉）。
+三件容易寫錯的事，各釘一條：
+1. 內文要取 `.forum-post__content--main` —— 用 `.forum-post__body` 會連標頭
+   （`Topic Starter`／作者／發文時間）一起抓進來，摘要的頭 40 字全是雜訊。
+   這個 bug 真的上線過。
+2. 短內文不該被加上「…」—— 加了會讓人以為後面還有字。
+3. 長內文要切在句尾，而不是剛好第 180 個字元（切在半句話中間讀起來像壞掉）。
 
 跑法：
     python tests/test_parse.py        # 不須 pytest
@@ -16,11 +19,51 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from osu_tourney import parse  # noqa: E402
+from osu_tourney import parse, rules  # noqa: E402
 
 
 def detail(body: str) -> parse.TopicDetail:
     return parse.TopicDetail(topic_id=1, body_text=body)
+
+
+def first_post() -> parse.TopicDetail:
+    html = (ROOT / "fixtures" / "topic.html").read_text(encoding="utf-8")
+    return parse.parse_topic(html)
+
+
+# --------------------------------------------------------------------------
+# 首帖內文的範圍
+# --------------------------------------------------------------------------
+
+
+def test_first_post_body_excludes_the_post_header():
+    """`.forum-post__body` 連標頭一起包進來，「Topic Starter」、作者、發文時間
+    都是樣板文字 —— 拿它當摘要，180 字裡有 40 字是雜訊。
+
+    這個 bug 上線時真的發生過：每一條節錄都長成
+    `Topic Starter [TCD] Dzar03 2026-09-20T04:34:22+00:00 Main Sheet - ...`。
+    """
+    d = first_post()
+    assert "Topic Starter" not in d.body_text
+    assert "2026-10-08T02:43:20+00:00" not in d.body_text, "標頭的發文時間不該在內文裡"
+
+
+def test_first_post_body_still_has_the_actual_content():
+    """反過來確認沒有修過頭 —— 切太窄會讓內文整個空掉，那更糟。"""
+    d = first_post()
+    assert "Welcome to the first FreeMod SMST Tournament!" in d.body_text
+    assert len(d.body_text) > 500
+
+
+def test_first_post_still_finds_the_deadline_sentence():
+    """內文換了來源，截止句與連結的抽取不能跟著壞掉。"""
+    d = first_post()
+    raw, iso = rules.extract_deadline(d.body_text, d.created_at)
+    assert raw and "Registrations will end" in raw
+    assert iso == "2026-10-16T23:59:00+00:00"
+    assert d.discord == "https://discord.gg/6d4pF59"
+    assert d.excerpt
+    assert "Topic Starter" not in d.excerpt
 
 
 def test_empty_body_has_no_excerpt():

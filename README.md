@@ -19,11 +19,16 @@ GitHub Actions（每 30 分鐘）
       ├─ 只對「新帖」抓主題頁，讀首帖內文
       ├─ 關鍵字規則抽取：模式／賽事名／名次／隊伍／區域／報名狀態
       ├─ 寫入 data/tournaments.json
+      ├─ 讀 data/overrides.json     ← 你在看板上直接改的說明（爬蟲只讀，永不覆寫）
       ├─ 產生 docs/index.html       → GitHub Pages 線上看板
       └─ 產生 drafts/{id}.md        → 你複製到 Facebook
               │
               └─ 資料或看板內容有變更才 git commit + push（沒變更不會產生假提交）
 ```
+
+看板本身也能反向寫回來：打開隱藏的編輯模式（在頁面上打 `edit`，或網址加 `#edit`）後，
+頁面會拿著你的 GitHub 權杖直接呼叫 API 把 `data/overrides.json` 提交回 repo
+（見下方「在網站上直接改說明」）。訪客看不到任何編輯按鈕。
 
 ### 為什麼是關鍵字規則而不是 AI
 
@@ -96,6 +101,15 @@ python -m osu_tourney.scrape --no-push  # 真的去抓，但只寫本機檔案�
 python -m osu_tourney.scrape --push     # 抓完並提交推送
 ```
 
+**改過 `parse.py`（或 `rules.py` 的 `extract_deadline`）之後**，資料檔裡既有的欄位還是舊解析器的
+產物 —— 平常的重抓規則綁在「標題說報名中」上，標題寫 `unknown` 或已截止的賽事永遠不會被重算。
+改完解析器要主動重抓一次：
+
+```bash
+python tests/test_parse.py                              # 先確認解析結果是對的
+python -m osu_tourney.scrape --push --refetch-details   # 再重抓本次列表上每個主題的明細
+```
+
 > **Windows 注意**：新開的 cmd 可能找不到 `python`（PATH 問題），用 `py` 即可。
 > 另外 `-m osu_tourney.scrape` 是從**當前目錄**找模組，所以要先 `cd` 到專案資料夾。
 > 中文路徑與空白不影響，但指令要加引號：`cd /d "C:\...\新增資料夾 (6)"`。
@@ -109,6 +123,9 @@ python -m osu_tourney.scrape --push     # 抓完並提交推送
 | `--limit N` | 本回合最多抓 N 個主題頁（想省請求時用） |
 | `--since-topic-id N` | 只處理 id 大於 N 的主題 |
 | `--refresh-days N` | 報名中的賽事幾天後重抓明細（預設 3） |
+| `--refetch-details` | 忽略新鮮度與報名狀態，重抓列表上**每個**主題的明細 |
+| `--repo owner/repo` | 看板編輯功能的目標 repo（Actions 會自動帶 `GITHUB_REPOSITORY`） |
+| `--branch main` | 看板編輯要提交到哪個分支（預設 `main`） |
 
 ### 首次回填
 
@@ -134,13 +151,14 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `osu_tourney/gitio.py` | 唯一呼叫 git 的地方 |
 | `osu_tourney/scrape.py` | 進入點（用 `python -m` 執行） |
 | `osu_tourney/poster.py` | Facebook 發文接縫（本期未實作） |
-| `data/tournaments.json` | 累積的賽事資料，key 是 topic id |
+| `data/tournaments.json` | 累積的賽事資料，key 是 topic id（爬蟲寫，**不要手改**） |
+| `data/overrides.json` | 站長自己寫的說明，key 是 topic id（爬蟲只讀不寫） |
 | `docs/index.html` | 看板產物（GitHub Pages 根目錄） |
 | `drafts/` | 產生的繁中草稿 |
 | `fixtures/` | 真實 osu! 快照，供測試用 |
 | `tests/test_rules.py` | 黃金測試：規則與分類分布 |
-| `tests/test_store.py` | 黃金測試：資料合併與變更偵測 |
-| `tests/test_render.py` | 黃金測試：報名狀態校正與草稿標題 |
+| `tests/test_store.py` | 黃金測試：資料合併、變更偵測、覆寫檔的讀取 |
+| `tests/test_render.py` | 黃金測試：報名狀態校正、看板資料、草稿標題 |
 | `tests/test_parse.py` | 黃金測試：首帖摘要的截斷 |
 
 ---
@@ -189,6 +207,64 @@ python tests/test_parse.py
 
 「簡要說明」用的是**原帖首段的原文節錄（180 字內，切在句尾）**，不摘要、不改寫、不翻譯，
 並標明出處。判斷留給讀者，點一下就能回到原帖。
+
+### 在網站上直接改說明
+
+看板上**沒有任何編輯按鈕** —— 訪客看到的就只是一條賽事看板。編輯模式是藏起來的，
+要打開有兩條路，都不會在頁面上留下痕跡：
+
+| 怎麼開 | 適合 |
+|---|---|
+| 在頁面上直接打 `edit`（四個字母，不用按 Ctrl） | 桌機最快，不用離開看板 |
+| 網址後面加 `#edit` | 手機，或直接存成書籤 |
+
+```
+https://uwukak.github.io/osu-tw-tournaments/#edit
+```
+
+兩個都是**切換**：再打一次 `edit`（或把 `#edit` 拿掉）就退出。第一次進來還沒有權杖時，
+權杖面板會自己打開。
+
+進編輯模式後，工具列下方會多一行「編輯模式：點任一張卡片就能改它的說明。」，右邊附
+**更換權杖**和**結束編輯**兩個連結。點任一張卡片就能直接改那筆的「說明」，或補一段
+「站長補充」；按儲存會寫進 `data/overrides.json`。訪客不會看到那一行，也不會看到卡片
+上的「編輯 ▸」（他們看到的是「詳細說明 ▸」）。
+
+**它怎麼運作的。** 看板是 GitHub Pages 的靜態頁，沒有後端 —— 所以「在網站上改並存下來」
+唯一可行的做法，是讓那個頁面拿著一把你的 GitHub 權杖，直接呼叫 GitHub API 產生 commit。
+權杖只存在**你自己的瀏覽器**（localStorage），不會進 repo、也不會出現在 HTML 裡；
+其他訪客的頁面沒有它，他們看到的永遠是已提交的內容。
+
+**第一次要設定權杖**（打 `edit` 進編輯模式時會自己跳出來，也可以按那行右邊的「更換權杖」）：
+
+1. GitHub → Settings → Developer settings → **Fine-grained tokens** → Generate new token
+2. Repository access 只選 `uwukak/osu-tw-tournaments`
+3. Permissions → **Contents: Read and write**
+4. （選用）**Actions: Read and write** —— 有這個的話，存檔後會順手觸發一次排程，
+   看板大約 1 分鐘後就更新；沒有就等下一回合，最多 30 分鐘。
+5. 貼進面板、按「儲存並開始編輯」
+
+**幾個要知道的事：**
+
+- **入口藏起來只是門面，不是安全機制。** 任何人打 `edit` 或加上 `#edit` 都進得了編輯模式、
+  也都打得開權杖面板 —— 但沒有權杖就什麼都存不了（GitHub API 一律回 401），
+  也讀不到你存在自己瀏覽器裡的那把。真正擋住寫入的是權杖，不是這個入口。
+- **權杖是「能改這個 repo」的憑證。** 頁面本身只載 Google Fonts 跟自己的 inline script，
+  沒有第三方 JS，所以被偷的機率低 —— 但風險不是零，所以那把權杖的最小權限就好，
+  不要給 classic token 的 `repo`（那等於整個帳號）。
+- **`uwukak.github.io` 是你所有 Pages 專案共用的網域**，而 localStorage 以網域為界、
+  不分路徑。現在只有這一個站所以沒事；日後若在別的 repo 開 Pages 又載了別人的 JS，
+  那個 JS 讀得到同一把權杖。
+- **換瀏覽器／換電腦要重設一次。** 權杖不會跟著 repo 跑。
+- **改了不會蓋掉爬蟲的資料。** 覆寫寫在 `data/overrides.json`，爬蟲只讀不寫它；
+  原帖的節錄仍然照抓，只是看板顯示時以你的說明為優先。清空再儲存就退回自動節錄。
+- **「跟原節錄一字不差就不建立覆寫」**：所以你只是打開來看一下、順手按了儲存，
+  不會把當下的節錄凍結住。
+- **`overrides.json` 壞掉的話排程會變紅、整個停住**（不寫檔、不提交）。這是刻意的：
+  當成空檔繼續跑，你的說明會整批從看板上消失，而且因為 `dashboard_sha` 跟著變了，
+  這個「消失」還會被當成一次正常更新提交出去。修好它，或直接刪掉那個檔案。
+- **本機測這個功能**要自己帶 repo：`py -m osu_tourney.scrape --no-push --repo uwukak/osu-tw-tournaments`。
+  沒帶的話編輯面板會打開但存不回去（會直接告訴你）。
 
 ---
 
@@ -241,6 +317,6 @@ python tests/test_parse.py
   所以這種卡片不會被藏起來，只會變灰並附上提示，請點進原帖確認。
 - **每週系列賽**（例如 `#51 week ... cup (weekly)`）會每週產生一篇草稿。
 - **首帖節錄是後加的欄位**，所以在這版上線前就已抓過明細的賽事，點開時只會少那一段，
-  其餘欄位照常。想立刻補齊就跑一次 `python -m osu_tourney.scrape --no-push --refresh-days 0`，
-  否則會在既有的明細更新週期（報名中的 3 天）內自己補上。
+  其餘欄位照常。想立刻補齊就跑一次 `python -m osu_tourney.scrape --no-push --refetch-details`
+  （見下方說明），否則要等該賽事的標題變成「報名中」且過了明細更新週期才會自己補上。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。

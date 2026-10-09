@@ -169,3 +169,55 @@ def is_fresh(
 
 def get(tournaments: dict[str, Any], topic_id: int) -> Optional[dict[str, Any]]:
     return tournaments.get(str(topic_id))
+
+
+# --------------------------------------------------------------------------
+# data/overrides.json：站長自己寫的說明
+# --------------------------------------------------------------------------
+
+
+class OverridesError(ValueError):
+    """data/overrides.json 壞掉，沒辦法解讀。"""
+
+
+def load_overrides(path: Path) -> dict[str, Any]:
+    """讀站長的覆寫內容（key 是 topic id）。
+
+    這個檔案跟 tournaments.json 的關係是**刻意單向**的：只有人會寫它
+    （看板上的「站長編輯」，或你直接在 GitHub 上改），爬蟲只讀不寫。
+    所以你的修改不會被下一回合的抓取蓋掉 —— 那正是它存在的理由。
+
+    壞掉時直接拋錯、讓排程變紅，不當成空檔默默帶過。當成空檔的下場很惡毒：
+    看板上的站長說明會整批消失，而且因為 dashboard_sha 跟著變了，
+    這個「消失」還會被當成一次正常的更新提交出去 —— 從 log 到看板都看不出異狀。
+    """
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise OverridesError(
+            f"{path} 不是有效的 JSON（第 {exc.lineno} 行第 {exc.colno} 欄：{exc.msg}）。"
+            f"修好它，或直接刪掉這個檔案 —— 看板就會退回程式自動抓的原帖節錄。"
+        ) from exc
+    if not isinstance(data, dict):
+        raise OverridesError(f"{path} 的最外層必須是一個物件（topic id → 覆寫內容）。")
+    return data
+
+
+def override_for(overrides: dict[str, Any], topic_id: Any) -> dict[str, str]:
+    """取出某一筆的覆寫，順手把格式不對的部分濾掉。
+
+    檔案是給人改的，所以要有這層：`{"2252361": "一段字"}` 這種寫法（整筆寫成字串
+    而不是物件）不該讓整個看板炸掉，也不該讓那段字變成半個欄位。
+    空的字串一律當作「沒有覆寫」—— 那正是看板上「清空再儲存」的語意。
+    """
+    entry = overrides.get(str(topic_id))
+    if not isinstance(entry, dict):
+        return {}
+    out: dict[str, str] = {}
+    for key in ("summary", "note"):
+        value = entry.get(key)
+        if isinstance(value, str) and value.strip():
+            out[key] = value.strip()
+    return out

@@ -9,6 +9,8 @@
   要用 `data-post-username` 屬性。
 - `.forum-post-content` 在單頁會多出一個（15 vs 14 帖），
   所以取內文一定要 scope 在該帖元素內。
+- `.forum-post__body` **包含標頭**（`Topic Starter`、作者、發文時間），
+  取內文要用 `.forum-post__content--main`，否則摘要的頭 40 字全是樣板文字。
 """
 from __future__ import annotations
 
@@ -178,7 +180,16 @@ def parse_topic(html: str) -> TopicDetail:
     detail.author = first.get("data-post-username")
 
     # 內文要 scope 在這個帖元素內取，否則會抓到別的帖。
-    body = first.select_one(".forum-post__body") or first.select_one(".forum-post-content")
+    #
+    # 而且要用 --main，不能用 .forum-post__body：後者連**標頭**一起包進來 ——
+    # 「Topic Starter」、作者、發文時間（`2026-10-08T02:43:20+00:00`）全都是樣板文字，
+    # 對摘要來說是純雜訊，會吃掉 180 字裡的頭 40 字。真正的內文在 --main 裡。
+    # 保留 body 當後備：寧可摘要有雜訊，也不要整個空掉。
+    body = (
+        first.select_one(".forum-post__content--main")
+        or first.select_one(".forum-post__body")
+        or first.select_one(".forum-post-content")
+    )
     if body is not None:
         detail.body_text = " ".join(body.get_text(" ", strip=True).split())
 

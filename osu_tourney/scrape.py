@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import logging
+import os
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -23,6 +24,7 @@ from .render import to_taipei
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = ROOT / "data" / "tournaments.json"
+OVERRIDES_PATH = ROOT / "data" / "overrides.json"
 DOCS_DIR = ROOT / "docs"
 DRAFTS_DIR = ROOT / "drafts"
 FIXTURES = ROOT / "fixtures"
@@ -144,6 +146,23 @@ def run(args: argparse.Namespace) -> int:
     now = datetime.now(timezone.utc)
     now_iso = now.isoformat(timespec="seconds")
 
+    # 0) 站長的覆寫內容。刻意放在最前面、也在抓取之前 —— 檔案壞掉就當場說清楚，
+    # 不要先花掉一次請求才發現。這份檔案只有人會寫（看板上的編輯介面），
+    # 爬蟲永遠不寫它，所以使用者的修改不會被下一回合蓋掉。
+    overrides = store.load_overrides(OVERRIDES_PATH)
+    if overrides:
+        log.info("讀到 %d 筆站長說明。", len(overrides))
+
+    # 看板上的「站長編輯」要靠 repo 與分支才能呼叫 GitHub API。Actions 每次執行都會
+    # 帶 GITHUB_REPOSITORY／GITHUB_REF_NAME，所以排程產生的頁面自動就有；
+    # 本機要測這個功能時自己帶 --repo。
+    page_meta = {
+        "repo": args.repo,
+        "branch": args.branch,
+        "last_run_utc": now_iso,
+        "last_run_taipei": to_taipei(now_iso) or "",
+    }
+
     source = OfflineSource(FIXTURES) if args.offline else Fetcher()
 
     # 1) 抓列表。失敗就整個中止 —— 絕不用空資料覆蓋既有歷史。
@@ -181,10 +200,21 @@ def run(args: argparse.Namespace) -> int:
         # 少了這一條，非「報名中」的賽事永遠不會落到下面的 stale 規則，discord 與
         # 截止時間就永久缺漏。
         missing_details = not (existing or {}).get("details_fetched_at")
-        needs_details = is_new or missing_details or (
-            existing is not None
-            and existing.get("status") == rules.STATUS_OPEN
-            and _is_stale(existing, now, args.refresh_days)
+        # --refetch-details 是「解析器改版」專用的一次性開關。
+        #
+        # 為什麼需要它：明細裡的欄位（excerpt、deadline_raw、discord…）都只在下載主題頁
+        # 那一刻算出來。解析器修好之後，畫面上看起來「資料都在」，其實每一筆留著的都是
+        # 舊解析器的產物 —— 而平常的重抓規則綁在「標題說報名中」上，標題寫 unknown 或
+        # 已截止的賽事就永遠不會被重算，錯誤的欄位會一直留在那裡。
+        needs_details = (
+            args.refetch_details
+            or is_new
+            or missing_details
+            or (
+                existing is not None
+                and existing.get("status") == rules.STATUS_OPEN
+                and _is_stale(existing, now, args.refresh_days)
+            )
         )
 
         if is_new:
@@ -255,10 +285,19 @@ def run(args: argparse.Namespace) -> int:
     # 但 now_iso 要照傳 —— 它會經由 effective_status 影響內容，代表「截止時間一到，
     # 看板自己就會更新」，這正是我們要的行為。
     #
+    # repo／branch 也**刻意不傳**：那兩個值只有 Actions 有（GITHUB_REPOSITORY），
+    # 本機是空的。放進來的話，本機與排程會對同一個資料算出不同的 dashboard_sha，
+    # 兩邊互推、每次換環境就多一次假提交 —— 正是這道守門要擋掉的東西。
+    #
+    # overrides 則一定要傳 —— 站長在看板上改的那幾個字，就是靠這裡進到 dashboard_sha，
+    # 下一回合的爬蟲才會發現「看板內容變了」而去重繪、提交。
+    #
     # 前提是 build_payload 對相同輸入必須產生位元組相同的輸出（render.py 是純函式，
     # 排序也補了 topic_id 這個 tiebreaker），否則這裡會變成假提交製造機。
     dashboard_sha = _sha(
-        render.render_dashboard(render.build_payload(tournaments, meta={}, now_iso=now_iso))
+        render.render_dashboard(
+            render.build_payload(tournaments, meta={}, now_iso=now_iso, overrides=overrides)
+        )
     )
 
     new_data = {
@@ -281,12 +320,7 @@ def run(args: argparse.Namespace) -> int:
     store.save(DATA_PATH, new_data)
 
     payload = render.build_payload(
-        tournaments,
-        meta={
-            "last_run_utc": now_iso,
-            "last_run_taipei": to_taipei(now_iso) or "",
-        },
-        now_iso=now_iso,
+        tournaments, meta=page_meta, now_iso=now_iso, overrides=overrides
     )
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     with (DOCS_DIR / "index.html").open("w", encoding="utf-8", newline="\n") as fh:
@@ -334,6 +368,23 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser.add_argument("--limit", type=int, default=0, help="本回合最多抓幾個主題頁（測試用）")
     parser.add_argument("--since-topic-id", type=int, default=0, help="只處理 id 大於此值的主題")
     parser.add_argument("--refresh-days", type=int, default=3, help="報名中的賽事幾天後重抓明細")
+    parser.add_argument(
+        "--refetch-details",
+        action="store_true",
+        help="忽略新鮮度與報名狀態，重抓本次列表上每個主題的明細（改過解析器之後用一次）",
+    )
+    # 這兩個只影響看板上的「站長編輯」按鈕能不能用。Actions 每次執行都自動帶
+    # GITHUB_REPOSITORY／GITHUB_REF_NAME，所以排程那條路不用設定。
+    parser.add_argument(
+        "--repo",
+        default=os.environ.get("GITHUB_REPOSITORY", ""),
+        help="owner/repo，看板的編輯功能用它呼叫 GitHub API（Actions 會自動提供）",
+    )
+    parser.add_argument(
+        "--branch",
+        default=os.environ.get("GITHUB_REF_NAME", "main"),
+        help="看板編輯要提交到哪個分支（預設 main）",
+    )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
 
@@ -347,6 +398,12 @@ def main(argv: Optional[list[str]] = None) -> int:
         return run(args)
     except FetchError as exc:
         log.error("抓取失敗，已中止：%s", exc)
+        return 1
+    except store.OverridesError as exc:
+        # 看板上的站長說明全部來自這個檔案。讀不懂就整個停下來、讓排程變紅 ——
+        # 當成空檔繼續跑的話，說明會整批從看板上消失，而且因為 dashboard_sha
+        # 也跟著變了，這個「消失」還會被當成一次正常的更新提交出去。
+        log.error("站長說明讀不進來，已中止（不寫檔、不提交）：%s", exc)
         return 1
 
 

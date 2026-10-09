@@ -5,6 +5,9 @@
 永遠回報「無變更」—— 這是真的發生過的 bug，下場是 changed 恆為 False，
 只剩換日的 heartbeat 會寫檔，當天發現的新賽事全部被吞到隔天才出現。
 
+後半段是 data/overrides.json（看板上的站長說明）。那份檔案只有人會寫，
+所以重點全在「讀到壞掉的内容時怎麼辦」。
+
 跑法：
     python tests/test_store.py
     python -m pytest tests/
@@ -12,6 +15,7 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -143,6 +147,82 @@ def test_title_history_keeps_every_distinct_title():
     store.upsert(tournaments, _fields(1, "[Closed]"), NOW)
     store.upsert(tournaments, _fields(1, "[Open]"), NOW)  # 改回來不重複記
     assert tournaments["1"]["title_history"] == ["[Open]", "[Closed]"]
+
+
+# --------------------------------------------------------------------------
+# data/overrides.json
+#
+# 這個檔案跟 tournaments.json 的關係是單向的：只有人會寫它（看板上的編輯介面，
+# 或直接在 GitHub 上改），爬蟲只讀。所以「讀壞掉時怎麼辦」是這裡唯一的重點。
+# --------------------------------------------------------------------------
+
+
+def _overrides(text: str):
+    """把內容寫進暫存檔，回傳路徑。"""
+    d = tempfile.TemporaryDirectory()
+    path = Path(d.name) / "overrides.json"
+    path.write_text(text, encoding="utf-8")
+    return d, path
+
+
+def test_a_missing_overrides_file_is_simply_empty():
+    """還沒有人編輯過時，這個檔案根本不存在 —— 那是正常狀態，不是錯誤。"""
+    with tempfile.TemporaryDirectory() as d:
+        assert store.load_overrides(Path(d) / "overrides.json") == {}
+
+
+def test_load_overrides_reads_what_is_there():
+    d, path = _overrides('{"2252361": {"summary": "站長寫的說明"}}')
+    try:
+        assert store.load_overrides(path) == {"2252361": {"summary": "站長寫的說明"}}
+    finally:
+        d.cleanup()
+
+
+def test_a_broken_overrides_file_raises_instead_of_reading_as_empty():
+    """壞掉時必須拋錯，不能默默當成空檔。
+
+    當成空檔的下場很惡毒：看板上的站長說明整批消失，而且因為 dashboard_sha
+    跟著變了，這個「消失」還會被當成一次正常的更新提交出去 ——
+    從 log 到看板都看不出異狀，使用者只會發現自己寫的字不見了。
+    """
+    d, path = _overrides('{"2252361": {"summary": "少了收尾的括號"')
+    try:
+        try:
+            store.load_overrides(path)
+        except store.OverridesError as exc:
+            assert "overrides.json" in str(exc)
+        else:
+            raise AssertionError("壞掉的 JSON 竟然沒有拋錯")
+    finally:
+        d.cleanup()
+
+
+def test_a_json_array_is_rejected():
+    """最外層一定要是「topic id → 覆寫內容」的物件。"""
+    d, path = _overrides('["2252361"]')
+    try:
+        try:
+            store.load_overrides(path)
+        except store.OverridesError:
+            pass
+        else:
+            raise AssertionError("最外層是陣列竟然被接受了")
+    finally:
+        d.cleanup()
+
+
+def test_override_for_drops_anything_that_is_not_a_string():
+    """檔案是給人改的，形狀可能不對 —— 濾掉就好，不必讓整個看板陪葬。"""
+    ov = {"1": {"summary": "好的", "note": 42, "extra": "不認識的欄位"}}
+    assert store.override_for(ov, 1) == {"summary": "好的"}
+    assert store.override_for(ov, 99) == {}
+    assert store.override_for({"2": "整筆寫成字串"}, 2) == {}
+
+
+def test_blank_overrides_count_as_no_override():
+    """看板上「清空再儲存」的語意就是刪掉覆寫，所以空白等於沒有。"""
+    assert store.override_for({"1": {"summary": "   ", "note": "\n"}}, 1) == {}
 
 
 # --------------------------------------------------------------------------

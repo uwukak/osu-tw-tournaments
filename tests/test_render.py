@@ -171,6 +171,74 @@ def test_a_record_without_an_excerpt_still_builds():
 
 
 # --------------------------------------------------------------------------
+# 站長說明（data/overrides.json）
+#
+# 看板上可以直接改說明：頁面拿著站長的 GitHub 權杖，把 data/overrides.json 提交回
+# repo，爬蟲下一回合讀它重繪看板。所以這裡釘的兩件事是整條路能不能通：
+# 覆寫有沒有進到 payload，以及它有沒有進到 dashboard_sha。
+# --------------------------------------------------------------------------
+
+
+def test_summary_and_excerpt_both_reach_the_page():
+    """站長寫的說明與程式抓的節錄要**並存**，不是後者被換掉。
+
+    編輯面板要拿 excerpt 當預設內容，也要用它比對「這次到底改了沒」；
+    少了它，第一次打開編輯器會是空白的，而且「跟原節錄一樣就不建立覆寫」
+    這條防呆會失效。
+    """
+    rec = dict(SMST83, excerpt="Welcome to SMST 83. Registrations will end ...")
+    ov = {"2246109": {"summary": "SMST 83，1–10K 分區，1v1 單淘汰。", "note": "沒有表單，要在原帖回覆。"}}
+    row = render.build_payload({"2246109": rec}, META, NOW, ov)["tournaments"][0]
+    assert row["summary"] == "SMST 83，1–10K 分區，1v1 單淘汰。"
+    assert row["note"] == "沒有表單，要在原帖回覆。"
+    assert row["excerpt"].startswith("Welcome to SMST 83")
+
+
+def test_records_without_an_override_are_untouched():
+    ov = {"9999999": {"summary": "這是別筆的"}}
+    row = render.build_payload({"2246109": SMST83}, META, NOW, ov)["tournaments"][0]
+    assert row["summary"] == ""
+    assert row["note"] == ""
+
+
+def test_no_overrides_at_all_still_builds():
+    """overrides 是後加的參數，只有三個位置參數的舊呼叫端不能因此壞掉。"""
+    payload = render.build_payload({"2246109": SMST83}, META, NOW)
+    assert payload["tournaments"][0]["summary"] == ""
+
+
+def test_a_hand_written_entry_of_the_wrong_shape_is_ignored():
+    """這個檔案是給人改的，很容易把整筆寫成字串而不是物件。不該讓整頁炸掉。"""
+    row = render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": "一段字"})["tournaments"][0]
+    assert row["summary"] == ""
+
+
+def test_an_override_changes_the_dashboard_bytes():
+    """這是站長說明能上線的**唯一**路徑，值得釘死。
+
+    存檔改的是 data/overrides.json，不是 data/tournaments.json —— 資料本身一個字都沒動。
+    下一回合的爬蟲全靠 dashboard_sha 看出「看板內容不一樣了」才會重繪、提交。
+    這個 sha 沒跟著動的話，站長改的字要等到隔天的 heartbeat 才會出現，
+    而且中間那 24 小時的 log 全部顯示「資料無變更」。
+    """
+    before = render.render_dashboard(render.build_payload({"2246109": SMST83}, META, NOW))
+    after = render.render_dashboard(
+        render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"summary": "站長說明"}})
+    )
+    assert before != after
+
+
+def test_an_override_does_not_leak_into_the_draft():
+    """刻意釘住一條界線：站長說明是**看板專用**的註解。
+
+    草稿是要貼到 Facebook 的貼文，內容一律照規則產生。哪天有人「順手」把 overrides
+    接進 render_draft，這條會擋下來 —— 草稿裡冒出只有看板才有的字，貼出去會很突兀。
+    """
+    render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"summary": "只有看板看得到的字"}})
+    assert "只有看板看得到的字" not in render.render_draft(SMST83, NOW)
+
+
+# --------------------------------------------------------------------------
 # 草稿標題
 # --------------------------------------------------------------------------
 
