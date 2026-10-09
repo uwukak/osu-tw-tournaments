@@ -144,6 +144,32 @@ def test_dashboard_html_changes_when_a_deadline_passes():
     assert before != after
 
 
+def test_payload_carries_the_raw_iso_the_countdown_needs():
+    """卡片上的「剩餘幾日」是瀏覽器自己算的，靠的就是 deadline_iso。
+
+    這個欄位不見不會報錯，只會安靜地不顯示倒數 —— 典型的靜默失敗，值得釘住。
+    """
+    row = render.build_payload({"2246109": SMST83}, META, NOW)["tournaments"][0]
+    assert row["deadline_iso"] == "2026-09-25T23:59:00+00:00"
+    assert row["deadline"], "同時要有人看的台北時間字串"
+
+
+def test_payload_carries_what_the_detail_panel_shows():
+    rec = dict(SMST83, excerpt="歡迎來到 SMST 83。", author="someone")
+    row = render.build_payload({"2246109": rec}, META, NOW)["tournaments"][0]
+    assert row["title"] == SMST83["title"]
+    assert row["excerpt"] == "歡迎來到 SMST 83。"
+    assert row["author"] == "someone"
+    assert row["deadline_raw"], "面板要顯示主辦自己寫的那句話"
+
+
+def test_a_record_without_an_excerpt_still_builds():
+    """excerpt 是後加的欄位，既有資料沒有它 —— 面板少一段可以，整頁不能壞。"""
+    row = render.build_payload({"2246109": SMST83}, META, NOW)["tournaments"][0]
+    assert row["excerpt"] == ""
+    assert row["title"], "標題本來就每回合更新，不該跟著摘要一起缺"
+
+
 # --------------------------------------------------------------------------
 # 草稿標題
 # --------------------------------------------------------------------------

@@ -33,6 +33,7 @@ jobs:
           python tests/test_rules.py
           python tests/test_store.py
           python tests/test_render.py
+          python tests/test_parse.py
 
       - name: 抓取並更新
         run: python -m osu_tourney.scrape --push

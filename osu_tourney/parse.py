@@ -27,6 +27,10 @@ SIGNUP_FORM_URL = re.compile(
 )
 STREAM_URL = re.compile(r"https?://(?:www\.)?(?:twitch\.tv|youtube\.com|youtu\.be)/[^\s\"'<>]*")
 
+# 首帖摘要的字數上限。帖子開頭常常是「歡迎來到 X！」加一串賽制與規則，
+# 整段塞進卡片沒有意義，所以只取開頭、並盡量切在句尾。
+EXCERPT_CHARS = 180
+
 
 @dataclass
 class TopicRow:
@@ -72,6 +76,29 @@ class TopicDetail:
             if STREAM_URL.match(url):
                 return url
         return None
+
+    @property
+    def excerpt(self) -> str:
+        """首帖開頭的短摘要，給看板的「簡要說明」用。
+
+        刻意只截不改：不摘要、不翻譯、不補字。看到的就是原帖原話，
+        判斷留給讀者，出處就是卡片上那個原帖連結。
+        """
+        text = self.body_text.strip()
+        if not text:
+            return ""
+        if len(text) <= EXCERPT_CHARS:
+            return text
+
+        head = text[:EXCERPT_CHARS]
+        # 分兩段找切點：先找句尾，找不到夠長的句尾才退而求其次找逗號或空白。
+        # 不能把所有標點混在一起取「最靠後的那個」—— 那會讓「，」贏過前面完整的「。」，
+        # 摘要就結束在半句話上。太早切（不到一半）則寧可硬切，否則 180 字的摘要只剩 20 字。
+        for seps in (("。", ". ", "! ", "? ", "！", "？"), ("，", ", ", "；", "; ", " ")):
+            cut = max(head.rfind(sep) for sep in seps)
+            if cut >= EXCERPT_CHARS // 2:
+                return head[: cut + 1].rstrip() + "…"
+        return head.rstrip() + "…"
 
 
 def _int_or_none(text: str) -> Optional[int]:

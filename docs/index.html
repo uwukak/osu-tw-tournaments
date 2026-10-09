@@ -72,7 +72,9 @@ h1 .accent{color:var(--accent)}
 .card{
   background:var(--surface); border:1px solid var(--border); border-radius:14px;
   padding:18px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  cursor:pointer;
 }
+.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .card.review{border-style:dashed}
 .card-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .chip{
@@ -100,9 +102,44 @@ h1 .accent{color:var(--accent)}
 .card-foot a{color:var(--accent); text-decoration:none; font-weight:600}
 .card-foot a:hover{text-decoration:underline}
 .card-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+.more{margin-left:auto; white-space:nowrap; opacity:.75}
+/* 剩餘時間。分開一個 span 是為了讓 JS 每分鐘只改這幾個字，
+   不必整頁重繪（重繪會把正在讀的卡片捲動位置跳掉）。 */
+.countdown{font-variant-numeric:tabular-nums; opacity:.75; white-space:nowrap}
+.countdown::before{content:"· "}
+.countdown.past{color:var(--closed); opacity:1}
+.countdown:empty::before{content:""}
 .empty{text-align:center; color:var(--muted); padding:64px 16px; border:1px dashed var(--border); border-radius:14px}
 footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.7}
 @media (prefers-reduced-motion:no-preference){ .card{transition:box-shadow .15s ease} .card:hover{box-shadow:0 2px 4px rgba(30,23,32,.06),0 14px 32px -20px rgba(30,23,32,.5)} }
+
+/* 點卡片彈出的詳細說明。用原生 <dialog>：Esc 關閉、focus trap、backdrop 都是免費的。 */
+.detail{
+  border:1px solid var(--border); border-radius:16px; padding:0; background:var(--surface); color:var(--text);
+  width:min(560px, calc(100% - 32px)); max-height:min(85vh, 720px); overflow:auto;
+  box-shadow:0 24px 64px -28px rgba(30,23,32,.6);
+}
+.detail::backdrop{background:rgba(20,15,22,.55)}
+.detail-inner{padding:20px}
+.detail-top{display:flex; align-items:center; gap:8px}
+.detail .pill{margin-left:0}
+.detail-close{
+  margin-left:auto; font:inherit; font-size:14px; line-height:1; padding:6px 9px;
+  border:1px solid var(--border); border-radius:8px; background:transparent; color:var(--muted); cursor:pointer;
+}
+.detail-close:hover{color:var(--text); border-color:var(--muted)}
+.detail-close:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.detail h2{font-size:20px; font-weight:700; margin:12px 0 0; line-height:1.35; text-wrap:balance}
+.detail-body{display:flex; flex-direction:column; gap:14px; margin-top:16px}
+.quote{
+  border-left:3px solid var(--border); padding:2px 0 2px 12px;
+  font-size:13px; line-height:1.7; color:var(--text); white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.quote .src{display:block; margin-top:6px; font-size:11px; color:var(--muted)}
+.detail-foot{display:flex; flex-wrap:wrap; gap:16px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-size:13px}
+.detail-foot a{color:var(--accent); text-decoration:none; font-weight:600}
+.detail-foot a:hover{text-decoration:underline}
+.detail-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
 </style>
 </head>
 <body>
@@ -128,15 +165,30 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden>沒有符合條件的賽事。</div>
 
+  <dialog class="detail" id="detail" aria-labelledby="d-name">
+    <div class="detail-inner">
+      <div class="detail-top">
+        <span class="chip" id="d-chip"></span>
+        <span class="pill" id="d-pill"></span>
+        <button type="button" class="detail-close" id="d-close">✕ 關閉</button>
+      </div>
+      <h2 id="d-name"></h2>
+      <div class="detail-body" id="d-body"></div>
+      <div class="detail-foot" id="d-foot"></div>
+    </div>
+  </dialog>
+
   <footer>
     <div id="foot-meta"></div>
     <div>資料來源：<a href="https://osu.ppy.sh/community/forums/55?sort=created" style="color:var(--accent)">osu! 論壇 Tournaments 版</a>。
     區域與欄位以關鍵字規則自動判定，可能有誤 —— 標示「待確認」者請自行核對原帖。<br>
-    「<b>表定已截止</b>」表示標題仍寫著報名開放，但帖內文寫的截止時間已經過去（主辦忘了改標題）。</div>
+    時間一律換算成 <b>UTC+8</b>（台北）；「剩餘…」由你的瀏覽器即時計算，會隨時間自己更新。<br>
+    「<b>表定已截止</b>」表示標題仍寫著報名開放，但帖內文寫的截止時間已經過去（主辦忘了改標題）。<br>
+    點卡片可以看原帖首段的節錄與完整欄位。</div>
   </footer>
 </div>
 
-<script type="application/json" id="data">{"meta":{"last_run_utc":"2026-10-09T19:24:19+00:00","last_run_taipei":"2026-10-10 03:24"},"counts":{"include":17,"review":6,"open":12},"tournaments":[{"topic_id":2252781,"name":"Frost Night Cup","mode":"std","mode_label":"osu!standard","rank":"100K–999K","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-10-09T17:30:58+00:00","first_seen_utc":"2026-10-09T19:13:29+00:00","first_seen_display":"10/10","url":"https://osu.ppy.sh/community/forums/topics/2252781","discord":"https://discord.gg/BgAbqQ9zvn","signup_form":"https://docs.google.com/spreadsheets/d/13OT1i5D7Xf8GxXMFKDTw2P2tygJbXBwNTtZHHa-iMJg"},{"topic_id":2252609,"name":"The Taiko Poop Cup","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-10-09T00:28:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252609","discord":"https://discord.gg/QNhWPx244z","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLScIHX_2h29EYcYdGGhNbkTGKhYFCnTRVzY2x2_IHhjNI6D6CQ/viewform?usp=dialog"},{"topic_id":2252361,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"50K–100K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/17 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 16th(Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-10-08T02:43:20+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252361","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2251619,"name":"Yimasu‘s Hidden Tournament 2","mode":"std","mode_label":"osu!standard","rank":"20K–99,999","teams":[],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"registrations close","decision":"include","reason":"no-region","created_at":"2026-10-05T13:52:58+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251619","discord":"https://discord.gg/maK6SzzGeu","signup_form":"https://forms.gle/HnugLcwqgAJc9k6p8"},{"topic_id":2251298,"name":"Beginner's Taiko Tournament 10","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-10-04T15:59:28+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251298","discord":"https://discord.gg/JEER3PfNSe","signup_form":"https://forms.gle/GK8SedZhM6orjgaFA"},{"topic_id":2250673,"name":"Kaga Sumire Championship","mode":"std","mode_label":"osu!standard","rank":"55K–∞","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-10-02T16:00:11+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250673","discord":"https://discord.gg/xwn96Y2pqM","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdTLXgBIA7kFEkhyfB78dJJcAKobduyki_iM2T044EsHCF2Hg/viewform?usp=preview"},{"topic_id":2250525,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"100K–∞","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/10 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 9th Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-10-02T02:05:59+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250525","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2250321,"name":"Fast Food Cup","mode":"std","mode_label":"osu!standard","rank":"1K–99,999","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-10-01T09:15:16+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250321","discord":"http://discord.gg/4qyhQpYwUd","signup_form":"https://docs.google.com/spreadsheets/d/1xFgsuYpv6ASp9j9XSyDx7-LT5KBrGDbKFKVIKecuIZU/"},{"topic_id":2250173,"name":"Teirin's Super Gacha Experience","mode":"std","mode_label":"osu!standard","rank":"1–9,500","teams":["4v4"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-30T19:03:15+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250173","discord":"https://discord.com/invite/Tt8CGFt95G","signup_form":"https://forms.gle/Ampj2ZoEsnCixVr98"},{"topic_id":2249574,"name":"The Aphelion 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"5K–40K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-28T20:00:19+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249574","discord":"https://discord.gg/D4HAmzRHc9","signup_form":"https://docs.google.com/spreadsheets/d/1GXIZvGer6CXSxJcEI4_qNGoOo9Gygq9Td8b1K2_4Bjg/edit?usp=sharing"},{"topic_id":2249559,"name":"Setsukue's Coupling Tournament Duo Draft","mode":"std","mode_label":"osu!standard","rank":"100–10K","teams":["4v4"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"registration ends, the staff will pick 16 pairs of captains , which will be the protagonists of the Drafting Procedure by picking 3 duos for their teams","decision":"include","reason":"no-region","created_at":"2026-09-28T19:28:25+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249559","discord":"https://discord.gg/tYKVBV8Gc9","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdX6zQlOjAdT27_28XjlW3YzJfoxZVdZEih3403VCmR0Wr8Fw/viewform"},{"topic_id":2248645,"name":"Advanced TCT","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-26T00:03:34+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248645","discord":"https://discord.gg/56WRzpQUV2","signup_form":""},{"topic_id":2248268,"name":"Hidden Cup: Chapter Golden Lily","mode":"std","mode_label":"osu!standard","rank":"100–99,999","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-24T19:16:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248268","discord":"https://discord.gg/ZvMVp9Rx4R","signup_form":"https://docs.google.com/spreadsheets/d/1vL1UfQRzRKALP6qIzRPp8tGGYjOCf4SQzvaYvv9QLXA/edit?usp=sharing"},{"topic_id":2247819,"name":"Sonus Scope 2","mode":"std","mode_label":"osu!standard","rank":"3,333–25K","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-23T06:12:42+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2247819","discord":"https://discord.gg/XMZ5mPcKxC","signup_form":"https://docs.google.com/spreadsheets/d/1JAbFiunw7RtqpXjlifD7qleTnfkWqlXlIatrq_00prI/edit?gid=0#gid=0"},{"topic_id":2246985,"name":"Mavo's Blitz Brawl Rewind","mode":"std","mode_label":"osu!standard","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-20T15:15:08+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246985","discord":"https://discord.gg/ugtUDns8zB","signup_form":"https://docs.google.com/spreadsheets/d/1kJEt5HLupy-wMC0FLY1Kq84p4Xw5MXNNkd-YmiSvksA"},{"topic_id":2246833,"name":"Newcomers Mania World Cup 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"25K–200K","teams":["3v3"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-09-20T04:34:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246833","discord":"https://discord.gg/qXkUh5vE6j","signup_form":"https://docs.google.com/spreadsheets/d/1rNpAsSSTYS_eUP313xm0aXllYlMM2d1LZs0nVL2ipx0/edit?gid=450431037#gid=450431037"},{"topic_id":2246109,"name":"SMST 83","mode":"std","mode_label":"osu!standard","rank":"1–10K","teams":[],"region":"無區域限制（全球開放）","status":"expired","deadline":"09/26 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 September 25th(Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-09-18T01:02:27+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246109","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2251780,"name":"Lazer std tournaments","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"unknown","deadline":"","deadline_raw":"","decision":"review","reason":"low-signal","created_at":"2026-10-06T02:19:03+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251780","discord":"","signup_form":""},{"topic_id":2250628,"name":"osu!MayniLAN 2026 LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"lan","created_at":"2026-10-02T13:24:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250628","discord":"https://discord.gg/ea59ERZByY","signup_form":"https://docs.google.com/spreadsheets/d/1SEJRD8_7UMCxWRNJIr1Eg3OqCwSV3ED0AR3BgQK4604/edit?usp=sharing"},{"topic_id":2250369,"name":"RE:Legacy Invitational 6WC Player Invitational","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"邀請賽／選拔，非公開報名","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"invitational","created_at":"2026-10-01T12:53:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250369","discord":"","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdiP1a04jn8ufPW4JiFJWPBu2TF-kf82oxADXJv69il_6UEpA/viewform?usp=publish-editor"},{"topic_id":2250185,"name":"Lion's osu! Cup","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"lan","created_at":"2026-09-30T20:32:12+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250185","discord":"https://discord.gg/vrsvkV5nGr","signup_form":"https://forms.gle/MLQ4Nr8k9GiFBxeUA"},{"topic_id":2249349,"name":"purl's interstellar tales","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"low-signal","created_at":"2026-09-28T03:38:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249349","discord":"https://discord.gg/UCENFGs3kH","signup_form":"https://docs.google.com/spreadsheets/d/17rXnPS56ivQ21SoPK9Ly8hrYdl5jTUBW0zymxPguHJs/edit?gid=464425013#gid=464425013"},{"topic_id":2246751,"name":"The Bronco Brawl osu! LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"expired","deadline":"10/05 07:59","deadline_raw":"REGISTRATION ends on SUNDAY, OCTOBER 4TH @ 11:59PM PDT! This is a BYOC (Bring Your Own Computer) event, so bring everything necessary for your setup","decision":"review","reason":"lan","created_at":"2026-09-19T21:54:39+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246751","discord":"https://discord.gg/FWGXRtpEjw","signup_form":"https://docs.google.com/spreadsheets/d/1T0nzr-PL-HtpA4oEuTbXpxGFTsT-8fK6ivjr-x_tihM/edit?usp=sharing"}]}</script>
+<script type="application/json" id="data">{"meta":{"last_run_utc":"2026-10-09T19:33:50+00:00","last_run_taipei":"2026-10-10 03:33"},"counts":{"include":17,"review":6,"open":12},"tournaments":[{"topic_id":2252781,"name":"Frost Night Cup","mode":"std","mode_label":"osu!standard","rank":"100K–999K","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD | Teams/FA Regs Open!] Frost Night Cup [3v3 TS6 | 100k - 999k]","rank_full":"100,000 – 999,000","author":"TAXOMETP","excerpt":"Topic Starter TAXOMETP 2026-10-09T17:30:58+00:00 Main Sheet | Rules Doc | Discord | Challonge Team Regs | Free Agent Regs This is an osu!standard, 3v3, Team Size 6, International,…","decision":"include","reason":"no-region","created_at":"2026-10-09T17:30:58+00:00","first_seen_utc":"2026-10-09T19:13:29+00:00","first_seen_display":"10/10","url":"https://osu.ppy.sh/community/forums/topics/2252781","discord":"https://discord.gg/BgAbqQ9zvn","signup_form":"https://docs.google.com/spreadsheets/d/13OT1i5D7Xf8GxXMFKDTw2P2tygJbXBwNTtZHHa-iMJg"},{"topic_id":2252609,"name":"The Taiko Poop Cup","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","deadline_iso":"","title":"(Taiko, 1v1, Open Rank) The Taiko Poop Cup","rank_full":"","author":"snowstorm345","excerpt":"","decision":"include","reason":"no-region","created_at":"2026-10-09T00:28:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252609","discord":"https://discord.gg/QNhWPx244z","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLScIHX_2h29EYcYdGGhNbkTGKhYFCnTRVzY2x2_IHhjNI6D6CQ/viewform?usp=dialog"},{"topic_id":2252361,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"50K–100K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/17 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 16th(Friday UTC+0)","deadline_iso":"2026-10-16T23:59:00+00:00","title":"[STD]SMST 84 50K-100K [Open]","rank_full":"50,000 – 100,000","author":"Sinaeb","excerpt":"Topic Starter Sinaeb 2026-10-08T02:43:20+00:00 Discord Link | Sheets | Twitch Welcome to the first FreeMod SMST Tournament!…","decision":"include","reason":"no-region","created_at":"2026-10-08T02:43:20+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252361","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2251619,"name":"Yimasu‘s Hidden Tournament 2","mode":"std","mode_label":"osu!standard","rank":"20K–99,999","teams":[],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"registrations close","deadline_iso":"","title":"[STD] Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)","rank_full":"20,000 – 99,999","author":"yimasu","excerpt":"","decision":"include","reason":"no-region","created_at":"2026-10-05T13:52:58+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251619","discord":"https://discord.gg/maK6SzzGeu","signup_form":"https://forms.gle/HnugLcwqgAJc9k6p8"},{"topic_id":2251298,"name":"Beginner's Taiko Tournament 10","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","deadline_iso":"","title":"[osu!taiko][1v1] Beginner's Taiko Tournament 10","rank_full":"","author":"TaikoMom","excerpt":"","decision":"include","reason":"no-region","created_at":"2026-10-04T15:59:28+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251298","discord":"https://discord.gg/JEER3PfNSe","signup_form":"https://forms.gle/GK8SedZhM6orjgaFA"},{"topic_id":2250673,"name":"Kaga Sumire Championship","mode":"std","mode_label":"osu!standard","rank":"55K–∞","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD](Regs Open) Kaga Sumire Championship [55k-inf][2v2,TS3][中文]","rank_full":"55,000 – 無上限","author":"Inori-","excerpt":"Topic Starter Inori- 2026-10-02T16:00:11+00:00 Kaga Sumire Chaimpionship (KSC) 是在Stable版本進行的osu!Standard比賽。 對陣人數與隊伍人數為 2v2 、 Team Size of 2 ~ 3 。…","decision":"include","reason":"explicit-allow","created_at":"2026-10-02T16:00:11+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250673","discord":"https://discord.gg/xwn96Y2pqM","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdTLXgBIA7kFEkhyfB78dJJcAKobduyki_iM2T044EsHCF2Hg/viewform?usp=preview"},{"topic_id":2250525,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"100K–∞","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/10 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 9th Friday UTC+0)","deadline_iso":"2026-10-09T23:59:00+00:00","title":"[STD]SMST 84 100K-Infinity [Open]","rank_full":"100,000 – 無上限","author":"Sinaeb","excerpt":"Topic Starter Sinaeb 2026-10-02T02:05:59+00:00 Discord Link | Sheets | Twitch Myon Also make sure to have joined the discord server To sign up to 1v1, answer with 1v1 To usign,…","decision":"include","reason":"no-region","created_at":"2026-10-02T02:05:59+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250525","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2250321,"name":"Fast Food Cup","mode":"std","mode_label":"osu!standard","rank":"1K–99,999","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD] Fast Food Cup | #1,000 - #99,999 BWS | CN,HK,TW,MO only | 2v2 TS3 [regs open]","rank_full":"1,000 – 99,999","author":"BurgerKing","excerpt":"Topic Starter BurgerKing 2026-10-01T09:15:16+00:00 Main Sheet | Discord | QQ | Rules Document | Challonge Team Registrations | Free Agent Registrations | Staff Registrations FFC…","decision":"include","reason":"explicit-allow","created_at":"2026-10-01T09:15:16+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250321","discord":"http://discord.gg/4qyhQpYwUd","signup_form":"https://docs.google.com/spreadsheets/d/1xFgsuYpv6ASp9j9XSyDx7-LT5KBrGDbKFKVIKecuIZU/"},{"topic_id":2250173,"name":"Teirin's Super Gacha Experience","mode":"std","mode_label":"osu!standard","rank":"1–9,500","teams":["4v4"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD] Teirin's Super Gacha Experience | 4v4 TS9 | #1-9500 No BWS (Max 3 Badges)","rank_full":"1 – 9,500","author":"Teirin","excerpt":"","decision":"include","reason":"no-region","created_at":"2026-09-30T19:03:15+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250173","discord":"https://discord.com/invite/Tt8CGFt95G","signup_form":"https://forms.gle/Ampj2ZoEsnCixVr98"},{"topic_id":2249574,"name":"The Aphelion 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"5K–40K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[o!m 4K] The Aphelion 2026 #5,000-40,000 (4K rank) [Staff + Player Regs OPEN]","rank_full":"5,000 – 40,000","author":"Saemitsu","excerpt":"Topic Starter Saemitsu 2026-09-28T20:00:19+00:00 Standing at the furthest point from the bright star ahead, reach out and grasp the light the Celestial emanates Mastersheet •…","decision":"include","reason":"no-region","created_at":"2026-09-28T20:00:19+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249574","discord":"https://discord.gg/D4HAmzRHc9","signup_form":"https://docs.google.com/spreadsheets/d/1GXIZvGer6CXSxJcEI4_qNGoOo9Gygq9Td8b1K2_4Bjg/edit?usp=sharing"},{"topic_id":2249559,"name":"Setsukue's Coupling Tournament Duo Draft","mode":"std","mode_label":"osu!standard","rank":"100–10K","teams":["4v4"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"registration ends, the staff will pick 16 pairs of captains , which will be the protagonists of the Drafting Procedure by picking 3 duos for their teams","deadline_iso":"","title":"[STD] Setsukue's Coupling Tournament | 100-10.000 BWS | Duo Draft 4v4 TS8 | [OPEN]","rank_full":"100 – 10,000","author":"Setsukue","excerpt":"Topic Starter Setsukue 2026-09-28T19:28:25+00:00 Registration │ Discord │ Main Sheet │ Twitch │ Challonge • This is the third iteration of Setsukue's Comeback Tournament and…","decision":"include","reason":"no-region","created_at":"2026-09-28T19:28:25+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249559","discord":"https://discord.gg/tYKVBV8Gc9","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdX6zQlOjAdT27_28XjlW3YzJfoxZVdZEih3403VCmR0Wr8Fw/viewform"},{"topic_id":2248645,"name":"Advanced TCT","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[Taiko, 2v2, Convert] Advanced TCT (REG OPEN)","rank_full":"","author":"Remi_hs","excerpt":"Topic Starter Remi_hs 2026-09-26T00:03:34+00:00 Website Discord Twitch この投稿の日本語版はこちらのリンクです Registration： OPEN INFORMATION ━━━━━━━━━━━━━━━━━━━━ Welcome to the Taiko Convert…","decision":"include","reason":"no-region","created_at":"2026-09-26T00:03:34+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248645","discord":"https://discord.gg/56WRzpQUV2","signup_form":""},{"topic_id":2248268,"name":"Hidden Cup: Chapter Golden Lily","mode":"std","mode_label":"osu!standard","rank":"100–99,999","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD] Hidden Cup: Chapter Golden Lily | 3v3 Ts5 | #100 - #99.999 BWS | Team, FA & Staff Regs Open!","rank_full":"100 – 99,999","author":"Tey","excerpt":"Topic Starter Tey 2026-09-24T19:16:04+00:00 Apply to help out as staff: -> HERE <- Staff list updated as of: 28/09/2026 Host: Tey Admin: baikalsk Main GFX: Helveetica Sub GFX: Tey…","decision":"include","reason":"no-region","created_at":"2026-09-24T19:16:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248268","discord":"https://discord.gg/ZvMVp9Rx4R","signup_form":"https://docs.google.com/spreadsheets/d/1vL1UfQRzRKALP6qIzRPp8tGGYjOCf4SQzvaYvv9QLXA/edit?usp=sharing"},{"topic_id":2247819,"name":"Sonus Scope 2","mode":"std","mode_label":"osu!standard","rank":"3,333–25K","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD] Sonus Scope 2 [3v3 TS6 Tiered Suiji, 3,333-25,000 BWS] [Player and Staff Regs Open!]","rank_full":"3,333 – 25,000","author":"Laurus","excerpt":"Topic Starter Laurus 2026-09-23T06:12:42+00:00 Main Sheet - Rules Document - Discord - Challonge Player Registration - Staff Registration Welcome to the second iteration of Sonus…","decision":"include","reason":"no-region","created_at":"2026-09-23T06:12:42+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2247819","discord":"https://discord.gg/XMZ5mPcKxC","signup_form":"https://docs.google.com/spreadsheets/d/1JAbFiunw7RtqpXjlifD7qleTnfkWqlXlIatrq_00prI/edit?gid=0#gid=0"},{"topic_id":2246985,"name":"Mavo's Blitz Brawl Rewind","mode":"std","mode_label":"osu!standard","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD] [REGS OPEN, Open Rank, 2v2 TS2] Mavo's Blitz Brawl Rewind","rank_full":"","author":"Mavosiik","excerpt":"Topic Starter Mavosiik 2026-09-20T15:15:08+00:00 Discord | Main Sheet | Registration | Challonge THIS ITERATION EACH TEAM IS REQUIRED TO HAVE AT LEAST 1 PAST MBB PARTICIPANT…","decision":"include","reason":"no-region","created_at":"2026-09-20T15:15:08+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246985","discord":"https://discord.gg/ugtUDns8zB","signup_form":"https://docs.google.com/spreadsheets/d/1kJEt5HLupy-wMC0FLY1Kq84p4Xw5MXNNkd-YmiSvksA"},{"topic_id":2246833,"name":"Newcomers Mania World Cup 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"25K–200K","teams":["3v3"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[PLAYER + STAFF REG OPEN][o!m 4k][3v3 TS6][#25k - #200k] Newcomers Mania World Cup 2026","rank_full":"25,000 – 200,000","author":"[TCD] Dzar03","excerpt":"Topic Starter [TCD] Dzar03 2026-09-20T04:34:22+00:00 Main Sheet - Player Registration - Staff Registration - Rule Document - Bracket YouTube - Discord - Twitch (1) - Twitch (2) -…","decision":"include","reason":"explicit-allow","created_at":"2026-09-20T04:34:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246833","discord":"https://discord.gg/qXkUh5vE6j","signup_form":"https://docs.google.com/spreadsheets/d/1rNpAsSSTYS_eUP313xm0aXllYlMM2d1LZs0nVL2ipx0/edit?gid=450431037#gid=450431037"},{"topic_id":2246109,"name":"SMST 83","mode":"std","mode_label":"osu!standard","rank":"1–10K","teams":[],"region":"無區域限制（全球開放）","status":"expired","deadline":"09/26 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 September 25th(Friday UTC+0)","deadline_iso":"2026-09-25T23:59:00+00:00","title":"[STD]SMST 83 1-10K [Open]","rank_full":"1 – 10,000","author":"Sinaeb","excerpt":"","decision":"include","reason":"no-region","created_at":"2026-09-18T01:02:27+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246109","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2251780,"name":"Lazer std tournaments","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"unknown","deadline":"","deadline_raw":"","deadline_iso":"","title":"Lazer std tournaments","rank_full":"","author":"Katan24","excerpt":"","decision":"review","reason":"low-signal","created_at":"2026-10-06T02:19:03+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251780","discord":"","signup_form":""},{"topic_id":2250628,"name":"osu!MayniLAN 2026 LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD, SEA only] osu!MayniLAN 2026 | 1v1, LAN | Open Rank | Player and Staff Registrations Open","rank_full":"","author":"AliceMargatroid","excerpt":"Topic Starter AliceMargatroid 2026-10-02T13:24:10+00:00 osu! Mayni LAN 2026 is an open rank LAN tournament open to all players with a flag from a Southeast Asian country in their…","decision":"review","reason":"lan","created_at":"2026-10-02T13:24:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250628","discord":"https://discord.gg/ea59ERZByY","signup_form":"https://docs.google.com/spreadsheets/d/1SEJRD8_7UMCxWRNJIr1Eg3OqCwSV3ED0AR3BgQK4604/edit?usp=sharing"},{"topic_id":2250369,"name":"RE:Legacy Invitational 6WC Player Invitational","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"邀請賽／選拔，非公開報名","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[1V1] [STD] RE:Legacy Invitational | 6WC Player Invitational | Staff Registrations Open!","rank_full":"","author":"MissingNote","excerpt":"Topic Starter MissingNote 2026-10-01T12:53:22+00:00 Staff Registration ・ Stream 1 ・ Stream 2 ・ Twitter Tournament Overview RE:Legacy Invitational is an osu!standard 1v1…","decision":"review","reason":"invitational","created_at":"2026-10-01T12:53:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250369","discord":"","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdiP1a04jn8ufPW4JiFJWPBu2TF-kf82oxADXJv69il_6UEpA/viewform?usp=publish-editor"},{"topic_id":2250185,"name":"Lion's osu! Cup","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[STD/LAN/1v1] Lion's osu! Cup - OPEN RANK [PLAYEY/STAFF REGS OPEN]","rank_full":"","author":"luxembourg","excerpt":"Topic Starter luxembourg 2026-09-30T20:32:12+00:00 Lion's Osu! Cup <<discord server>> ・ <<staff reg>> ・ <<player regs>> ・ <<rule doc>> Lion's osu!…","decision":"review","reason":"lan","created_at":"2026-09-30T20:32:12+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250185","discord":"https://discord.gg/vrsvkV5nGr","signup_form":"https://forms.gle/MLQ4Nr8k9GiFBxeUA"},{"topic_id":2249349,"name":"purl's interstellar tales","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"open","deadline":"","deadline_raw":"","deadline_iso":"","title":"[std/stable] [lan] purl's interstellar tales | open rank | regs open!","rank_full":"","author":"Purl","excerpt":"Topic Starter Purl 2026-09-28T03:38:04+00:00 b a n n e r c o m m i s s i o n e d b y Kourihase main sheet ・ registration ・ discord ・ twitch ❖ PIT will be a 3v3, team size 3,…","decision":"review","reason":"low-signal","created_at":"2026-09-28T03:38:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249349","discord":"https://discord.gg/UCENFGs3kH","signup_form":"https://docs.google.com/spreadsheets/d/17rXnPS56ivQ21SoPK9Ly8hrYdl5jTUBW0zymxPguHJs/edit?gid=464425013#gid=464425013"},{"topic_id":2246751,"name":"The Bronco Brawl osu! LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"expired","deadline":"10/05 07:59","deadline_raw":"REGISTRATION ends on SUNDAY, OCTOBER 4TH @ 11:59PM PDT! This is a BYOC (Bring Your Own Computer) event, so bring everything necessary for your setup","deadline_iso":"2026-10-04T23:59:00+00:00","title":"[STD | 1v1 | Open Rank] The Bronco Brawl osu! LAN (Fall 2026)","rank_full":"","author":"rezash","excerpt":"","decision":"review","reason":"lan","created_at":"2026-09-19T21:54:39+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246751","discord":"https://discord.gg/FWGXRtpEjw","signup_form":"https://docs.google.com/spreadsheets/d/1T0nzr-PL-HtpA4oEuTbXpxGFTsT-8fK6ivjr-x_tihM/edit?usp=sharing"}]}</script>
 <script>
 (function(){
   var payload = JSON.parse(document.getElementById('data').textContent);
@@ -154,6 +206,62 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
 
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  function metaRow(meta, label, value, node, numeric){
+    if(!value && !node) return;
+    var d = el('div');
+    d.appendChild(el('dt', null, label));
+    var dd = el('dd', numeric?'num':null);
+    if(node) dd.appendChild(node); else dd.textContent = value;
+    d.appendChild(dd); meta.appendChild(d);
+  }
+
+  // 倒數是**唯一由瀏覽器現算**的東西。看板是靜態頁，可能好幾小時前就產生了；
+  // 若用產生時間去算「剩餘幾小時」，一打開就已經是錯的（而且是愈用愈錯）。
+  // 所以：絕對時間由 Python 算好（台北 = UTC+8），JS 只負責「還有多久」。
+  function countdownText(iso, now){
+    var t = Date.parse(iso);
+    if(isNaN(t)) return '';
+    var ms = t - now;
+    if(ms <= 0) return '已截止';
+    var mins = Math.floor(ms / 60000);
+    if(mins < 1) return '剩餘不到 1 分';
+    var days = Math.floor(mins / 1440);
+    if(days >= 1) return '剩餘 ' + days + ' 天';
+    var hrs = Math.floor(mins / 60);
+    if(hrs >= 1) return '剩餘 ' + hrs + ' 小時 ' + (mins % 60) + ' 分';
+    return '剩餘 ' + mins + ' 分';
+  }
+
+  function tickCountdowns(){
+    var now = Date.now();
+    var nodes = document.querySelectorAll('[data-deadline]');
+    for(var i=0;i<nodes.length;i++){
+      var txt = countdownText(nodes[i].getAttribute('data-deadline'), now);
+      if(nodes[i].textContent !== txt) nodes[i].textContent = txt;
+      var past = (txt === '已截止');
+      if(nodes[i].classList.contains('past') !== past) nodes[i].classList.toggle('past', past);
+    }
+  }
+
+  // 截止時間那一格的內容：絕對時間（台北）＋ 倒數。
+  // 沒有可用的 ISO 時間時退回主辦寫的原句 —— 寧可顯示模糊的原話，
+  // 也不要捏造一個看起來很精確的時刻。
+  function deadlineNode(r){
+    if(!r.deadline && !r.deadline_raw) return null;
+    var frag = document.createDocumentFragment();
+    if(r.deadline){
+      frag.appendChild(document.createTextNode(r.deadline + '（UTC+8）'));
+      if(r.deadline_iso){
+        var s = el('span','countdown','');
+        s.setAttribute('data-deadline', r.deadline_iso);
+        frag.appendChild(s);
+      }
+    } else {
+      frag.appendChild(document.createTextNode(r.deadline_raw));
+    }
+    return frag;
+  }
 
   function buildGroup(host, options, key){
     options.forEach(function(opt){
@@ -182,29 +290,44 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     });
   }
 
+  // 卡片裡的連結要自己吃掉點擊事件，否則點 Discord 會同時彈出詳細面板。
+  function link(href, text){
+    var a = el('a', null, text);
+    a.href = href; a.target='_blank'; a.rel='noopener';
+    a.addEventListener('click', function(e){ e.stopPropagation(); });
+    return a;
+  }
+
   function card(r){
     var c = el('article','card'+(r.decision==='review'?' review':''));
+    // 整張卡片就是「看詳細」的按鈕。role/tabindex 是為了鍵盤與讀屏，
+    // 裡面還有真的連結，所以不能用 <button> 包起來（互動元素不能嵌套）。
+    c.tabIndex = 0;
+    c.setAttribute('role','button');
+    c.setAttribute('aria-label', r.name + '，顯示詳細說明');
+    function show(e){ if(e) e.preventDefault(); openDetail(r); }
+    c.addEventListener('click', show);
+    c.addEventListener('keydown', function(e){
+      // 只有焦點在卡片本身時才算。少了這一行的話，在卡片內的連結上按 Enter
+      // 會同時開啟連結**和**詳細面板 —— keydown 會從連結往上冒泡，
+      // 而 link() 的 stopPropagation 只擋得住 click。
+      if(e.target !== c) return;
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') show(e);
+    });
+
     var top = el('div','card-top');
     top.appendChild(el('span','chip', r.mode_label));
-    var pill = el('span','pill '+r.status, STATUS[r.status]||'');
-    top.appendChild(pill);
+    top.appendChild(el('span','pill '+r.status, STATUS[r.status]||''));
     c.appendChild(top);
 
     c.appendChild(el('h2', null, r.name));
 
     var meta = el('dl','meta');
-    function row(label, value, numeric){
-      if(!value) return;
-      var d = el('div');
-      d.appendChild(el('dt', null, label));
-      var dd = el('dd', numeric?'num':null, value);
-      d.appendChild(dd); meta.appendChild(d);
-    }
-    row('名次', r.rank, true);
-    row('形式', (r.teams||[]).join(' / '));
-    row('區域', r.region);
-    row('截止', r.deadline ? ('台北 ' + r.deadline) : (r.deadline_raw || ''));
-    row('發現', r.first_seen_display);
+    metaRow(meta, '名次', r.rank, null, true);
+    metaRow(meta, '形式', (r.teams||[]).join(' / '));
+    metaRow(meta, '區域', r.region);
+    metaRow(meta, '截止', null, deadlineNode(r));
+    metaRow(meta, '發現', r.first_seen_display);
     c.appendChild(meta);
 
     if(r.status==='expired'){
@@ -216,13 +339,75 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     }
 
     var foot = el('div','card-foot');
-    var a = el('a', null, '查看 osu! 原帖 →');
-    a.href = r.url; a.target='_blank'; a.rel='noopener';
-    foot.appendChild(a);
-    if(r.discord){ var d2 = el('a', null, 'Discord'); d2.href=r.discord; d2.target='_blank'; d2.rel='noopener'; foot.appendChild(d2); }
+    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
+    foot.appendChild(el('span','more','詳細說明 ▸'));
     c.appendChild(foot);
     return c;
   }
+
+  var dlg = document.getElementById('detail');
+
+  function openDetail(r){
+    document.getElementById('d-chip').textContent = r.mode_label;
+    var pill = document.getElementById('d-pill');
+    pill.className = 'pill ' + r.status;
+    pill.textContent = STATUS[r.status] || '';
+    document.getElementById('d-name').textContent = r.name;
+
+    var body = document.getElementById('d-body');
+    body.textContent = '';
+
+    var meta = el('dl','meta');
+    metaRow(meta, '名次', r.rank_full || r.rank, null, true);
+    metaRow(meta, '形式', (r.teams||[]).join(' / '));
+    metaRow(meta, '區域', r.region);
+    metaRow(meta, '截止', null, deadlineNode(r));
+    metaRow(meta, '主辦', r.author);
+    metaRow(meta, '發現', r.first_seen_display);
+    body.appendChild(meta);
+
+    if(r.decision === 'review'){
+      body.appendChild(el('div','review-note','⚠️ 待人工確認：' + (r.region||'')));
+    }
+    if(r.status === 'expired'){
+      body.appendChild(el('div','stale-note','⚠️ 內文寫的截止時間已過，標題卻沒更新 —— 請點進原帖確認還能不能報名。'));
+    }
+
+    // 摘要＝原帖首段原文，只截不改。加註出處，避免被當成我們的轉述。
+    if(r.excerpt){
+      var q = el('div','quote');
+      q.appendChild(document.createTextNode(r.excerpt));
+      q.appendChild(el('span','src','— 原帖首段節錄'));
+      body.appendChild(q);
+    }
+    if(r.deadline_raw){
+      var dq = el('div','quote');
+      dq.appendChild(document.createTextNode(r.deadline_raw));
+      dq.appendChild(el('span','src','— 原帖關於報名時間的說法'));
+      body.appendChild(dq);
+    }
+    if(r.title){
+      var tq = el('div','quote');
+      tq.appendChild(document.createTextNode(r.title));
+      tq.appendChild(el('span','src','— 原帖標題（狀態判定依此為準）'));
+      body.appendChild(tq);
+    }
+
+    var foot = document.getElementById('d-foot');
+    foot.textContent = '';
+    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
+    if(r.signup_form) foot.appendChild(link(r.signup_form, '報名表單'));
+
+    tickCountdowns();
+    if(!dlg.open) dlg.showModal();
+  }
+
+  document.getElementById('d-close').addEventListener('click', function(){ dlg.close(); });
+  // 點 backdrop 關閉。內容包在 .detail-inner 裡，所以點內文空白處不會誤關
+  // （事件 target 會是那個 div，不是 <dialog> 本身）。
+  dlg.addEventListener('click', function(e){ if(e.target === dlg) dlg.close(); });
 
   function render(){
     var grid = document.getElementById('grid');
@@ -239,6 +424,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var m = payload.meta||{};
     document.getElementById('foot-meta').textContent =
       '賽事總筆數 ' + rows.length + '　·　最後更新 ' + (m.last_run_taipei||'—') + '（台北時間）';
+
+    // 卡片是重新產生的，倒數的 span 也跟著換新 —— 補算一次。
+    tickCountdowns();
   }
 
   buildGroup(document.getElementById('f-mode'), MODES, 'mode');
@@ -248,6 +436,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   reviewToggle.addEventListener('change', render);
 
   render();
+  // 只改倒數那幾個字，不重繪整頁 —— 重繪會把正在讀的卡片與捲動位置跳掉。
+  setInterval(tickCountdowns, 60000);
 })();
 </script>
 </body>

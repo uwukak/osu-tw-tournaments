@@ -204,6 +204,11 @@ def run(args: argparse.Namespace) -> int:
                 fields["discord"] = detail.discord
                 fields["signup_form"] = detail.signup_form
                 fields["stream"] = detail.stream
+                # 抓不到內文時不要用空字串蓋掉已經存好的摘要 —— 那會讓看板上的說明
+                # 因為一次暫時性的解析失敗而整段消失。寧可留著上一次的節錄：
+                # 它標著「原帖首段節錄」又附原帖連結，稍微過時遠比整段不見好。
+                if detail.excerpt:
+                    fields["excerpt"] = detail.excerpt
                 if detail.author and not fields.get("author"):
                     fields["author"] = detail.author
                 raw, iso = rules.extract_deadline(detail.body_text, detail.created_at)

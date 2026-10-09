@@ -90,6 +90,7 @@ pip install -r requirements.txt
 python tests/test_rules.py              # 規則測試（不須 pytest）
 python tests/test_store.py              # 資料合併與「有變更才提交」的測試
 python tests/test_render.py             # 報名狀態校正（標題沒改、內文已截止）
+python tests/test_parse.py              # 首帖摘要的截斷
 python -m osu_tourney.scrape --offline  # 用 fixtures/ 跑，完全不碰網路
 python -m osu_tourney.scrape --no-push  # 真的去抓，但只寫本機檔案、不提交
 python -m osu_tourney.scrape --push     # 抓完並提交推送
@@ -140,6 +141,7 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `tests/test_rules.py` | 黃金測試：規則與分類分布 |
 | `tests/test_store.py` | 黃金測試：資料合併與變更偵測 |
 | `tests/test_render.py` | 黃金測試：報名狀態校正與草稿標題 |
+| `tests/test_parse.py` | 黃金測試：首帖摘要的截斷 |
 
 ---
 
@@ -151,6 +153,7 @@ python -m osu_tourney.scrape --seed-only --no-push
 python tests/test_rules.py
 python tests/test_store.py
 python tests/test_render.py
+python tests/test_parse.py
 ```
 
 測試會斷言真實語料上的分類分布。若你**刻意**改了規則，測試會失敗並印出新的分布 ——
@@ -166,6 +169,26 @@ python tests/test_render.py
 
 被判成 `review` 的常見原因：線下賽（LAN，要自己看地點）、邀請賽、區域代碼無法判定、
 缺少名次與隊伍資訊（可能是情報帖而非比賽）。
+
+---
+
+## 看板
+
+`docs/index.html` 是單一自足頁面（CSS／JS／資料全部內嵌），推到 GitHub Pages。
+
+- 卡片列出賽事，可用**模式**與**報名狀態**篩選；「顯示待確認」控制 review 那批要不要出現
+- **點卡片**會彈出詳細說明：原帖首段的節錄、主辦自己寫的截止那句話、原帖完整標題、完整名次與主辦
+- 時間一律顯示成 `MM/DD HH:MM（UTC+8）`，後面接**剩餘時間**（`剩餘 3 天`／`剩餘 5 小時 12 分`）
+
+關於時間有兩件事是刻意這樣設計的：
+
+- **絕對時間由 Python 算好，倒數由瀏覽器現算。** 看板是靜態頁，可能好幾小時前就產生；
+  用產生時間去算「剩餘幾小時」，一打開就已經是錯的。所以 `deadline_iso`（原始 UTC）也放進
+  資料裡，讓 JS 每分鐘自己重算一次 —— 只改那幾個字，不重繪整頁。
+- **草稿裡沒有倒數。** 貼文是被讀者稍後才看到的，寫「剩餘 3 天」只會誤導。
+
+「簡要說明」用的是**原帖首段的原文節錄（180 字內，切在句尾）**，不摘要、不改寫、不翻譯，
+並標明出處。判斷留給讀者，點一下就能回到原帖。
 
 ---
 
@@ -217,4 +240,7 @@ python tests/test_render.py
   看板與草稿會改標成 **「表定已截止」**。反過來，若內文的截止時間猜錯，也可能誤標 ——
   所以這種卡片不會被藏起來，只會變灰並附上提示，請點進原帖確認。
 - **每週系列賽**（例如 `#51 week ... cup (weekly)`）會每週產生一篇草稿。
+- **首帖節錄是後加的欄位**，所以在這版上線前就已抓過明細的賽事，點開時只會少那一段，
+  其餘欄位照常。想立刻補齊就跑一次 `python -m osu_tourney.scrape --no-push --refresh-days 0`，
+  否則會在既有的明細更新週期（報名中的 3 天）內自己補上。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。

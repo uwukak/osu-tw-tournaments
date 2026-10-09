@@ -165,6 +165,14 @@ def build_payload(
                 "status": status,
                 "deadline": to_taipei(record.get("deadline_iso"), "%m/%d %H:%M") or "",
                 "deadline_raw": (record.get("deadline_raw") or "")[:200],
+                # 給卡片上的倒數用。deadline 是已經算好的台北時間字串（人看的），
+                # deadline_iso 是原始 UTC 時間（機器算剩餘時間用的）—— 兩個都需要。
+                "deadline_iso": record.get("deadline_iso") or "",
+                # 詳細面板才有空間放這些，卡片上塞不下。
+                "title": record.get("title", ""),
+                "rank_full": record.get("rank_full") or "",
+                "author": record.get("author") or "",
+                "excerpt": record.get("excerpt") or "",
                 "decision": record.get("decision"),
                 "reason": record.get("reason", ""),
                 "created_at": record.get("created_at") or "",
@@ -362,7 +370,9 @@ h1 .accent{color:var(--accent)}
 .card{
   background:var(--surface); border:1px solid var(--border); border-radius:14px;
   padding:18px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  cursor:pointer;
 }
+.card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .card.review{border-style:dashed}
 .card-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .chip{
@@ -390,9 +400,44 @@ h1 .accent{color:var(--accent)}
 .card-foot a{color:var(--accent); text-decoration:none; font-weight:600}
 .card-foot a:hover{text-decoration:underline}
 .card-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+.more{margin-left:auto; white-space:nowrap; opacity:.75}
+/* 剩餘時間。分開一個 span 是為了讓 JS 每分鐘只改這幾個字，
+   不必整頁重繪（重繪會把正在讀的卡片捲動位置跳掉）。 */
+.countdown{font-variant-numeric:tabular-nums; opacity:.75; white-space:nowrap}
+.countdown::before{content:"· "}
+.countdown.past{color:var(--closed); opacity:1}
+.countdown:empty::before{content:""}
 .empty{text-align:center; color:var(--muted); padding:64px 16px; border:1px dashed var(--border); border-radius:14px}
 footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.7}
 @media (prefers-reduced-motion:no-preference){ .card{transition:box-shadow .15s ease} .card:hover{box-shadow:0 2px 4px rgba(30,23,32,.06),0 14px 32px -20px rgba(30,23,32,.5)} }
+
+/* 點卡片彈出的詳細說明。用原生 <dialog>：Esc 關閉、focus trap、backdrop 都是免費的。 */
+.detail{
+  border:1px solid var(--border); border-radius:16px; padding:0; background:var(--surface); color:var(--text);
+  width:min(560px, calc(100% - 32px)); max-height:min(85vh, 720px); overflow:auto;
+  box-shadow:0 24px 64px -28px rgba(30,23,32,.6);
+}
+.detail::backdrop{background:rgba(20,15,22,.55)}
+.detail-inner{padding:20px}
+.detail-top{display:flex; align-items:center; gap:8px}
+.detail .pill{margin-left:0}
+.detail-close{
+  margin-left:auto; font:inherit; font-size:14px; line-height:1; padding:6px 9px;
+  border:1px solid var(--border); border-radius:8px; background:transparent; color:var(--muted); cursor:pointer;
+}
+.detail-close:hover{color:var(--text); border-color:var(--muted)}
+.detail-close:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.detail h2{font-size:20px; font-weight:700; margin:12px 0 0; line-height:1.35; text-wrap:balance}
+.detail-body{display:flex; flex-direction:column; gap:14px; margin-top:16px}
+.quote{
+  border-left:3px solid var(--border); padding:2px 0 2px 12px;
+  font-size:13px; line-height:1.7; color:var(--text); white-space:pre-wrap; overflow-wrap:anywhere;
+}
+.quote .src{display:block; margin-top:6px; font-size:11px; color:var(--muted)}
+.detail-foot{display:flex; flex-wrap:wrap; gap:16px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-size:13px}
+.detail-foot a{color:var(--accent); text-decoration:none; font-weight:600}
+.detail-foot a:hover{text-decoration:underline}
+.detail-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
 </style>
 </head>
 <body>
@@ -418,11 +463,26 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   <div class="grid" id="grid"></div>
   <div class="empty" id="empty" hidden>沒有符合條件的賽事。</div>
 
+  <dialog class="detail" id="detail" aria-labelledby="d-name">
+    <div class="detail-inner">
+      <div class="detail-top">
+        <span class="chip" id="d-chip"></span>
+        <span class="pill" id="d-pill"></span>
+        <button type="button" class="detail-close" id="d-close">✕ 關閉</button>
+      </div>
+      <h2 id="d-name"></h2>
+      <div class="detail-body" id="d-body"></div>
+      <div class="detail-foot" id="d-foot"></div>
+    </div>
+  </dialog>
+
   <footer>
     <div id="foot-meta"></div>
     <div>資料來源：<a href="https://osu.ppy.sh/community/forums/55?sort=created" style="color:var(--accent)">osu! 論壇 Tournaments 版</a>。
     區域與欄位以關鍵字規則自動判定，可能有誤 —— 標示「待確認」者請自行核對原帖。<br>
-    「<b>表定已截止</b>」表示標題仍寫著報名開放，但帖內文寫的截止時間已經過去（主辦忘了改標題）。</div>
+    時間一律換算成 <b>UTC+8</b>（台北）；「剩餘…」由你的瀏覽器即時計算，會隨時間自己更新。<br>
+    「<b>表定已截止</b>」表示標題仍寫著報名開放，但帖內文寫的截止時間已經過去（主辦忘了改標題）。<br>
+    點卡片可以看原帖首段的節錄與完整欄位。</div>
   </footer>
 </div>
 
@@ -444,6 +504,62 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
 
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  function metaRow(meta, label, value, node, numeric){
+    if(!value && !node) return;
+    var d = el('div');
+    d.appendChild(el('dt', null, label));
+    var dd = el('dd', numeric?'num':null);
+    if(node) dd.appendChild(node); else dd.textContent = value;
+    d.appendChild(dd); meta.appendChild(d);
+  }
+
+  // 倒數是**唯一由瀏覽器現算**的東西。看板是靜態頁，可能好幾小時前就產生了；
+  // 若用產生時間去算「剩餘幾小時」，一打開就已經是錯的（而且是愈用愈錯）。
+  // 所以：絕對時間由 Python 算好（台北 = UTC+8），JS 只負責「還有多久」。
+  function countdownText(iso, now){
+    var t = Date.parse(iso);
+    if(isNaN(t)) return '';
+    var ms = t - now;
+    if(ms <= 0) return '已截止';
+    var mins = Math.floor(ms / 60000);
+    if(mins < 1) return '剩餘不到 1 分';
+    var days = Math.floor(mins / 1440);
+    if(days >= 1) return '剩餘 ' + days + ' 天';
+    var hrs = Math.floor(mins / 60);
+    if(hrs >= 1) return '剩餘 ' + hrs + ' 小時 ' + (mins % 60) + ' 分';
+    return '剩餘 ' + mins + ' 分';
+  }
+
+  function tickCountdowns(){
+    var now = Date.now();
+    var nodes = document.querySelectorAll('[data-deadline]');
+    for(var i=0;i<nodes.length;i++){
+      var txt = countdownText(nodes[i].getAttribute('data-deadline'), now);
+      if(nodes[i].textContent !== txt) nodes[i].textContent = txt;
+      var past = (txt === '已截止');
+      if(nodes[i].classList.contains('past') !== past) nodes[i].classList.toggle('past', past);
+    }
+  }
+
+  // 截止時間那一格的內容：絕對時間（台北）＋ 倒數。
+  // 沒有可用的 ISO 時間時退回主辦寫的原句 —— 寧可顯示模糊的原話，
+  // 也不要捏造一個看起來很精確的時刻。
+  function deadlineNode(r){
+    if(!r.deadline && !r.deadline_raw) return null;
+    var frag = document.createDocumentFragment();
+    if(r.deadline){
+      frag.appendChild(document.createTextNode(r.deadline + '（UTC+8）'));
+      if(r.deadline_iso){
+        var s = el('span','countdown','');
+        s.setAttribute('data-deadline', r.deadline_iso);
+        frag.appendChild(s);
+      }
+    } else {
+      frag.appendChild(document.createTextNode(r.deadline_raw));
+    }
+    return frag;
+  }
 
   function buildGroup(host, options, key){
     options.forEach(function(opt){
@@ -472,29 +588,44 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     });
   }
 
+  // 卡片裡的連結要自己吃掉點擊事件，否則點 Discord 會同時彈出詳細面板。
+  function link(href, text){
+    var a = el('a', null, text);
+    a.href = href; a.target='_blank'; a.rel='noopener';
+    a.addEventListener('click', function(e){ e.stopPropagation(); });
+    return a;
+  }
+
   function card(r){
     var c = el('article','card'+(r.decision==='review'?' review':''));
+    // 整張卡片就是「看詳細」的按鈕。role/tabindex 是為了鍵盤與讀屏，
+    // 裡面還有真的連結，所以不能用 <button> 包起來（互動元素不能嵌套）。
+    c.tabIndex = 0;
+    c.setAttribute('role','button');
+    c.setAttribute('aria-label', r.name + '，顯示詳細說明');
+    function show(e){ if(e) e.preventDefault(); openDetail(r); }
+    c.addEventListener('click', show);
+    c.addEventListener('keydown', function(e){
+      // 只有焦點在卡片本身時才算。少了這一行的話，在卡片內的連結上按 Enter
+      // 會同時開啟連結**和**詳細面板 —— keydown 會從連結往上冒泡，
+      // 而 link() 的 stopPropagation 只擋得住 click。
+      if(e.target !== c) return;
+      if(e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') show(e);
+    });
+
     var top = el('div','card-top');
     top.appendChild(el('span','chip', r.mode_label));
-    var pill = el('span','pill '+r.status, STATUS[r.status]||'');
-    top.appendChild(pill);
+    top.appendChild(el('span','pill '+r.status, STATUS[r.status]||''));
     c.appendChild(top);
 
     c.appendChild(el('h2', null, r.name));
 
     var meta = el('dl','meta');
-    function row(label, value, numeric){
-      if(!value) return;
-      var d = el('div');
-      d.appendChild(el('dt', null, label));
-      var dd = el('dd', numeric?'num':null, value);
-      d.appendChild(dd); meta.appendChild(d);
-    }
-    row('名次', r.rank, true);
-    row('形式', (r.teams||[]).join(' / '));
-    row('區域', r.region);
-    row('截止', r.deadline ? ('台北 ' + r.deadline) : (r.deadline_raw || ''));
-    row('發現', r.first_seen_display);
+    metaRow(meta, '名次', r.rank, null, true);
+    metaRow(meta, '形式', (r.teams||[]).join(' / '));
+    metaRow(meta, '區域', r.region);
+    metaRow(meta, '截止', null, deadlineNode(r));
+    metaRow(meta, '發現', r.first_seen_display);
     c.appendChild(meta);
 
     if(r.status==='expired'){
@@ -506,13 +637,75 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     }
 
     var foot = el('div','card-foot');
-    var a = el('a', null, '查看 osu! 原帖 →');
-    a.href = r.url; a.target='_blank'; a.rel='noopener';
-    foot.appendChild(a);
-    if(r.discord){ var d2 = el('a', null, 'Discord'); d2.href=r.discord; d2.target='_blank'; d2.rel='noopener'; foot.appendChild(d2); }
+    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
+    foot.appendChild(el('span','more','詳細說明 ▸'));
     c.appendChild(foot);
     return c;
   }
+
+  var dlg = document.getElementById('detail');
+
+  function openDetail(r){
+    document.getElementById('d-chip').textContent = r.mode_label;
+    var pill = document.getElementById('d-pill');
+    pill.className = 'pill ' + r.status;
+    pill.textContent = STATUS[r.status] || '';
+    document.getElementById('d-name').textContent = r.name;
+
+    var body = document.getElementById('d-body');
+    body.textContent = '';
+
+    var meta = el('dl','meta');
+    metaRow(meta, '名次', r.rank_full || r.rank, null, true);
+    metaRow(meta, '形式', (r.teams||[]).join(' / '));
+    metaRow(meta, '區域', r.region);
+    metaRow(meta, '截止', null, deadlineNode(r));
+    metaRow(meta, '主辦', r.author);
+    metaRow(meta, '發現', r.first_seen_display);
+    body.appendChild(meta);
+
+    if(r.decision === 'review'){
+      body.appendChild(el('div','review-note','⚠️ 待人工確認：' + (r.region||'')));
+    }
+    if(r.status === 'expired'){
+      body.appendChild(el('div','stale-note','⚠️ 內文寫的截止時間已過，標題卻沒更新 —— 請點進原帖確認還能不能報名。'));
+    }
+
+    // 摘要＝原帖首段原文，只截不改。加註出處，避免被當成我們的轉述。
+    if(r.excerpt){
+      var q = el('div','quote');
+      q.appendChild(document.createTextNode(r.excerpt));
+      q.appendChild(el('span','src','— 原帖首段節錄'));
+      body.appendChild(q);
+    }
+    if(r.deadline_raw){
+      var dq = el('div','quote');
+      dq.appendChild(document.createTextNode(r.deadline_raw));
+      dq.appendChild(el('span','src','— 原帖關於報名時間的說法'));
+      body.appendChild(dq);
+    }
+    if(r.title){
+      var tq = el('div','quote');
+      tq.appendChild(document.createTextNode(r.title));
+      tq.appendChild(el('span','src','— 原帖標題（狀態判定依此為準）'));
+      body.appendChild(tq);
+    }
+
+    var foot = document.getElementById('d-foot');
+    foot.textContent = '';
+    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
+    if(r.signup_form) foot.appendChild(link(r.signup_form, '報名表單'));
+
+    tickCountdowns();
+    if(!dlg.open) dlg.showModal();
+  }
+
+  document.getElementById('d-close').addEventListener('click', function(){ dlg.close(); });
+  // 點 backdrop 關閉。內容包在 .detail-inner 裡，所以點內文空白處不會誤關
+  // （事件 target 會是那個 div，不是 <dialog> 本身）。
+  dlg.addEventListener('click', function(e){ if(e.target === dlg) dlg.close(); });
 
   function render(){
     var grid = document.getElementById('grid');
@@ -529,6 +722,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var m = payload.meta||{};
     document.getElementById('foot-meta').textContent =
       '賽事總筆數 ' + rows.length + '　·　最後更新 ' + (m.last_run_taipei||'—') + '（台北時間）';
+
+    // 卡片是重新產生的，倒數的 span 也跟著換新 —— 補算一次。
+    tickCountdowns();
   }
 
   buildGroup(document.getElementById('f-mode'), MODES, 'mode');
@@ -538,6 +734,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   reviewToggle.addEventListener('change', render);
 
   render();
+  // 只改倒數那幾個字，不重繪整頁 —— 重繪會把正在讀的卡片與捲動位置跳掉。
+  setInterval(tickCountdowns, 60000);
 })();
 </script>
 </body>
