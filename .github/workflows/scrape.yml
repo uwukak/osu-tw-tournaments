@@ -1,0 +1,39 @@
+name: 更新賽事資料
+
+on:
+  schedule:
+    # 每 30 分鐘。GitHub 在尖峰時段可能延遲數分鐘，對賽事公告來說無妨。
+    - cron: "*/30 * * * *"
+  workflow_dispatch: # 也可以在 Actions 頁面手動觸發
+
+permissions:
+  contents: write # 需要寫入權限才能把資料提交回 repo
+
+# 避免兩個回合重疊（前一次還在跑時不啟動新的）。
+concurrency:
+  group: scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: 安裝相依套件
+        run: pip install -r requirements.txt
+
+      - name: 跑單元測試（規則或變更偵測壞掉就不要提交）
+        run: |
+          python tests/test_rules.py
+          python tests/test_store.py
+
+      - name: 抓取並更新
+        run: python -m osu_tourney.scrape --push
+
+      # 用預設的 GITHUB_TOKEN 推送**不會**再觸發 workflow，所以沒有遞迴風險。

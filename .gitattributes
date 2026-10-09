@@ -1,0 +1,11 @@
+# Windows 寫 CRLF、Linux runner 寫 LF。沒有這行，每次換環境都會全檔 diff，
+# 導致排程每 30 分鐘產生一次假的「有變更」提交。
+* text=auto
+
+# 產物與資料一律 LF，確保「相同輸入 → 位元組相同輸出」。
+data/** text eol=lf
+docs/** text eol=lf
+drafts/** text eol=lf
+
+# 快照是測試fixture，不要被 diff 汙染。
+fixtures/** -diff linguist-vendored

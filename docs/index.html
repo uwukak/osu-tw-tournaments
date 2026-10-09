@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>台灣 osu! 賽事看板</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+:root{
+  --bg:#FBF7F9; --surface:#FFFFFF; --text:#1E1720; --muted:#6E6170;
+  --border:#EADFE5; --accent:#D62E77; --accent-soft:#FCE7F0;
+  --open:#1F7A4D; --open-bg:#E3F4EA;
+  --closed:#8A7F8D; --closed-bg:#EFEBF1;
+  --unknown:#8A6212; --unknown-bg:#FBF0D9;
+  --review:#8A5A12; --review-bg:#FDF0DC;
+  --shadow:0 1px 2px rgba(30,23,32,.05), 0 8px 24px -18px rgba(30,23,32,.35);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15111A; --surface:#1E1824; --text:#F2ECF4; --muted:#A498A9;
+    --border:#2E2735; --accent:#FF66AA; --accent-soft:#3A1F2E;
+    --open:#5FD79B; --open-bg:#12301F;
+    --closed:#8E8393; --closed-bg:#241E2A;
+    --unknown:#E0B45C; --unknown-bg:#33280F;
+    --review:#E0B45C; --review-bg:#33280F;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.9);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15111A; --surface:#1E1824; --text:#F2ECF4; --muted:#A498A9;
+  --border:#2E2735; --accent:#FF66AA; --accent-soft:#3A1F2E;
+  --open:#5FD79B; --open-bg:#12301F;
+  --closed:#8E8393; --closed-bg:#241E2A;
+  --unknown:#E0B45C; --unknown-bg:#33280F;
+  --review:#E0B45C; --review-bg:#33280F;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.9);
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"Noto Sans TC","Saira",system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding:0 16px env(safe-area-inset-bottom,0px);
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1120px; margin:0 auto; padding-block:32px 64px}
+header.top{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; justify-content:space-between; padding-bottom:20px; border-bottom:1px solid var(--border)}
+h1{font-family:"Saira","Noto Sans TC",sans-serif; font-size:clamp(22px,4vw,32px); font-weight:700; margin:0; letter-spacing:-.01em}
+h1 .accent{color:var(--accent)}
+.sub{color:var(--muted); font-size:13px; margin-top:6px}
+.stats{display:flex; gap:24px}
+.stat{text-align:right}
+.stat b{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:26px; font-weight:700; display:block; line-height:1.1}
+.stat span{font-size:12px; color:var(--muted)}
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:24px 0 20px}
+.group{display:flex; gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--surface)}
+.group button{
+  font:inherit; font-size:13px; padding:8px 13px; border:0; background:transparent; color:var(--muted);
+  cursor:pointer; border-right:1px solid var(--border); white-space:nowrap;
+}
+.group button:last-child{border-right:0}
+.group button[aria-pressed="true"]{background:var(--accent); color:#fff; font-weight:500}
+.group button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+.toggle{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); cursor:pointer}
+.toggle input{accent-color:var(--accent); width:16px; height:16px}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px}
+@media (max-width:420px){ .grid{grid-template-columns:1fr} .wrap{padding-inline:0} }
+.card{
+  background:var(--surface); border:1px solid var(--border); border-radius:14px;
+  padding:18px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+}
+.card.review{border-style:dashed}
+.card-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.chip{
+  font-family:"Saira",sans-serif; font-size:11px; font-weight:600; letter-spacing:.04em;
+  text-transform:uppercase; padding:4px 9px; border-radius:999px;
+  background:var(--accent-soft); color:var(--accent); border:1px solid transparent;
+}
+.pill{font-size:11px; padding:4px 9px; border-radius:999px; font-weight:500; margin-left:auto}
+.pill.open{background:var(--open-bg); color:var(--open)}
+.pill.closed{background:var(--closed-bg); color:var(--closed)}
+.pill.unknown{background:var(--unknown-bg); color:var(--unknown)}
+.card h2{font-size:19px; font-weight:700; margin:0; line-height:1.35; text-wrap:balance}
+.meta{display:flex; flex-direction:column; gap:7px; font-size:13px; color:var(--muted); margin:0}
+.meta div{display:flex; gap:10px}
+.meta dt{min-width:56px; color:var(--muted); opacity:.8}
+.meta dd{margin:0; color:var(--text)}
+.meta dd.num{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums}
+.review-note{font-size:12px; color:var(--review); background:var(--review-bg); border-radius:8px; padding:8px 10px; line-height:1.5}
+.card-foot{display:flex; gap:14px; align-items:center; margin-top:auto; padding-top:4px; font-size:12px; color:var(--muted)}
+.card-foot a{color:var(--accent); text-decoration:none; font-weight:600}
+.card-foot a:hover{text-decoration:underline}
+.card-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
+.empty{text-align:center; color:var(--muted); padding:64px 16px; border:1px dashed var(--border); border-radius:14px}
+footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.7}
+@media (prefers-reduced-motion:no-preference){ .card{transition:box-shadow .15s ease} .card:hover{box-shadow:0 2px 4px rgba(30,23,32,.06),0 14px 32px -20px rgba(30,23,32,.5)} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <h1>台灣 osu! <span class="accent">賽事看板</span></h1>
+      <div class="sub" id="sub">自動彙整 osu! 論壇 Tournaments 版中，台灣玩家可報名的錦標賽</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="s-open">–</b><span>報名中</span></div>
+      <div class="stat"><b id="s-total">–</b><span>收錄賽事</span></div>
+      <div class="stat"><b id="s-review">–</b><span>待確認</span></div>
+    </div>
+  </header>
+
+  <div class="controls">
+    <div class="group" id="f-mode" role="group" aria-label="依模式篩選"></div>
+    <div class="group" id="f-status" role="group" aria-label="依報名狀態篩選"></div>
+    <label class="toggle"><input type="checkbox" id="f-review" checked> 顯示待確認</label>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" hidden>沒有符合條件的賽事。</div>
+
+  <footer>
+    <div id="foot-meta"></div>
+    <div>資料來源：<a href="https://osu.ppy.sh/community/forums/55?sort=created" style="color:var(--accent)">osu! 論壇 Tournaments 版</a>。
+    區域與欄位以關鍵字規則自動判定，可能有誤 —— 標示「待確認」者請自行核對原帖。</div>
+  </footer>
+</div>
+
+<script type="application/json" id="data">{"meta":{"last_run_utc":"2026-10-09T16:08:16+00:00","last_run_taipei":"2026-10-10 00:08"},"counts":{"include":16,"review":6,"open":12},"tournaments":[{"topic_id":2246109,"name":"SMST 83","mode":"std","mode_label":"osu!standard","rank":"1–10K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"09/26 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 September 25th(Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-09-18T01:02:27+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246109","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2246833,"name":"Newcomers Mania World Cup 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"25K–200K","teams":["3v3"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-09-20T04:34:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246833","discord":"https://discord.gg/qXkUh5vE6j","signup_form":"https://docs.google.com/spreadsheets/d/1rNpAsSSTYS_eUP313xm0aXllYlMM2d1LZs0nVL2ipx0/edit?gid=450431037#gid=450431037"},{"topic_id":2246985,"name":"Mavo's Blitz Brawl Rewind","mode":"std","mode_label":"osu!standard","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-20T15:15:08+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246985","discord":"https://discord.gg/ugtUDns8zB","signup_form":"https://docs.google.com/spreadsheets/d/1kJEt5HLupy-wMC0FLY1Kq84p4Xw5MXNNkd-YmiSvksA"},{"topic_id":2247819,"name":"Sonus Scope 2","mode":"std","mode_label":"osu!standard","rank":"3,333–25K","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-23T06:12:42+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2247819","discord":"https://discord.gg/XMZ5mPcKxC","signup_form":"https://docs.google.com/spreadsheets/d/1JAbFiunw7RtqpXjlifD7qleTnfkWqlXlIatrq_00prI/edit?gid=0#gid=0"},{"topic_id":2248268,"name":"Hidden Cup: Chapter Golden Lily","mode":"std","mode_label":"osu!standard","rank":"100–99,999","teams":["3v3"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-24T19:16:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248268","discord":"https://discord.gg/ZvMVp9Rx4R","signup_form":"https://docs.google.com/spreadsheets/d/1vL1UfQRzRKALP6qIzRPp8tGGYjOCf4SQzvaYvv9QLXA/edit?usp=sharing"},{"topic_id":2248645,"name":"Advanced TCT","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["2v2"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-26T00:03:34+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2248645","discord":"https://discord.gg/56WRzpQUV2","signup_form":""},{"topic_id":2249559,"name":"Setsukue's Coupling Tournament Duo Draft","mode":"std","mode_label":"osu!standard","rank":"100–10K","teams":["4v4"],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"registration ends, the staff will pick 16 pairs of captains , which will be the protagonists of the Drafting Procedure by picking 3 duos for their teams","decision":"include","reason":"no-region","created_at":"2026-09-28T19:28:25+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249559","discord":"https://discord.gg/tYKVBV8Gc9","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdX6zQlOjAdT27_28XjlW3YzJfoxZVdZEih3403VCmR0Wr8Fw/viewform"},{"topic_id":2249574,"name":"The Aphelion 2026","mode":"mania","mode_label":"osu!mania 4K","rank":"5K–40K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-28T20:00:19+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249574","discord":"https://discord.gg/D4HAmzRHc9","signup_form":"https://docs.google.com/spreadsheets/d/1GXIZvGer6CXSxJcEI4_qNGoOo9Gygq9Td8b1K2_4Bjg/edit?usp=sharing"},{"topic_id":2250173,"name":"Teirin's Super Gacha Experience","mode":"std","mode_label":"osu!standard","rank":"1–9,500","teams":["4v4"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-09-30T19:03:15+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250173","discord":"https://discord.com/invite/Tt8CGFt95G","signup_form":"https://forms.gle/Ampj2ZoEsnCixVr98"},{"topic_id":2250321,"name":"Fast Food Cup","mode":"std","mode_label":"osu!standard","rank":"1K–99,999","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-10-01T09:15:16+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250321","discord":"http://discord.gg/4qyhQpYwUd","signup_form":"https://docs.google.com/spreadsheets/d/1xFgsuYpv6ASp9j9XSyDx7-LT5KBrGDbKFKVIKecuIZU/"},{"topic_id":2250525,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"100K–∞","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/10 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 9th Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-10-02T02:05:59+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250525","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2250673,"name":"Kaga Sumire Championship","mode":"std","mode_label":"osu!standard","rank":"55K–∞","teams":["2v2"],"region":"明確包含台灣／亞洲區域","status":"open","deadline":"","deadline_raw":"","decision":"include","reason":"explicit-allow","created_at":"2026-10-02T16:00:11+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250673","discord":"https://discord.gg/xwn96Y2pqM","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdTLXgBIA7kFEkhyfB78dJJcAKobduyki_iM2T044EsHCF2Hg/viewform?usp=preview"},{"topic_id":2251298,"name":"Beginner's Taiko Tournament 10","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-10-04T15:59:28+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251298","discord":"https://discord.gg/JEER3PfNSe","signup_form":"https://forms.gle/GK8SedZhM6orjgaFA"},{"topic_id":2251619,"name":"Yimasu‘s Hidden Tournament 2","mode":"std","mode_label":"osu!standard","rank":"20K–99,999","teams":[],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"registrations close","decision":"include","reason":"no-region","created_at":"2026-10-05T13:52:58+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251619","discord":"https://discord.gg/maK6SzzGeu","signup_form":"https://forms.gle/HnugLcwqgAJc9k6p8"},{"topic_id":2252361,"name":"SMST 84","mode":"std","mode_label":"osu!standard","rank":"50K–100K","teams":[],"region":"無區域限制（全球開放）","status":"open","deadline":"10/17 07:59","deadline_raw":"Registrations will end for both brackets at 23:59 October 16th(Friday UTC+0)","decision":"include","reason":"no-region","created_at":"2026-10-08T02:43:20+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252361","discord":"https://discord.gg/6d4pF59","signup_form":"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing"},{"topic_id":2252609,"name":"The Taiko Poop Cup","mode":"taiko","mode_label":"osu!taiko","rank":"","teams":["1v1"],"region":"無區域限制（全球開放）","status":"unknown","deadline":"","deadline_raw":"","decision":"include","reason":"no-region","created_at":"2026-10-09T00:28:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2252609","discord":"https://discord.gg/QNhWPx244z","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLScIHX_2h29EYcYdGGhNbkTGKhYFCnTRVzY2x2_IHhjNI6D6CQ/viewform?usp=dialog"},{"topic_id":2246751,"name":"The Bronco Brawl osu! LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"unknown","deadline":"10/05 07:59","deadline_raw":"REGISTRATION ends on SUNDAY, OCTOBER 4TH @ 11:59PM PDT! This is a BYOC (Bring Your Own Computer) event, so bring everything necessary for your setup","decision":"review","reason":"lan","created_at":"2026-09-19T21:54:39+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2246751","discord":"https://discord.gg/FWGXRtpEjw","signup_form":"https://docs.google.com/spreadsheets/d/1T0nzr-PL-HtpA4oEuTbXpxGFTsT-8fK6ivjr-x_tihM/edit?usp=sharing"},{"topic_id":2249349,"name":"purl's interstellar tales","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"low-signal","created_at":"2026-09-28T03:38:04+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2249349","discord":"https://discord.gg/UCENFGs3kH","signup_form":"https://docs.google.com/spreadsheets/d/17rXnPS56ivQ21SoPK9Ly8hrYdl5jTUBW0zymxPguHJs/edit?gid=464425013#gid=464425013"},{"topic_id":2250185,"name":"Lion's osu! Cup","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"lan","created_at":"2026-09-30T20:32:12+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250185","discord":"https://discord.gg/vrsvkV5nGr","signup_form":"https://forms.gle/MLQ4Nr8k9GiFBxeUA"},{"topic_id":2250369,"name":"RE:Legacy Invitational 6WC Player Invitational","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"邀請賽／選拔，非公開報名","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"invitational","created_at":"2026-10-01T12:53:22+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250369","discord":"","signup_form":"https://docs.google.com/forms/d/e/1FAIpQLSdiP1a04jn8ufPW4JiFJWPBu2TF-kf82oxADXJv69il_6UEpA/viewform?usp=publish-editor"},{"topic_id":2250628,"name":"osu!MayniLAN 2026 LAN","mode":"std","mode_label":"osu!standard","rank":"","teams":["1v1"],"region":"線下賽（LAN），需人工確認地點","status":"open","deadline":"","deadline_raw":"","decision":"review","reason":"lan","created_at":"2026-10-02T13:24:10+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2250628","discord":"https://discord.gg/ea59ERZByY","signup_form":"https://docs.google.com/spreadsheets/d/1SEJRD8_7UMCxWRNJIr1Eg3OqCwSV3ED0AR3BgQK4604/edit?usp=sharing"},{"topic_id":2251780,"name":"Lazer std tournaments","mode":"std","mode_label":"osu!standard","rank":"","teams":[],"region":"缺少名次與隊伍資訊，可能是情報帖（需人工確認）","status":"unknown","deadline":"","deadline_raw":"","decision":"review","reason":"low-signal","created_at":"2026-10-06T02:19:03+00:00","first_seen_utc":"2026-10-09T15:39:43+00:00","first_seen_display":"10/09","url":"https://osu.ppy.sh/community/forums/topics/2251780","discord":"","signup_form":""}]}</script>
+<script>
+(function(){
+  var payload = JSON.parse(document.getElementById('data').textContent);
+  var rows = payload.tournaments || [];
+  var state = { mode: 'all', status: 'all', showReview: true };
+
+  var STATUS = {open:'報名開放中', closed:'報名已截止', unknown:'報名狀態未標明'};
+  var MODES = [['all','全部'],['std','Standard'],['taiko','Taiko'],['catch','Catch'],['mania','Mania']];
+  var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
+
+  function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
+
+  function buildGroup(host, options, key){
+    options.forEach(function(opt){
+      var b = el('button', null, opt[1]);
+      b.type='button';
+      b.setAttribute('aria-pressed', String(state[key]===opt[0]));
+      b.addEventListener('click', function(){
+        state[key]=opt[0];
+        Array.prototype.forEach.call(host.children, function(c){ c.setAttribute('aria-pressed', String(c===b)); });
+        render();
+      });
+      host.appendChild(b);
+    });
+  }
+
+  function visible(){
+    return rows.filter(function(r){
+      if(r.decision==='review' && !state.showReview) return false;
+      if(state.mode!=='all' && r.mode!==state.mode) return false;
+      if(state.status!=='all' && r.status!==state.status) return false;
+      return true;
+    });
+  }
+
+  function card(r){
+    var c = el('article','card'+(r.decision==='review'?' review':''));
+    var top = el('div','card-top');
+    top.appendChild(el('span','chip', r.mode_label));
+    var pill = el('span','pill '+r.status, STATUS[r.status]||'');
+    top.appendChild(pill);
+    c.appendChild(top);
+
+    c.appendChild(el('h2', null, r.name));
+
+    var meta = el('dl','meta');
+    function row(label, value, numeric){
+      if(!value) return;
+      var d = el('div');
+      d.appendChild(el('dt', null, label));
+      var dd = el('dd', numeric?'num':null, value);
+      d.appendChild(dd); meta.appendChild(d);
+    }
+    row('名次', r.rank, true);
+    row('形式', (r.teams||[]).join(' / '));
+    row('區域', r.region);
+    row('截止', r.deadline ? ('台北 ' + r.deadline) : (r.deadline_raw || ''));
+    row('發現', r.first_seen_display);
+    c.appendChild(meta);
+
+    if(r.decision==='review'){
+      c.appendChild(el('div','review-note','⚠️ 待人工確認：' + (r.region||'')));
+    }
+
+    var foot = el('div','card-foot');
+    var a = el('a', null, '查看 osu! 原帖 →');
+    a.href = r.url; a.target='_blank'; a.rel='noopener';
+    foot.appendChild(a);
+    if(r.discord){ var d2 = el('a', null, 'Discord'); d2.href=r.discord; d2.target='_blank'; d2.rel='noopener'; foot.appendChild(d2); }
+    c.appendChild(foot);
+    return c;
+  }
+
+  function render(){
+    var grid = document.getElementById('grid');
+    grid.textContent='';
+    var list = visible();
+    document.getElementById('empty').hidden = list.length>0;
+    list.forEach(function(r){ grid.appendChild(card(r)); });
+
+    var inc = rows.filter(function(r){return r.decision==='include';});
+    document.getElementById('s-open').textContent = inc.filter(function(r){return r.status==='open';}).length;
+    document.getElementById('s-total').textContent = inc.length;
+    document.getElementById('s-review').textContent = rows.filter(function(r){return r.decision==='review';}).length;
+
+    var m = payload.meta||{};
+    document.getElementById('foot-meta').textContent =
+      '賽事總筆數 ' + rows.length + '　·　最後更新 ' + (m.last_run_taipei||'—') + '（台北時間）';
+  }
+
+  buildGroup(document.getElementById('f-mode'), MODES, 'mode');
+  buildGroup(document.getElementById('f-status'), STATUSES, 'status');
+  var cb = document.getElementById('f-review');
+  cb.checked = true;
+  cb.addEventListener('change', function(){ state.showReview = cb.checked; render(); });
+
+  render();
+})();
+</script>
+</body>
+</html>
