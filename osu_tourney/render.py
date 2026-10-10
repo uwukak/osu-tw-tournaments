@@ -905,6 +905,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // （就是這個頁面），爬蟲只讀不寫。分開的理由是兩者的生命週期不同 ——
   // 覆寫是「蓋在爬蟲記錄上的顯示修正」，手動賽事是「爬蟲根本沒看過的比賽」。
   var CUSTOM_PATH = 'data/custom.json';
+  // fetch 沒有逾時。GitHub 沒回應時（網路、代理、或擴充套件把 api.github.com 擋掉），
+  // 那個 Promise 會永遠不 settle —— 畫面上就停在「新增中…」、按鈕一直是灰的，
+  // 既沒有成功也沒有失敗，站在看板前面的人只能一直按。所以自己設一個上限。
+  var API_TIMEOUT_MS = 20000;
   var REPO = (payload.meta && payload.meta.repo) || '';
   var BRANCH = (payload.meta && payload.meta.branch) || 'main';
   var editOn = false;
@@ -940,6 +944,11 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       'Accept': 'application/vnd.github+json',
       'X-GitHub-Api-Version': '2022-11-28'
     }, opt.headers || {});
+    // 見上面 API_TIMEOUT_MS。沒有 AbortController 的舊瀏覽器就照舊（不逾時），
+    // 寧可少一層保護，也不要整個功能因為這個而壞掉。
+    var ctl = (typeof AbortController === 'function') ? new AbortController() : null;
+    if(ctl) opt.signal = ctl.signal;
+    var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, API_TIMEOUT_MS);
     return fetch('https://api.github.com/repos/' + REPO + path, opt).then(function(res){
       // 先把 body 讀成文字再試著 parse：GitHub 出錯時回的不一定是 JSON
       // （proxy 擋掉會回 HTML），直接 res.json() 會拋在一個與原因無關的地方。
@@ -948,6 +957,18 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         try{ json = JSON.parse(body); }catch(e){}
         return { status: res.status, ok: res.ok, json: json };
       });
+    }).then(function(out){
+      clearTimeout(timer);
+      return out;
+    }, function(err){
+      clearTimeout(timer);
+      // abort 是我們自己逾時砍掉的。不講清楚的話，使用者只會看到
+      // 「The user aborted a request」—— 那句話跟原因（沒人回應）完全對不起來。
+      if(err && err.name === 'AbortError'){
+        throw new Error('GitHub 沒有回應（超過 ' + (API_TIMEOUT_MS / 1000)
+                      + ' 秒），可能是網路或瀏覽器擴充套件把 api.github.com 擋掉了。');
+      }
+      throw new Error('連不上 GitHub：' + ((err && err.message) || '未知原因'));
     });
   }
 
@@ -1566,7 +1587,11 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     box.appendChild(nb);
 
     var bar = el('div','ed-bar');
-    var save = el('button','ed-save', isNew ? '新增到看板' : '儲存到 GitHub');
+    // 沒有 repo 資訊時整顆按鈕是死的。這是最惡的一種失敗：disabled 的按鈕會把點擊
+    // **整顆吃掉**，不報錯、不進處理函式、畫面上什麼都不會發生 —— 看起來就只是「按了
+    // 沒用」。光靠變淡（opacity .5）看不出一回事，所以把原因直接寫在按鈕上。
+    var saveLabel = isNew ? '新增到看板' : '儲存到 GitHub';
+    var save = el('button','ed-save', REPO ? saveLabel : '無法儲存：看板沒有 repo 資訊');
     save.type = 'button';
     save.disabled = !REPO;
     var revert = el('button','ed-revert', isNew ? '清空重填' : '還原成自動判定');
@@ -1595,7 +1620,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       FIELDS.forEach(function(f){ if(inputs[f.k]) inputs[f.k].value = r.raw[f.k] || ''; });
       ta.value = r.excerpt || '';
       nb.value = '';
-      setEditStatus('按「' + save.textContent + '」才會生效。');
+      setEditStatus('按「' + saveLabel + '」才會生效。');
     });
 
     // 刪除要按兩次。這裡刻意不用 confirm()：那是一個跟整頁無關的系統彈窗，
