@@ -58,6 +58,28 @@ def _same_path(a: Path, b: Path) -> bool:
     return os.path.normcase(str(a)) == os.path.normcase(str(b))
 
 
+def _has_conflicts(cwd: Path) -> bool:
+    """索引裡有沒有未解的衝突。
+
+    rebase 撞到衝突時，索引會為同一個檔案留下 stage 1/2/3 三個項目，
+    `git ls-files -u` 只列這些。比起解析 `git status` 的字串（UU／AA／DD…），
+    這個判斷不會隨 git 版本與語系而變。
+    """
+    try:
+        return bool(_git("ls-files", "-u", cwd=cwd).strip())
+    except GitError:
+        return False
+
+
+def _abort_rebase(cwd: Path) -> None:
+    """把停在半途的 rebase 收掉，讓工作區回到我們自己的提交。"""
+    try:
+        _git("rebase", "--abort", cwd=cwd)
+        log.warning("已中止半途的 rebase。")
+    except GitError:
+        pass  # 本來就沒有 rebase 在跑
+
+
 def publish(cwd: Path, message: str, push: bool = True) -> bool:
     """提交目前的變更。回傳是否真的產生了提交。"""
     if not is_repo(cwd):
@@ -101,6 +123,19 @@ def publish(cwd: Path, message: str, push: bool = True) -> bool:
     try:
         _git("pull", "--rebase", "--autostash", cwd=cwd)
     except GitError as exc:
+        if _has_conflicts(cwd):
+            # 這裡無論如何都不能往下走。rebase 停在半途時工作區留著 <<<<<<< 標記，
+            # 底下那段 `add -A` + `commit` 會**把衝突標記當成內容提交上去** ——
+            # data/tournaments.json 就此爛掉（它就是要餵給看板的 JSON），而且會推上線。
+            # 寧可整個回合不推：遠端維持原狀，代價只是這一輪資料晚半小時。
+            _abort_rebase(cwd)
+            log.error(
+                "rebase 撞到衝突，已中止並放棄本回合（未推送）：%s\n"
+                "  本機與遠端改了同一份生成檔。請手動 `git pull --rebase` 解掉再重跑。",
+                exc,
+            )
+            return False
+        # 沒有遠端、遠端還沒有這個分支、暫時連不上 —— 這些不影響後面的 push。
         log.warning("rebase 失敗（可能沒有遠端或首次推送）：%s", exc)
 
     if _git("status", "--porcelain", cwd=cwd).strip():
