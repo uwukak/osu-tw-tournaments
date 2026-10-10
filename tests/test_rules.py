@@ -21,9 +21,13 @@ from bs4 import BeautifulSoup  # noqa: E402
 from osu_tourney.rules import (  # noqa: E402
     EXCLUDE,
     INCLUDE,
+    KIND_BOTH,
+    KIND_PLAYER,
+    KIND_STAFF,
     REVIEW,
     analyze,
     clean_name,
+    detect_kind,
     detect_mode,
     extract_deadline,
     extract_rank_range,
@@ -165,15 +169,20 @@ def test_open_rank_is_not_open_registration():
 
 
 # --------------------------------------------------------------------------
-# 工作人員帖：只排除真正的工作人員帖
+# 工作人員帖：照收，只是分到看板的工作人員分頁
 # --------------------------------------------------------------------------
 
 
-def test_staff_topics_excluded_but_player_tournaments_kept():
+def test_staff_topics_are_still_recognised():
+    """`is_staff_topic` 刻意寫得窄（只認標題最前面的 `[STAFF REGS]` 與 `[STAFF RECRUIT…]`）。
+
+    它是「這帖本身就是一篇徵人公告」的判定，不是「標題裡出現 staff」。
+    放寬會把同時也在徵人的選手賽事一起吃掉，所以這條要釘住。
+    """
     assert is_staff_topic("[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, STD]")
     assert is_staff_topic("[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026")
 
-    # 這些是「選手」賽事，只是順便徵工作人員，不可以被排除。
+    # 這些是「選手」賽事，只是順便徵工作人員 —— 不是純徵人帖。
     for title in [
         "[osu!catch] UK Catch Tournament 2026 (Staff Wanted)",
         "[STD, SEA only] osu!MayniLAN 2026 | Player and Staff Registrations Open",
@@ -181,6 +190,47 @@ def test_staff_topics_excluded_but_player_tournaments_kept():
         "[STD] Hidden Cup | 3v3 Ts5 | Team, FA & Staff Regs Open!",
     ]:
         assert not is_staff_topic(title), f"{title!r} 不該被當成工作人員帖"
+
+
+def test_staff_topics_are_included_and_go_to_the_staff_tab():
+    """純徵人帖從「排除」改成「收錄 + 分頁」。
+
+    這是政策改變：工作人員招募對社群一樣有用，只是跟報名比賽是不同的資訊。
+    所以它不再被丟掉，而是進 include、由 kind 決定出現在哪一頁。
+    """
+    v = analyze("[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, STD]")
+    assert v.kind == KIND_STAFF
+    assert v.decision == INCLUDE, "徵人帖本身要收，只是分頁不同"
+    assert v.reason != "staff-topic", "reason 不再用來表達分頁，改由 kind 表達"
+
+    # 純徵人帖沒有名次、沒有隊伍形式 —— 那些「資訊不足，可能不是比賽」的啟發式
+    # 對它不適用，不跳過的話每一篇都會變成待確認。
+    v = analyze("[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity]")
+    assert v.kind == KIND_STAFF and v.decision == INCLUDE, v
+
+
+def test_staff_topics_are_still_subject_to_the_region_gate():
+    """分頁不該蓋掉區域判定 —— 日本限定的徵人帖一樣進不了台灣看板。"""
+    v = analyze("[STAFF REGS] Some JP Only Cup [JP ONLY]")
+    assert v.decision == EXCLUDE, "區域閘門仍然優先於「這是徵人帖」"
+    assert v.kind == KIND_STAFF, "但它仍然是工作人員分頁的東西"
+
+
+def test_kind_is_detected_from_the_title():
+    # 只有 staff 一個字不算「同時徵人」—— 那是一場比賽，只是也缺人手。
+    assert detect_kind("[osu!catch] UK Catch Tournament 2026 (Staff Wanted)") == KIND_PLAYER
+
+    # 明講同時徵選手與工作人員才算 both，兩頁都列。
+    for title in [
+        "[STD, SEA only] osu!MayniLAN 2026 | Player and Staff Registrations Open",
+        "[o!m 4K] The Aphelion 2026 (4K rank) [Staff + Player Regs OPEN]",
+        "[STD] Hidden Cup | 3v3 Ts5 | Team, FA & Staff Regs Open!",
+        "[PLAYER + STAFF REG OPEN][o!m 4k][3v3 TS6] Newcomers Mania World Cup 2026",
+    ]:
+        assert detect_kind(title) == KIND_BOTH, title
+
+    assert detect_kind("[STD]SMST 84 50K-100K [Open]") == KIND_PLAYER
+    assert detect_kind("[STAFF REGS] Looking-Glass Mirror: bloom") == KIND_STAFF
 
 
 # --------------------------------------------------------------------------
@@ -437,7 +487,12 @@ def test_rank_range_is_not_read_as_a_date():
 # 整體分布（若 osu! 語料沒變，這些數字必須吻合）
 # --------------------------------------------------------------------------
 
-EXPECTED_DECISIONS = {INCLUDE: 16, EXCLUDE: 28, REVIEW: 6}
+EXPECTED_DECISIONS = {INCLUDE: 18, EXCLUDE: 26, REVIEW: 6}
+
+# 分頁歸屬。這三個數字也會跟著規則漂移，所以一起釘住 ——
+# 只釘 decision 的話，kind 哪天整批被改壞（例如 `_STAFF_MENTION` 打錯），
+# 看板會安靜地把一堆選手賽事丟到工作人員分頁，而測試全綠。
+EXPECTED_KINDS = {KIND_PLAYER: 40, KIND_STAFF: 2, KIND_BOTH: 8}
 
 
 def check_distribution(verbose: bool = True) -> Counter:
@@ -449,8 +504,9 @@ def check_distribution(verbose: bool = True) -> Counter:
 
     if verbose:
         for v in verdicts:
-            print(f"  {v.decision:8} {v.reason:15} {v.mode_label:18} {v.status:8} {v.rank_compact:12} | {v.name[:44]}")
+            print(f"  {v.decision:8} {v.reason:15} {v.kind:6} {v.mode_label:18} {v.status:8} {v.rank_compact:12} | {v.name[:44]}")
         print(f"\n  DECISION: {dict(by_decision)}")
+        print(f"  KIND:     {dict(Counter(v.kind for v in verdicts))}")
         for k in sorted(by_reason):
             print(f"    {k}: {by_reason[k]}")
 
@@ -462,6 +518,14 @@ def test_distribution():
     assert dict(counts) == EXPECTED_DECISIONS, (
         f"分類分布改變了：{dict(counts)} != {EXPECTED_DECISIONS}\n"
         "若是刻意調整規則，請更新 EXPECTED_DECISIONS；否則表示有回歸。"
+    )
+
+
+def test_kind_distribution():
+    counts = Counter(analyze(t).kind for t in forum_titles())
+    assert dict(counts) == EXPECTED_KINDS, (
+        f"分頁分布改變了：{dict(counts)} != {EXPECTED_KINDS}\n"
+        "若是刻意調整規則，請更新 EXPECTED_KINDS；否則表示有回歸。"
     )
 
 

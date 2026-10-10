@@ -141,17 +141,42 @@ def extract_team_formats(title: str) -> tuple[list[str], list[str]]:
 
 
 # --------------------------------------------------------------------------
-# 工作人員帖（要排除）
+# 工作人員帖（走看板的工作人員分頁）
 # --------------------------------------------------------------------------
 
 # 只比對「標題開頭的獨立標籤」或明確的招募標籤。
-# 不能用寬鬆的 staff.*reg —— 那會錯殺同時也在徵工作人員的「選手」賽事，
+# 不能用寬鬆的 staff.*reg —— 那會把同時也在徵工作人員的「選手」賽事歸成純徵人帖，
 # 例如「UK Catch Tournament 2026 (Staff Wanted)」、「[Staff + Player Regs OPEN]」。
 STAFF_TOPIC = re.compile(r"(?i)^\s*\[\s*staff\s*regs?\s*\]|\[\s*staff\s+recruit")
 
 
 def is_staff_topic(title: str) -> bool:
+    """這帖**本身**就是一篇徵人公告（不是「比賽順便徵人」）。"""
     return bool(STAFF_TOPIC.search(title))
+
+
+# 看板的兩個分頁。`kind` 有三個值而不是兩個，因為「同時徵選手又徵工作人員」的賽事
+# 兩頁都要列出 —— 分頁是檢視，不是把資料切開。
+KIND_PLAYER = "player"
+KIND_STAFF = "staff"
+KIND_BOTH = "both"
+
+_STAFF_MENTION = re.compile(r"(?i)\bstaff\b|工作人員|徵\s*(?:求)?\s*工作")
+_PLAYER_MENTION = re.compile(r"(?i)\bplayers?\b|\bteams?\b|\bfa\b|free agent|選手|隊伍")
+
+
+def detect_kind(title: str) -> str:
+    """這帖在徵誰。
+
+    `staff` 與 `player` 的關鍵字**要同時出現**才算 both。只看 `staff` 一個字的話，
+    「UK Catch Tournament 2026 (Staff Wanted)」這種順便徵人的選手賽事會被歸到
+    工作人員分頁 —— 那是一場比賽，只是也缺人手。
+    """
+    if is_staff_topic(title):
+        return KIND_STAFF
+    if _STAFF_MENTION.search(title) and _PLAYER_MENTION.search(title):
+        return KIND_BOTH
+    return KIND_PLAYER
 
 
 # --------------------------------------------------------------------------
@@ -332,6 +357,7 @@ class Verdict:
     decision: str = INCLUDE
     reason: str = ""
     is_staff_topic: bool = False
+    kind: str = KIND_PLAYER
 
     @property
     def mode_label(self) -> str:
@@ -352,7 +378,11 @@ def analyze(title: str) -> Verdict:
     staff = is_staff_topic(title)
 
     if staff:
-        decision, reason = EXCLUDE, "staff-topic"
+        # 徵人帖本身照收，只是分到工作人員分頁（見 detect_kind）。
+        # 區域判定仍然優先 —— `[STAFF REGS]` 掛在日本限定的比賽上照樣排除。
+        # 也刻意跳過下面那幾條選手取向的啟發式：徵人帖本來就沒有名次、沒有隊伍形式，
+        # 讓它們跑下去只會被判成「待確認」。
+        pass
     elif decision == INCLUDE and is_low_signal(title, rng, teams):
         decision, reason = REVIEW, "low-signal"
     elif decision == INCLUDE and re.search(r"(?i)\blan\b", title):
@@ -374,6 +404,7 @@ def analyze(title: str) -> Verdict:
         decision=decision,
         reason=reason,
         is_staff_topic=staff,
+        kind=detect_kind(title),
     )
 
 

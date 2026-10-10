@@ -1,8 +1,9 @@
 {
-  "dashboard_sha": "d98f9e474bd6528b8535a1c561ddc3da74c1fa262ee5f025157e31db456f4a77",
+  "custom_draft_sha": {},
+  "dashboard_sha": "0119a36c65da549873e86d1e85af19668faf5af13ac3731828b801e1a0300774",
   "draft_baseline_topic_id": null,
   "heartbeat_date": "2026-10-10",
-  "last_run_utc": "2026-10-10T04:43:46+00:00",
+  "last_run_utc": "2026-10-10T05:34:24+00:00",
   "schema_version": 1,
   "tournaments": {
     "2246109": {
@@ -16,14 +17,14 @@
       "draft_sha": "caa0b47b23447a56d4d7519d639aa3770ea391e68fdfef1d74f97d3a964df220",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-05T04:16:49+00:00",
-      "last_seen_utc": "2026-10-09T16:08:16+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "SMST 83",
-      "off_listing_since": "2026-10-09T19:13:29+00:00",
       "posts": 11,
       "rank": [
         1,
@@ -42,7 +43,7 @@
         "[STD]SMST 83 1-10K [Open]"
       ],
       "topic_id": 2246109,
-      "views": 447
+      "views": 445
     },
     "2246161": {
       "author": "Fault",
@@ -55,8 +56,9 @@
       "excerpt": "| Main Sheet | Discord | Rules | Signups | Bracket | The 5 Digit Australia New Zealand Tournament (5AUNZ) is a 1v1 tournament which will take place in the osu!std gamemode.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-21T22:53:56+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -81,7 +83,7 @@
         "[STD] [1v1] 5 Digit Australia New Zealand Tournament 2 [10,000-99,999]"
       ],
       "topic_id": 2246161,
-      "views": 839
+      "views": 825
     },
     "2246212": {
       "author": "baikalsk",
@@ -92,8 +94,9 @@
       "excerpt": "Host: netraena , baikalsk , _Rossweisse_ Poolers: Mimil , netraena , gamer228666 , BaBeDiBeDon Mappers: Bazuso , Flask , Rtyzen , Neonlights , ellia- , Jayareeee , [ VII ] , Jofox…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-22T16:49:53+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -118,7 +121,7 @@
         "[STD] Raise It! 2 (Auction) [Open rank] | 3v3 TS6 [Ru-speaking only] | [REGS CLOSED]"
       ],
       "topic_id": 2246212,
-      "views": 1330
+      "views": 1324
     },
     "2246214": {
       "author": "tuuli",
@@ -131,8 +134,9 @@
       "excerpt": "Website | Register | Discord | Stream Qualifiers — only run if more than 16 players are accepted.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-21T20:30:02+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -155,7 +159,7 @@
         "[STD] [MN Only, 1v1->2v2] osu! mongolia cup 2026"
       ],
       "topic_id": 2246214,
-      "views": 336
+      "views": 331
     },
     "2246265": {
       "author": "makipan",
@@ -166,8 +170,9 @@
       "excerpt": "duality / duˈælət̬i [名] ―― 二面性, 二重性, 二元性 メインシート | Discord | Twitch | トーナメント表 | 登録フォーム Information これは osu!lazer 、 osu!standard 、 日本国旗限定 の大会です。 参加者は例外なくプロフィールが 日本国旗 である必要があります。…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-29T02:54:09+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -190,7 +195,7 @@
         "[STD] [lazer] DUALITY trial [日本語, 2v2]"
       ],
       "topic_id": 2246265,
-      "views": 1395
+      "views": 1385
     },
     "2246729": {
       "author": "LLIaBKa",
@@ -201,8 +206,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « PP капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-19T21:00:00+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -221,7 +227,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #51 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2246729,
-      "views": 138
+      "views": 137
     },
     "2246733": {
       "author": "Memesical",
@@ -234,8 +240,9 @@
       "excerpt": "main sheet • registrations • rules • discord • stream / MOT2 / The Michigan osu! Tournament 3 is an open rank, 2v2 tournament consisting of players from the state of Michigan .…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-20T00:59:25+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -260,7 +267,7 @@
         "[STD, Michigan only] Michigan osu! Tournament 3 | 2v2 TS2"
       ],
       "topic_id": 2246733,
-      "views": 524
+      "views": 520
     },
     "2246734": {
       "author": "LLIaBKa",
@@ -271,8 +278,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « Пул капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-19T21:05:10+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -291,7 +299,7 @@
         "[STD, SPEAK RU ONLY] #73 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2246734,
-      "views": 149
+      "views": 148
     },
     "2246751": {
       "author": "rezash",
@@ -305,8 +313,9 @@
       "excerpt": "Main Sheet | Info and Rules | Player Regs | Discord | Twitch | Eventbrite Welcome to the 1st iteration of the Bronco Brawl osu! LAN!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-20T00:26:28+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -329,7 +338,7 @@
         "[STD | 1v1 | Open Rank] The Bronco Brawl osu! LAN (Fall 2026)"
       ],
       "topic_id": 2246751,
-      "views": 586
+      "views": 576
     },
     "2246829": {
       "author": "Fiftyppee",
@@ -340,8 +349,9 @@
       "excerpt": "| Main Sheet | Discord | メインTwitch | 大会概要記事 | Staff 応募フォーム | | 応募フォームHIGH | 応募フォームMID | 応募フォームLOW | osu! Japan Community Cup は日本人のプレイヤーをターゲットとしたteam vs のトーナメントです。 トーナメントはosu!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-20T16:05:30+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -365,7 +375,7 @@
         "#1~200k [JP ONLY] [STD] 第2回 Osu! Japan Community Cup OJCC#2"
       ],
       "topic_id": 2246829,
-      "views": 1332
+      "views": 1323
     },
     "2246833": {
       "author": "[TCD] Dzar03",
@@ -375,18 +385,19 @@
       "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/qXkUh5vE6j",
-      "draft_sha": "6303168a063d617a54450e0c4154a9601f0a2a4a4de4e11d2473c36641e1e2d9",
+      "draft_sha": "995e8c4e2659ced2395bcab5bc4ed3f1c36345f99f96963185473bc05d3b3ac0",
       "excerpt": "Main Sheet - Player Registration - Staff Registration - Rule Document - Bracket YouTube - Discord - Twitch (1) - Twitch (2) - Donate Newcomers Mania World Cup 2026 ( NMWC26 ) is…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T15:58:35+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "both",
+      "last_reply_at": "2026-10-09T11:59:11+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
       "mode_label": "osu!mania 4K",
       "name": "Newcomers Mania World Cup 2026",
-      "posts": 63,
+      "posts": 62,
       "rank": [
         25000,
         200000
@@ -408,7 +419,7 @@
         "[PLAYER + STAFF REG OPEN][o!m 4k][3v3 TS6][#25k - #200k] Newcomers Mania World Cup 2026"
       ],
       "topic_id": 2246833,
-      "views": 5834
+      "views": 5582
     },
     "2246985": {
       "author": "Mavosiik",
@@ -421,8 +432,9 @@
       "excerpt": "Discord | Main Sheet | Registration | Challonge THIS ITERATION EACH TEAM IS REQUIRED TO HAVE AT LEAST 1 PAST MBB PARTICIPANT (played at least qualifiers) List of eligible players…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-30T13:18:54+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -446,7 +458,7 @@
         "[STD] [REGS OPEN, Open Rank, 2v2 TS2] Mavo's Blitz Brawl Rewind"
       ],
       "topic_id": 2246985,
-      "views": 1368
+      "views": 1346
     },
     "2247112": {
       "author": "Tomato",
@@ -459,8 +471,9 @@
       "excerpt": "We are back with the 4th iteration of UKCT! An Open Rank 1v1 for all UK catch players to compete for the winning title.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-24T15:53:01+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "catch",
       "mode_confidence": "high",
@@ -481,7 +494,7 @@
         "[osu!catch] UK Catch Tournament 2026 (Staff Wanted)"
       ],
       "topic_id": 2247112,
-      "views": 306
+      "views": 302
     },
     "2247489": {
       "author": "Crestive",
@@ -492,8 +505,9 @@
       "excerpt": "Current prize pool (donate on ko-fi) : $100 USD Hosts : Trex Crestive begl Admins : begl Cinnamon Twist Poolers : Crestive begl Playtesters : Crestive begl Julla GFX / Storyboard…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-09-29T22:06:33+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -516,7 +530,7 @@
         "[STD] [1v1 | Open Rank] Colorado LAN Duels (COLD) [PLAYER AND STAFF REGS OPEN]"
       ],
       "topic_id": 2247489,
-      "views": 613
+      "views": 611
     },
     "2247819": {
       "author": "Laurus",
@@ -526,12 +540,13 @@
       "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/XMZ5mPcKxC",
-      "draft_sha": "37fdd070862634abf2d83ae04708f8db831d710c73362a674b358516fdb0c614",
+      "draft_sha": "948177c2d4e8b48668cc010dad0098ce1a0fff79428cf4a82fa9d52edd7370ae",
       "excerpt": "Main Sheet - Rules Document - Discord - Challonge Player Registration - Staff Registration Welcome to the second iteration of Sonus scope!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-09-28T15:36:41+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -558,7 +573,7 @@
         "[STD] Sonus Scope 2 [3v3 TS6 Tiered Suiji, 3,333-25,000 BWS] [Player and Staff Regs Open!]"
       ],
       "topic_id": 2247819,
-      "views": 1741
+      "views": 1722
     },
     "2248091": {
       "author": "RAAPslimshady",
@@ -570,8 +585,9 @@
       "excerpt": "Registros - Spreadsheet - Twitch - Discord - Challonge - Rules Doc ▶ Rank Range: 20k - inf., Latam Only + Invites ▶ Todas las horas y el contenido del torneo están y estarán…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-05T03:39:19+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -598,7 +614,7 @@
         "[STD] WILD HUNT!! Track, Reveal, Win! | Latam Only + Invites | 20k - Inf. | 3v3 - ts6"
       ],
       "topic_id": 2248091,
-      "views": 1189
+      "views": 1171
     },
     "2248268": {
       "author": "Tey",
@@ -606,12 +622,13 @@
       "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/ZvMVp9Rx4R",
-      "draft_sha": "c745f70e538da57c14d93aa28731b3bbe905e3a0757e1b5b4221090960538859",
+      "draft_sha": "8be79220bf98def8ed8f00c05c49ff19996c0a26166b7450b3d3ce07dba318ab",
       "excerpt": "Apply to help out as staff: -> HERE <- Staff list updated as of: 28/09/2026 Host: Tey Admin: baikalsk Main GFX: Helveetica Sub GFX: Tey Sheeter: Tey Quality Assurance: Tey…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-10-08T01:49:37+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -639,7 +656,7 @@
         "[STD] Hidden Cup: Chapter Golden Lily | 3v3 Ts5 | #100 - #99.999 BWS | Team, FA & Staff Regs Open!"
       ],
       "topic_id": 2248268,
-      "views": 2933
+      "views": 2901
     },
     "2248645": {
       "author": "Remi_hs",
@@ -651,8 +668,9 @@
       "excerpt": "Website Discord Twitch この投稿の日本語版はこちらのリンクです Registration： OPEN INFORMATION ━━━━━━━━━━━━━━━━━━━━ Welcome to the Taiko Convert Tournament!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-07T14:43:01+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -674,7 +692,7 @@
         "[Taiko, 2v2, Convert] Advanced TCT (REG OPEN)"
       ],
       "topic_id": 2248645,
-      "views": 399
+      "views": 390
     },
     "2248855": {
       "author": "Umaruuuu",
@@ -686,8 +704,9 @@
       "excerpt": "♪ DISCORD | MAIN SHEET | RULE DOCS | TWITCH | REGISTRATIONS | DONATE ♪ ◎ Giải sẽ bao gồm 2 bộ mappool: Các map CHYM và các map EXTRA (EX) .…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-29T09:01:24+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -716,7 +735,7 @@
         "[STD] [1v1/2v2, team size 2] CHaos sYMphony Tournament [#1 - #50k] [REGS OPEN] [VN Only]"
       ],
       "topic_id": 2248855,
-      "views": 904
+      "views": 893
     },
     "2248913": {
       "author": "LLIaBKa",
@@ -727,8 +746,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « PP капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-26T21:00:01+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -747,7 +767,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #52 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2248913,
-      "views": 94
+      "views": 93
     },
     "2248916": {
       "author": "LLIaBKa",
@@ -758,8 +778,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « Пул капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-26T21:05:10+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -778,7 +799,7 @@
         "[STD, SPEAK RU ONLY] #74 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2248916,
-      "views": 105
+      "views": 104
     },
     "2249265": {
       "author": "- Oddy -",
@@ -791,8 +812,9 @@
       "excerpt": "Main Sheet | Registration | Staff Regs (Closed) | Discord | TikTok Tournament Overview Halo semuanya! Selamat datang di Isekai University Osu Cup - Season 1 : Mambo!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-30T07:46:22+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -817,7 +839,7 @@
         "[STD] IUOC - Season 1 : Mambo [ID Only] | [1v1] #100k - #inf+ | Player Regs Closed"
       ],
       "topic_id": 2249265,
-      "views": 851
+      "views": 837
     },
     "2249307": {
       "author": "Convex",
@@ -830,14 +852,15 @@
       "excerpt": "Discord | Website | Mainsheet | Twitch | Player Regs 🦅 Welcome to the second iteration of our United States Suiji! 🦅 🦅 Rank range is 2-99,999.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T19:05:03+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "both",
+      "last_reply_at": "2026-09-30T07:05:03+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "United States Suiji 2",
-      "posts": 9,
+      "posts": 8,
       "rank": [
         2,
         99999
@@ -859,7 +882,7 @@
         "[STD] United States Suiji 2 | 2-99,999 BWS | 4v4 TS8 | Player/Staff regs OPEN"
       ],
       "topic_id": 2249307,
-      "views": 1284
+      "views": 1208
     },
     "2249349": {
       "author": "Purl",
@@ -873,8 +896,9 @@
       "excerpt": "b a n n e r c o m m i s s i o n e d b y Kourihase main sheet ・ registration ・ discord ・ twitch ❖ PIT will be a 3v3, team size 3, offline tournament (with prior online qualifiers)…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-28T06:59:02+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -895,7 +919,7 @@
         "[std/stable] [lan] purl's interstellar tales | open rank | regs open!"
       ],
       "topic_id": 2249349,
-      "views": 916
+      "views": 903
     },
     "2249559": {
       "author": "Setsukue",
@@ -909,8 +933,9 @@
       "excerpt": "Registration │ Discord │ Main Sheet │ Twitch │ Challonge • This is the third iteration of Setsukue's Comeback Tournament and Setsukue's Chomasa Tournament • The tournament will…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-04T05:21:12+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -938,7 +963,7 @@
         "[STD] Setsukue's Coupling Tournament | 100-10.000 BWS | Duo Draft 4v4 TS8 | [OPEN]"
       ],
       "topic_id": 2249559,
-      "views": 1743
+      "views": 1703
     },
     "2249568": {
       "author": "Senndwich",
@@ -951,8 +976,9 @@
       "excerpt": "Welcome to the first edition of the much anticipated legally distinct knock-off of the dutch's \"Nederlandse Baby Bracket\" , aka. B E L G I A N PRODIGY CUP !…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-30T07:42:45+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -978,7 +1004,7 @@
         "[STD] Belgian Prodigy Cup 2026 [1v1, #10.000-#999.999] REGISTRATIONS OPEN!!"
       ],
       "topic_id": 2249568,
-      "views": 555
+      "views": 544
     },
     "2249574": {
       "author": "Saemitsu",
@@ -988,12 +1014,13 @@
       "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/D4HAmzRHc9",
-      "draft_sha": "56893f171d3e04cc993f6a8d8f467649623c98eaa148dc0d59ddf820668ef5ae",
+      "draft_sha": "122c37b29a7f52a350fe9d87ca996b6a7244813c6874326107ba7d1eeb4571a0",
       "excerpt": "Standing at the furthest point from the bright star ahead, reach out and grasp the light the Celestial emanates Mastersheet • Discord • Twitch • Youtube • Challonge Player Signups…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-10-07T02:59:00+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1017,7 +1044,7 @@
         "[o!m 4K] The Aphelion 2026 #5,000-40,000 (4K rank) [Staff + Player Regs OPEN]"
       ],
       "topic_id": 2249574,
-      "views": 1781
+      "views": 1725
     },
     "2249670": {
       "author": "Sparkle",
@@ -1030,8 +1057,9 @@
       "excerpt": "Main Sheet | Rules Doc | Website | Player Regs | Discord 6USC is back early this year! 6 Digit United States Cup 4 is a 3v3, Team Size 6 , state-based tournament.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-07T06:02:14+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1054,7 +1082,7 @@
         "[STD] 6 Digit United States Cup 4 | 100k-999k [Regs Open!]"
       ],
       "topic_id": 2249670,
-      "views": 1722
+      "views": 1686
     },
     "2249879": {
       "author": "Amuro",
@@ -1066,8 +1094,9 @@
       "excerpt": "Mainsheet | Discord | Registros Este año nuevamente los tryouts son OBLIGATORIOS y EXCLUYENTES y constarán de dos instancias con diferentes pools.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-29T19:51:37+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -1090,7 +1119,7 @@
         "osu!tryouts Team Argentina 2026 [#1 - #10000]"
       ],
       "topic_id": 2249879,
-      "views": 317
+      "views": 311
     },
     "2250173": {
       "author": "Teirin",
@@ -1102,8 +1131,9 @@
       "excerpt": "Hosts : Teirin , Nessy , Modems GFX & Sheet: Modems Mappoolers : Teirin , Nessy Custom Mappers : Nessy , Arushii , jykca , phten02 , Rtyzen , apoq , Cami , le pauvre bil ,…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-09-30T22:10:40+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1131,7 +1161,7 @@
         "[STD] Teirin's Super Gacha Experience | 4v4 TS9 | #1-9500 No BWS (Max 3 Badges)"
       ],
       "topic_id": 2250173,
-      "views": 1090
+      "views": 1047
     },
     "2250185": {
       "author": "luxembourg",
@@ -1144,8 +1174,9 @@
       "excerpt": "Lion's Osu! Cup <<discord server>> ・ <<staff reg>> ・ <<player regs>> ・ <<rule doc>> Lion's osu!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-02T06:14:24+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1167,7 +1198,7 @@
         "[STD/LAN/1v1] Lion's osu! Cup - OPEN RANK [PLAYEY/STAFF REGS OPEN]"
       ],
       "topic_id": 2250185,
-      "views": 533
+      "views": 520
     },
     "2250321": {
       "author": "BurgerKing",
@@ -1179,8 +1210,9 @@
       "excerpt": "Main Sheet | Discord | QQ | Rules Document | Challonge Team Registrations | Free Agent Registrations | Staff Registrations FFC 是面向所有中国四、五位数排名玩家的常规比赛，无特殊规则。…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-09T02:41:20+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1207,19 +1239,20 @@
         "[STD] Fast Food Cup | #1,000 - #99,999 BWS | CN,HK,TW,MO only | 2v2 TS3 [regs open]"
       ],
       "topic_id": 2250321,
-      "views": 884
+      "views": 863
     },
     "2250369": {
       "author": "MissingNote",
       "created_at": "2026-10-01T12:53:22+00:00",
       "decision": "review",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
-      "draft_sha": "b3c3a1e1311f6a5c9b8be7320e5d9320a7ac901c8033b0300ef5a070b3fa520f",
+      "draft_sha": "6d84dd2a1f178ce0c6a52ddfc57a10ab2c3d45773bd225e18f93d008157a65e5",
       "excerpt": "Staff Registration ・ Stream 1 ・ Stream 2 ・ Twitter Tournament Overview RE:Legacy Invitational is an osu!standard 1v1 invitational double-elimination tournament played within the…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-10-08T02:54:02+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1242,7 +1275,7 @@
         "[1V1] [STD] RE:Legacy Invitational | 6WC Player Invitational | Staff Registrations Open!"
       ],
       "topic_id": 2250369,
-      "views": 1360
+      "views": 1341
     },
     "2250525": {
       "author": "Sinaeb",
@@ -1256,14 +1289,15 @@
       "excerpt": "Discord Link | Sheets | Twitch Myon Also make sure to have joined the discord server To sign up to 1v1, answer with 1v1 To usign, edit your forum post This is an osu!standard 1v1…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T19:33:02+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "player",
+      "last_reply_at": "2026-10-09T04:56:26+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "SMST 84",
-      "posts": 60,
+      "posts": 56,
       "rank": [
         100000,
         null
@@ -1281,7 +1315,7 @@
         "[STD]SMST 84 100K-Infinity [Open]"
       ],
       "topic_id": 2250525,
-      "views": 695
+      "views": 644
     },
     "2250628": {
       "author": "AliceMargatroid",
@@ -1291,12 +1325,13 @@
       "decision": "review",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/ea59ERZByY",
-      "draft_sha": "05c2bd6bb2d0e129c52099acd41fae8b6629e57038e8ea37c6c3035355400bff",
+      "draft_sha": "8754a034c6933a005c9e3b690a468ccbd6f9b87d880474944fa979f5e01ca9ba",
       "excerpt": "osu! Mayni LAN 2026 is an open rank LAN tournament open to all players with a flag from a Southeast Asian country in their profile.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "both",
       "last_reply_at": "2026-10-08T13:13:10+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1319,7 +1354,7 @@
         "[STD, SEA only] osu!MayniLAN 2026 | 1v1, LAN | Open Rank | Player and Staff Registrations Open"
       ],
       "topic_id": 2250628,
-      "views": 977
+      "views": 957
     },
     "2250673": {
       "author": "Inori-",
@@ -1333,8 +1368,9 @@
       "excerpt": "Kaga Sumire Chaimpionship (KSC) 是在Stable版本進行的osu!Standard比賽。 對陣人數與隊伍人數為 2v2 、 Team Size of 2 ~ 3 。 正賽採用 ScoreV2 (& Accuracy)、TeamVS、強制NoFail。 本屆賽事有特殊的 AccGame 規則。…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-08T20:23:13+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1362,7 +1398,7 @@
         "[STD](Regs Open) Kaga Sumire Championship [55k-inf][2v2,TS3][中文]"
       ],
       "topic_id": 2250673,
-      "views": 669
+      "views": 635
     },
     "2251052": {
       "author": "LLIaBKa",
@@ -1373,8 +1409,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « PP капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-03T21:00:00+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1393,7 +1430,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #53 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2251052,
-      "views": 90
+      "views": 87
     },
     "2251055": {
       "author": "LLIaBKa",
@@ -1404,8 +1441,9 @@
       "excerpt": "Условия участия: Авторизуйтесь через osu! аккаунт на странице « Пул капа » и нажмите кнопку «Участвовать».…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-03T21:05:09+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1424,7 +1462,7 @@
         "[STD, SPEAK RU ONLY] #75 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2251055,
-      "views": 90
+      "views": 87
     },
     "2251277": {
       "author": "oct4",
@@ -1437,8 +1475,9 @@
       "excerpt": "A u s N Z ! 4K M a n i a T o u r n a m e n t 2 0 2 6 (open rank) Player Registrations Staff Registrations Discord Master Sheet (WIP) Ko-fi A u s N Z !…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-09T05:58:16+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1458,7 +1497,7 @@
         "[o!m 4K] AusNZ!4K Mania Tournament 2026"
       ],
       "topic_id": 2251277,
-      "views": 504
+      "views": 471
     },
     "2251298": {
       "author": "TaikoMom",
@@ -1470,8 +1509,9 @@
       "excerpt": "Registrations: OPEN Joining the Discord is mandatory to play in this tournament. Discord Server | Website | Staff Registration | Twitch channel Welcome to the 10th season of the…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-04T20:27:17+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -1494,7 +1534,7 @@
         "[osu!taiko][1v1] Beginner's Taiko Tournament 10"
       ],
       "topic_id": 2251298,
-      "views": 325
+      "views": 313
     },
     "2251304": {
       "author": "KakirM",
@@ -1505,8 +1545,9 @@
       "excerpt": "Main Sheet ・ Time Regs ・ FA Regs ・ Staff Regs ・ Discord ・ Twitch ・ Vods ・ Bracket Geral A TB5 ( Torneio Brasileiro de 5 Dígitos ) é um torneio 2v2 [Times de 3 ], ScoreV2 , Dupla…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-05T01:57:54+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1530,7 +1571,7 @@
         "[STD] [BR ONLY] [9k-120.000] TB5-Torneio Brasileiro de 5 Dígitos 2026 [REGS OPEN]"
       ],
       "topic_id": 2251304,
-      "views": 238
+      "views": 220
     },
     "2251396": {
       "author": "DUM4L77",
@@ -1541,8 +1582,9 @@
       "excerpt": "Registro de Times ・ Registro de Free Agent Main Sheet ・ Discord ・ Regras & Infos ・ Challonge ・ Contribuições ・ Twitch Coliseu Brasileiro de 6 Dígitos (Segunda Edição) O CB6.2…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-05T09:51:40+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1570,21 +1612,23 @@
         "[STD][BR Only] CB6.2 - Coliseu Brasileiro de 6 Dígitos - Segunda Edição [100k - 999k][2v2 Ts2]"
       ],
       "topic_id": 2251396,
-      "views": 208
+      "views": 197
     },
     "2251606": {
       "author": "6lp",
       "created_at": "2026-10-05T13:08:38+00:00",
       "deadline_iso": "2026-11-15T23:59:00+00:00",
       "deadline_raw": "staff reg : 5th October-15 November player reg : 15th November-15 December Screen phase : 15th December-20th December qualifer showcase ：21th December qualifer : 21th Decem",
-      "decision": "exclude",
+      "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
       "discord": "https://discord.gg/7xqfQ2ZcW",
+      "draft_sha": "345d51b7297f96681a92ba5d9a19d381c199a51ec174f6deecba6c1d8bb044e3",
       "excerpt": "Discord | QQ | Staff Reg | Player Reg wip | main sheet wip Information The Bai Yu Cup 2026 (BYC 2026) is an international osu!mania 2v2 team tournament hosted by the BYC team.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": true,
+      "kind": "staff",
       "last_reply_at": "2026-10-09T06:16:59+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1597,7 +1641,7 @@
       ],
       "rank_compact": "2,500–∞",
       "rank_full": "2,500 – 無上限",
-      "reason": "staff-topic",
+      "reason": "no-region",
       "signup_form": "https://docs.google.com/forms/d/e/1FAIpQLSdHUp2Y3CrrajuY6-UJI9sDGvwgdC878J89br7MAUWGKv4WVQ/viewform?usp=publish-editor",
       "status": "unknown",
       "team_sizes": [],
@@ -1609,7 +1653,7 @@
         "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity]"
       ],
       "topic_id": 2251606,
-      "views": 667
+      "views": 610
     },
     "2251619": {
       "author": "yimasu",
@@ -1623,14 +1667,15 @@
       "excerpt": "Team Sign ups || Free Agent Sign ups || Staff Sign ups Main Sheet || Discord || Rules Document || Challonge || Twitch General Yimasu's Hidden Tournament 2 is an International ,…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T21:48:20+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "player",
+      "last_reply_at": "2026-10-07T00:36:22+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "Yimasu‘s Hidden Tournament 2",
-      "posts": 12,
+      "posts": 10,
       "rank": [
         20000,
         99999
@@ -1649,33 +1694,35 @@
         "[STD] Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)"
       ],
       "topic_id": 2251619,
-      "views": 1246
+      "views": 1136
     },
     "2251657": {
       "author": "Pixelbee",
       "created_at": "2026-10-05T16:25:34+00:00",
       "deadline_iso": "2026-12-31T23:59:00+00:00",
       "deadline_raw": "Staff Regs : 5 Oct 2026 - 31 Dec 2026 Player Regs : 1 Dec 2026 - 31 Dec 2026 Tournament Start : 8 Jan 2027 - TBD",
-      "decision": "exclude",
+      "decision": "include",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
+      "draft_sha": "52f071379d0ee6b7e8443ef2ccbc10908ae69b8192c962d459a79fb919bd82df",
       "excerpt": "Welcome to the first ever iteration of The Looking-Glass Mirror! at the very moment this is a staff registration forum post only!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": true,
-      "last_reply_at": "2026-10-10T02:23:22+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "staff",
+      "last_reply_at": "2026-10-06T11:47:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "Looking-Glass Mirror: bloom",
-      "posts": 17,
+      "posts": 16,
       "rank": [
         75000,
         350000
       ],
       "rank_compact": "75K–350K",
       "rank_full": "75,000 – 350,000",
-      "reason": "staff-topic",
+      "reason": "explicit-allow",
       "signup_form": "https://docs.google.com/forms/d/e/1FAIpQLSde9OjPCZUeEMGjk-N9SXrwKYdDkSEIjV9bD2N4XCS2IHodJg/viewform?usp=dialog",
       "status": "unknown",
       "team_sizes": [],
@@ -1685,7 +1732,7 @@
         "[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, ETX<6, STD]"
       ],
       "topic_id": 2251657,
-      "views": 371
+      "views": 338
     },
     "2251780": {
       "author": "Katan24",
@@ -1696,8 +1743,9 @@
       "excerpt": "Are there any 6 digits std tournaments hosted on lazer? I've been thinking on playing some tourneys but stable feels so weird and wacky after getting used to lazer, so im…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-06T17:30:19+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1716,7 +1764,7 @@
         "Lazer std tournaments"
       ],
       "topic_id": 2251780,
-      "views": 360
+      "views": 335
     },
     "2252361": {
       "author": "Sinaeb",
@@ -1730,8 +1778,9 @@
       "excerpt": "Discord Link | Sheets | Twitch Welcome to the first FreeMod SMST Tournament! Also make sure to have joined the discord server To sign up to 1v1, answer with 1v1 To sign up to 2v2,…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-09T09:20:46+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1755,7 +1804,7 @@
         "[STD]SMST 84 50K-100K [Open]"
       ],
       "topic_id": 2252361,
-      "views": 167
+      "views": 143
     },
     "2252576": {
       "author": "tigiexe",
@@ -1768,14 +1817,15 @@
       "excerpt": "Discord - Main Sheet - Staff Reg - Team Reg - Free Agent Reg Balkan Chibi Cup 2026 is a 2v2, TS3 (minimum 2 players), double elimination, regional osu!…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T21:02:00+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "player",
+      "last_reply_at": "2026-10-09T12:28:37+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "Balkan Chibi Cup 2026",
-      "posts": 8,
+      "posts": 6,
       "rank": [
         10000,
         99999
@@ -1796,7 +1846,7 @@
         "[osu!std] Balkan Chibi Cup 2026 [2v2 TS3][#10,000-#99,999]"
       ],
       "topic_id": 2252576,
-      "views": 317
+      "views": 176
     },
     "2252588": {
       "author": "jas_",
@@ -1809,8 +1859,9 @@
       "excerpt": "This is a 1v1 double-elimination tournament played with ScoreV2 and TeamVS Only players from the Danish Kingdoms will be allowed to participate (Denmark, Faroe Islands, and…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
+      "kind": "player",
       "last_reply_at": "2026-10-08T23:28:56+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1831,7 +1882,7 @@
         "[STD] Royal Danish Osu!Cup 2026"
       ],
       "topic_id": 2252588,
-      "views": 187
+      "views": 139
     },
     "2252609": {
       "author": "snowstorm345",
@@ -1843,14 +1894,15 @@
       "excerpt": "welcome to Taiko Poop Cup Links Twitch - Discord Server - Player Registration Rules & Pooling Info Anyone can sign up; but joining the Discord server is mandatory.…",
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": false,
-      "last_reply_at": "2026-10-09T16:20:46+00:00",
-      "last_seen_utc": "2026-10-10T04:43:46+00:00",
+      "kind": "player",
+      "last_reply_at": "2026-10-09T08:41:04+00:00",
+      "last_seen_utc": "2026-10-10T05:34:24+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
       "mode_label": "osu!taiko",
       "name": "The Taiko Poop Cup",
-      "posts": 6,
+      "posts": 5,
       "rank": null,
       "rank_compact": "",
       "rank_full": "",
@@ -1867,7 +1919,7 @@
         "(Taiko, 1v1, Open Rank) The Taiko Poop Cup"
       ],
       "topic_id": 2252609,
-      "views": 128
+      "views": 77
     },
     "2252781": {
       "author": "TAXOMETP",
@@ -1888,6 +1940,7 @@
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "Frost Night Cup",
+      "off_listing_since": "2026-10-10T05:34:24+00:00",
       "posts": 7,
       "rank": [
         100000,

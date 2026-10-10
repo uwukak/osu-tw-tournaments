@@ -20,6 +20,7 @@ GitHub Actions（每 30 分鐘）
       ├─ 關鍵字規則抽取：模式／賽事名／名次／隊伍／區域／報名狀態
       ├─ 寫入 data/tournaments.json
       ├─ 讀 data/overrides.json     ← 你在看板上直接改的說明（爬蟲只讀，永不覆寫）
+      ├─ 讀 data/custom.json        ← 你在看板上手動新增的比賽（同上，爬蟲只讀）
       ├─ 產生 docs/index.html       → GitHub Pages 線上看板
       └─ 產生 drafts/{id}.md        → 你複製到 Facebook
               │
@@ -27,8 +28,9 @@ GitHub Actions（每 30 分鐘）
 ```
 
 看板本身也能反向寫回來：打開隱藏的編輯模式（在頁面上打 `edit`，或網址加 `#edit`）後，
-頁面會拿著你的 GitHub 權杖直接呼叫 API 把 `data/overrides.json` 提交回 repo
-（見下方「在網站上直接改說明」）。訪客看不到任何編輯按鈕。
+頁面會拿著你的 GitHub 權杖直接呼叫 API，把修改提交回 repo —— 改既有賽事寫
+`data/overrides.json`，手動新增或刪除的比賽寫 `data/custom.json`
+（見下方「在網站上直接改資料」與「手動新增比賽」）。訪客看不到任何編輯按鈕。
 
 ### 為什麼是關鍵字規則而不是 AI
 
@@ -96,6 +98,9 @@ python tests/test_rules.py              # 規則測試（不須 pytest）
 python tests/test_store.py              # 資料合併與「有變更才提交」的測試
 python tests/test_render.py             # 報名狀態校正（標題沒改、內文已截止）
 python tests/test_parse.py              # 首帖摘要的截斷
+python tests/test_gitio.py              # 提交前的防護（不准推到上層目錄）
+python tests/test_dashboard_js.py       # 看板的 inline script 能不能被 node 解析
+python tests/test_custom_roundtrip.py   # 手動新增的比賽走一遍完整流程（在暫存目錄裡跑）
 python -m osu_tourney.scrape --offline  # 用 fixtures/ 跑，完全不碰網路
 python -m osu_tourney.scrape --no-push  # 真的去抓，但只寫本機檔案、不提交
 python -m osu_tourney.scrape --push     # 抓完並提交推送
@@ -153,6 +158,7 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `osu_tourney/poster.py` | Facebook 發文接縫（本期未實作） |
 | `data/tournaments.json` | 累積的賽事資料，key 是 topic id（爬蟲寫，**不要手改**） |
 | `data/overrides.json` | 站長自己寫的說明，key 是 topic id（爬蟲只讀不寫） |
+| `data/custom.json` | 站長手動新增的比賽，key 是負整數 id（爬蟲只讀不寫） |
 | `docs/index.html` | 看板產物（GitHub Pages 根目錄） |
 | `drafts/` | 產生的繁中草稿 |
 | `fixtures/` | 真實 osu! 快照，供測試用 |
@@ -160,6 +166,9 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `tests/test_store.py` | 黃金測試：資料合併、變更偵測、覆寫檔的讀取 |
 | `tests/test_render.py` | 黃金測試：報名狀態校正、看板資料、草稿標題 |
 | `tests/test_parse.py` | 黃金測試：首帖摘要的截斷 |
+| `tests/test_gitio.py` | 黃金測試：提交前的防護（不准推到上層目錄） |
+| `tests/test_dashboard_js.py` | 黃金測試：看板的 inline script 要能被 JS 引擎解析 |
+| `tests/test_custom_roundtrip.py` | 黃金測試：手動新增的比賽整條路（`scrape.main()`，在暫存目錄裡跑） |
 
 ---
 
@@ -172,21 +181,54 @@ python tests/test_rules.py
 python tests/test_store.py
 python tests/test_render.py
 python tests/test_parse.py
+python tests/test_gitio.py
+python tests/test_dashboard_js.py
 ```
 
 測試會斷言真實語料上的分類分布。若你**刻意**改了規則，測試會失敗並印出新的分布 ——
-確認過再更新 `EXPECTED_DECISIONS`。若沒改規則卻失敗，那就是回歸。
+確認過再更新 `EXPECTED_DECISIONS`（還有分頁用的 `EXPECTED_KINDS`）。若沒改規則卻失敗，
+那就是回歸。
 
 ### 判定結果的三種可能
 
 | 結果 | 意思 |
 |---|---|
 | `include` | 收錄（無區域限制，或明確含台灣／亞洲／SEA／中文圈） |
-| `exclude` | 排除（限定其他國家／區域／語言，或是徵工作人員的帖） |
+| `exclude` | 排除（限定其他國家／區域／語言） |
 | `review` | **待人工確認** —— 看板會標示⚠️，草稿也會加警告 |
 
 被判成 `review` 的常見原因：線下賽（LAN，要自己看地點）、邀請賽、區域代碼無法判定、
 缺少名次與隊伍資訊（可能是情報帖而非比賽）。
+
+### 分頁：選手報名／工作人員報名
+
+看板上方有一組分頁，把「報名比賽」和「徵求工作人員」分開 —— 兩者是不同的資訊，
+但對社群一樣有用。
+
+分頁的歸屬是 `kind` 這個欄位，有**三個**值而不是兩個：
+
+| `kind` | 意思 |
+|---|---|
+| `player` | 選手賽事（預設） |
+| `staff` | 標題本身就在徵人（`[STAFF REGS]`、`[STAFF RECRUITMENT]`） |
+| `both` | 標題**同時明講**徵選手與徵工作人員，兩頁都列 |
+
+`both` 是刻意的設計：分頁是**檢視**，不是把資料切成兩半。一頁看不到的資訊對那一頁的
+讀者就是不存在，所以「兩者都徵」的比賽兩頁都要出現。
+
+判定寫在 `rules.detect_kind()`，刻意要求「工作人員」與「選手／隊伍」字樣**同時**出現才算
+`both` —— 只看 `staff` 一個字的話，`[osu!catch] UK Catch Tournament 2026 (Staff Wanted)`
+這種「比賽順便徵人」會被整批歸到工作人員分頁。
+
+兩種情況仍以區域判定優先：`[STAFF REGS]` 掛在日本限定的比賽上，一樣不會出現在台灣看板上
+（`kind` 仍然是 `staff`，只是整筆被排除）。
+
+分頁判錯的時候，在編輯模式的「分頁」那一格改就好 —— 它跟「收錄判定」一樣是手改得動的
+下拉選單。既有的資料沒有 `kind` 這個欄位，一律當成 `player`，所以不會有賽事在某次改版後
+突然跳進工作人員分頁。
+
+工作人員帖也會產生 Facebook 草稿，只是措辭換成「工作人員招募中」／「🙋 招募」，
+不會寫成「報名開放中」—— 那會讓讀者以為是去報名比賽，而那場比賽根本不收選手。
 
 ---
 
@@ -194,6 +236,8 @@ python tests/test_parse.py
 
 `docs/index.html` 是單一自足頁面（CSS／JS／資料全部內嵌），推到 GitHub Pages。
 
+- 最上方**分頁**切換「選手報名／工作人員報名」（見上方「分頁」一節）；按鈕上的數字是
+  那一頁有幾筆，所以「工作人員頁空著」跟「今天沒有比賽」分得出來
 - 卡片列出賽事，可用**模式**與**報名狀態**篩選；「顯示待確認」控制 review 那批要不要出現
 - **點卡片**會彈出詳細說明：原帖首段的節錄、主辦自己寫的截止那句話、原帖完整標題、完整名次與主辦
 - 時間一律顯示成 `MM/DD HH:MM（UTC+8）`，後面接**剩餘時間**（`剩餘 3 天`／`剩餘 5 小時 12 分`）
@@ -241,8 +285,10 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
 | 區域 | 規則判不了的那批（`MN` 是 Minnesota 還是 Mongolia？） |
 | 報名狀態 | **規則判錯時最常改的一格**，見下面 |
 | 收錄判定 | 把「待確認」升成「收錄」，或反過來排除掉 |
+| 分頁 | 這筆該出現在「選手報名」還是「工作人員報名」頁（見上方「分頁」一節） |
 | 截止時間（UTC）／截止時間（主辦原句） | 解析器猜錯時間，或那句話抓得不完整 |
 | Discord／報名表單／直播 | 抓錯連結，或連結是後來才補上的 |
+| 資訊連結 | **只有手動新增的比賽才有這一格**（爬蟲那批的網址是從 topic id 算出來的） |
 | 說明／站長補充 | **只有看板看得到**，不會進到 Facebook 草稿 |
 
 **「報名狀態未標明」和「表定已截止」怎麼改。** 這兩種都是規則的推論，不是事實：
@@ -301,6 +347,35 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
 - **本機測這個功能**要自己帶 repo：`py -m osu_tourney.scrape --no-push --repo uwukak/osu-tw-tournaments`。
   沒帶的話編輯面板會打開但存不回去（會直接告訴你）。
 
+### 手動新增比賽
+
+論壇上抓不到的比賽（社群自辦、只在 Discord 公告的）可以自己加。
+
+進編輯模式後，那行提示的最左邊會多一顆 **`＋ 新增賽事`**（訪客看不到它）。點下去開的是
+同一份表單，只有「賽事名稱」是必填，其餘留空就用預設值。存檔後那筆會當場出現在看板上，
+不必等下一回合。
+
+幾個要知道的事：
+
+- **它存在 `data/custom.json`**，跟 `overrides.json` 一樣是「只有人會寫、爬蟲只讀」的檔案。
+  這是刻意的：新增的比賽不會被下一回合的抓取蓋掉，因為爬蟲根本不寫那個檔案。
+- **它的 id 是負整數**（`-1`、`-2`…），由看板配發。爬蟲的 topic id 永遠是正整數，所以兩邊
+  不可能相撞。號碼不會重用，刪掉再新增不會踩到舊的草稿檔。
+- **它一直留著，只能手動刪除。** 爬蟲抓來的賽事會在掉出論壇列表 45 天後淡出看板，
+  手動新增的不受這條限制 —— 它沒有「最後出現在列表上」這種時間，而且你要的是它留著。
+- **刪除要按兩次。** 第一次只是「上膛」（按鈕會變成「確定刪除（無法復原）」並在旁邊寫清楚
+  會發生什麼事），第二次才真的把 key 從 `custom.json` 移除。這裡刻意不用 `confirm()` ——
+  那是跟整頁無關的系統彈窗，手機上很容易誤觸。
+- **刪掉之後，`drafts/{id}.md` 會留著。** 那份草稿可能已經貼出去了，刪掉就查不到自己發過
+  什麼。`drafts/README.md` 下次重繪時會自動不再列出它，孤兒 `.md` 要自己刪。
+- **沒有論壇原帖，所以「資訊連結」是你自己填的。** 沒填的話卡片上不會出現那一行 ——
+  寧可沒有連結，也不要一個連過去是 404 的（負 id 拼出來的論壇網址看起來完全正常）。
+- **`custom.json` 壞掉的話排程會變紅、整個停住**（不寫檔、不提交），跟 `overrides.json`
+  完全同一個理由：當成空檔繼續跑，手動新增的比賽會整批從看板上消失，而且因為
+  `dashboard_sha` 跟著變了，這個「消失」還會被當成一次正常更新提交出去。
+- **單筆形狀不對只會濾掉那一筆**（例如整筆不小心寫成字串），其餘照常顯示。只有 JSON 本身
+  壞掉、或最外層不是物件，才會中止整個排程。
+
 ---
 
 ## 貼文草稿的格式
@@ -323,6 +398,12 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
 ```
 
 **手改過的草稿不會被覆蓋** —— 程式用雜湊比對，偵測到你改過就保留下來。
+
+工作人員帖的措辭不一樣：標題的狀態詞換成「工作人員招募中」，內文那一行是
+`🙋 招募｜…`。同時徵選手與工作人員的（`kind == both`）本體是比賽，措辭照選手走，
+另外加一行 `🙋 招募｜同時徵求工作人員`。
+
+手動新增的比賽也有草稿（`drafts/{負id}.md`），網址用你填的「資訊連結」，沒填就整行不寫。
 
 ---
 
@@ -351,7 +432,11 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
   看板與草稿會改標成 **「表定已截止」**。反過來，若內文的截止時間猜錯，也可能誤標 ——
   所以這種卡片不會被藏起來，只會變灰並附上提示，請點進原帖確認。
 - **每週系列賽**（例如 `#51 week ... cup (weekly)`）會每週產生一篇草稿。
+- **分頁歸屬是啟發式。** `detect_kind()` 只看標題，而且要求「工作人員」與「選手／隊伍」
+  字樣**同時**出現才算 `both`。所以「比賽順便徵人」依預設算選手賽事 —— 不同意就在編輯模式
+  改「分頁」那一格。
 - **首帖節錄是後加的欄位**，所以在這版上線前就已抓過明細的賽事，點開時只會少那一段，
   其餘欄位照常。想立刻補齊就跑一次 `python -m osu_tourney.scrape --no-push --refetch-details`
   （見下方說明），否則要等該賽事的標題變成「報名中」且過了明細更新週期才會自己補上。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。
+  手動新增的比賽保存在 `data/custom.json`，只有把 key 刪掉才會消失。

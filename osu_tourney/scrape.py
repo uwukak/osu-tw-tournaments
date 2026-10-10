@@ -25,6 +25,7 @@ from .render import to_taipei
 ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = ROOT / "data" / "tournaments.json"
 OVERRIDES_PATH = ROOT / "data" / "overrides.json"
+CUSTOM_PATH = ROOT / "data" / "custom.json"
 DOCS_DIR = ROOT / "docs"
 DRAFTS_DIR = ROOT / "drafts"
 FIXTURES = ROOT / "fixtures"
@@ -98,6 +99,7 @@ def _fields_from_row(row: parse.TopicRow, verdict: rules.Verdict) -> dict[str, A
         "decision": verdict.decision,
         "reason": verdict.reason,
         "is_staff_topic": verdict.is_staff_topic,
+        "kind": verdict.kind,
     }
 
 
@@ -107,7 +109,9 @@ def _write_drafts(
     drafts_dir: Path,
     now_iso: str,
     overrides: Optional[dict[str, Any]] = None,
-) -> list[str]:
+    custom: Optional[dict[str, Any]] = None,
+    custom_draft_sha: Optional[dict[str, str]] = None,
+) -> tuple[list[str], dict[str, str]]:
     """為 baseline 之後的收錄／待確認賽事產生草稿。
 
     若使用者手改過草稿（檔案雜湊與我們上次寫入的不同），就**不要覆蓋**他的修改。
@@ -115,40 +119,60 @@ def _write_drafts(
     `overrides` 是站長在看板上手改的內容。草稿要照手改的走 —— 名次判錯、Discord
     抓錯正是他動手改的原因，草稿卻寫著舊的，貼出去就是發錯文，而且比看板標錯更難查
     （貼出去就收不回來了）。
+
+    `custom` 是站長手動新增的賽事，也要產生草稿。它們的雜湊不能寫回記錄 ——
+    記錄住在 data/custom.json，那是使用者的檔案，爬蟲只讀不寫。所以改記在
+    回傳的 `custom_draft_sha`（呼叫端存進 tournaments.json 的頂層）。
     """
     overrides = overrides or {}
+    custom_draft_sha = dict(custom_draft_sha or {})
     written: list[str] = []
     drafts_dir.mkdir(parents=True, exist_ok=True)
 
-    for record in tournaments.values():
+    for record in store.merge_custom(tournaments, custom).values():
         own = store.override_for(overrides, record.get("topic_id"))
         # 收錄判定也可能被手改（把「待確認」直接升成「收錄」、或反過來排除掉）。
         # 這裡要用疊過去的結果，否則會出現「看板收錄了、草稿卻沒產生」這種對不上的狀態。
         if render.apply_override(record, own).get("decision") not in ("include", "review"):
             continue
         tid = int(record["topic_id"])
-        if baseline is not None and tid <= baseline:
+        is_custom = bool(record.get("custom"))
+
+        # 手動新增的賽事不受 baseline 限制。它們的 id 是負數，而 baseline 是爬蟲那邊
+        # （兩百多萬）的 id —— 負數恆小於它，照這條擋的話每一筆都會被靜默跳過，
+        # 看板上有、drafts/ 裡卻永遠生不出草稿。
+        if not is_custom and baseline is not None and tid <= baseline:
             continue
 
         # 傳 now_iso：草稿是要貼出去的，標題的報名狀態必須先被截止時間校正過。
         content = render.render_draft(record, now_iso, own)
         path = drafts_dir / f"{tid}.md"
         digest = _sha(content)
+        key = str(tid)
+        # 上次寫出去的雜湊。爬蟲的記在記錄裡，手動新增的記在呼叫端給的那本帳。
+        last = custom_draft_sha.get(key) if is_custom else record.get("draft_sha")
 
         if path.exists():
             existing = path.read_text(encoding="utf-8")
-            if record.get("draft_sha") and _sha(existing) != record["draft_sha"]:
+            if last and _sha(existing) != last:
                 log.info("草稿 %s 已被手動修改，保留不覆蓋。", path.name)
                 continue
             if existing == content:
+                # 內容一樣，不重寫，但把雜湊補上 —— 少了這一步，之後有人手改這個
+                # 檔案時我們認不出來（last 還是空的），下一回合就把他改的蓋掉了。
+                if is_custom:
+                    custom_draft_sha.setdefault(key, digest)
                 continue
 
         with path.open("w", encoding="utf-8", newline="\n") as fh:
             fh.write(content)
-        record["draft_sha"] = digest
+        if is_custom:
+            custom_draft_sha[key] = digest
+        else:
+            record["draft_sha"] = digest
         written.append(path.name)
 
-    return written
+    return written, custom_draft_sha
 
 
 def run(args: argparse.Namespace) -> int:
@@ -161,6 +185,11 @@ def run(args: argparse.Namespace) -> int:
     overrides = store.load_overrides(OVERRIDES_PATH)
     if overrides:
         log.info("讀到 %d 筆站長說明。", len(overrides))
+
+    # 站長手動新增的賽事（看板上的「新增賽事」）。跟 overrides.json 一樣只有人會寫。
+    custom = store.load_custom(CUSTOM_PATH)
+    if custom:
+        log.info("讀到 %d 筆手動新增的賽事。", len(custom))
 
     # 看板上的「站長編輯」要靠 repo 與分支才能呼叫 GitHub API。Actions 每次執行都會
     # 帶 GITHUB_REPOSITORY／GITHUB_REF_NAME，所以排程產生的頁面自動就有；
@@ -305,9 +334,31 @@ def run(args: argparse.Namespace) -> int:
     # 排序也補了 topic_id 這個 tiebreaker），否則這裡會變成假提交製造機。
     dashboard_sha = _sha(
         render.render_dashboard(
-            render.build_payload(tournaments, meta={}, now_iso=now_iso, overrides=overrides)
+            render.build_payload(
+                tournaments, meta={}, now_iso=now_iso, overrides=overrides, custom=custom
+            )
         )
     )
+
+    # 手動新增賽事的草稿雜湊。**一定要從 old 帶過來**：只在 _write_drafts 之後才把
+    # 這個 key 加上去的話，old 沒有、new_data 有，store.meaningful 每回合都判定
+    # 「有變更」→ 每 30 分鐘一次假提交，永遠不停。
+    #
+    # 順手修剪成還活著的 id（那是爬蟲自己的帳，不是使用者的檔案）——
+    # 刪掉的手動賽事不該在 tournaments.json 裡留下永遠不會再用的 key。
+    #
+    # key 用 custom_record 算出來的那個（＝記錄自己的 topic_id），不是 custom.json 的
+    # 外層 key：_write_drafts 記帳時用的就是前者。兩者只有在人手改過檔案、把外層 key
+    # 跟內容的 topic_id 寫得不一致時才會分岔，而那時若用外層 key，每回合都會把這筆
+    # 的雜湊當成不存在 → 站長改過的草稿被默默蓋掉。
+    live_custom = {
+        str(rec["topic_id"])
+        for rec in (store.custom_record(k, v) for k, v in custom.items())
+        if rec
+    }
+    custom_draft_sha = {
+        k: v for k, v in (old.get("custom_draft_sha") or {}).items() if k in live_custom
+    }
 
     new_data = {
         "schema_version": store.SCHEMA_VERSION,
@@ -315,6 +366,7 @@ def run(args: argparse.Namespace) -> int:
         "heartbeat_date": now.date().isoformat(),
         "dashboard_sha": dashboard_sha,
         "draft_baseline_topic_id": baseline,
+        "custom_draft_sha": custom_draft_sha,
         "tournaments": tournaments,
     }
 
@@ -329,7 +381,7 @@ def run(args: argparse.Namespace) -> int:
     store.save(DATA_PATH, new_data)
 
     payload = render.build_payload(
-        tournaments, meta=page_meta, now_iso=now_iso, overrides=overrides
+        tournaments, meta=page_meta, now_iso=now_iso, overrides=overrides, custom=custom
     )
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     with (DOCS_DIR / "index.html").open("w", encoding="utf-8", newline="\n") as fh:
@@ -341,7 +393,10 @@ def run(args: argparse.Namespace) -> int:
     if args.seed_only:
         log.info("--seed-only：不產生草稿（baseline topic id = %s）。", baseline)
     else:
-        written = _write_drafts(tournaments, baseline, DRAFTS_DIR, now_iso, overrides)
+        written, custom_draft_sha = _write_drafts(
+            tournaments, baseline, DRAFTS_DIR, now_iso, overrides, custom, custom_draft_sha
+        )
+        new_data["custom_draft_sha"] = custom_draft_sha
         if written:
             log.info("產生 %d 份草稿：%s", len(written), ", ".join(written))
         with (DRAFTS_DIR / "README.md").open("w", encoding="utf-8", newline="\n") as fh:
@@ -413,6 +468,10 @@ def main(argv: Optional[list[str]] = None) -> int:
         # 當成空檔繼續跑的話，說明會整批從看板上消失，而且因為 dashboard_sha
         # 也跟著變了，這個「消失」還會被當成一次正常的更新提交出去。
         log.error("站長說明讀不進來，已中止（不寫檔、不提交）：%s", exc)
+        return 1
+    except store.CustomError as exc:
+        # 同理：手動新增的賽事全部來自 data/custom.json。
+        log.error("手動新增的賽事讀不進來，已中止（不寫檔、不提交）：%s", exc)
         return 1
 
 

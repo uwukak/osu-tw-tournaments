@@ -10,9 +10,12 @@ from __future__ import annotations
 
 import copy
 import json
+import logging
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Optional
+
+log = logging.getLogger(__name__)
 
 SCHEMA_VERSION = 1
 
@@ -196,7 +199,7 @@ class OverridesError(ValueError):
 # 打錯字要能被濾掉，而不是讓一個不存在的欄位靜靜地流進看板。
 OVERRIDE_KEYS = (
     "name", "mode", "mania_keys", "rank_compact", "rank_full", "teams",
-    "region", "status", "decision",
+    "region", "status", "decision", "kind",
     "deadline_iso", "deadline_raw", "discord", "signup_form", "stream",
     "summary", "note",
 )
@@ -255,3 +258,99 @@ def override_for(overrides: dict[str, Any], topic_id: Any) -> dict[str, Any]:
         elif isinstance(value, str) and value.strip():
             out[key] = value.strip()
     return out
+
+
+# --------------------------------------------------------------------------
+# data/custom.json：站長手動新增的賽事
+#
+# 跟 overrides.json 同一種關係 —— 只有人會寫它（看板上的「新增賽事」，或你直接在
+# GitHub 上改），爬蟲只讀不寫。
+#
+# 為什麼需要這個檔案：論壇上抓不到的比賽（社群自辦、只在 Discord 公告的）原本
+# 完全沒有辦法放上看板。
+#
+# 跟爬蟲抓來的賽事有兩個決定性的差別：
+#   1. **id 是負數**，由看板配發（見 board 的 allocate）。爬蟲的 topic id 永遠是
+#      正整數，所以兩邊不可能相撞。
+#   2. **不受 45 天的新鮮度限制** —— 手動新增的比賽一直留著，只能手動刪除。
+#      render.build_payload 靠 `custom` 這個旗標放行。
+# --------------------------------------------------------------------------
+
+
+class CustomError(ValueError):
+    """data/custom.json 壞掉，沒辦法解讀。"""
+
+
+def load_custom(path: Path) -> dict[str, Any]:
+    """讀站長手動新增的賽事。
+
+    壞掉時直接拋錯、讓排程變紅，理由跟 load_overrides 完全一樣：當成空檔的話，
+    看板上每一筆手動新增的賽事會整批消失，而且因為 dashboard_sha 跟著變了，
+    這個「消失」還會被當成一次正常的更新提交出去。
+    """
+    if not path.exists():
+        return {}
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise CustomError(
+            f"{path} 不是有效的 JSON（第 {exc.lineno} 行第 {exc.colno} 欄：{exc.msg}）。"
+            f"修好它 —— 看板上手動新增的賽事全部來自這個檔案。"
+        ) from exc
+    if not isinstance(data, dict):
+        raise CustomError(f"{path} 的最外層必須是一個物件（id → 賽事內容）。")
+    return data
+
+
+def custom_record(key: str, entry: Any) -> Optional[dict[str, Any]]:
+    """把 custom.json 的一筆整理成跟爬蟲記錄同構的 dict。形狀不對就回 None。
+
+    單筆壞掉只該濾掉那一筆（跟 override_for 一樣），不該讓整個看板陪葬 ——
+    只有 JSON 本身爛掉或最外層不是物件才值得中止整個排程。
+    """
+    if not isinstance(entry, dict):
+        return None
+    rec = dict(entry)
+    try:
+        rec["topic_id"] = int(rec.get("topic_id", key))
+    except (TypeError, ValueError):
+        return None
+
+    # name 是卡片唯一的標題來源。沒有的話這筆只會變成一張空卡片 ——
+    # 那是壞掉的一筆，不是「還沒填完」的一筆（看板上沒存過半成品）。
+    if not str(rec.get("name") or "").strip():
+        return None
+
+    rec["name"] = str(rec["name"]).strip()
+    rec.setdefault("decision", "include")
+    rec.setdefault("kind", "player")
+    rec.setdefault("status", "unknown")
+    rec.setdefault("first_seen_utc", "")
+    rec["custom"] = True
+    return rec
+
+
+def merge_custom(
+    tournaments: dict[str, Any], custom: Optional[dict[str, Any]]
+) -> dict[str, Any]:
+    """看用：爬蟲的賽事 + 手動新增的賽事。
+
+    **刻意只做淺層複製**：爬蟲的記錄要以「同一個物件」的身分帶進結果，
+    因為 `_write_drafts` 會把 `record["draft_sha"]` 寫回去，而那個物件正是
+    稍後要存進 tournaments.json 的那一個。deep copy 的話雜湊會寫進一個用完
+    就丟的複本，tournaments.json 永遠記不住自己寫過哪份草稿。
+    """
+    records = dict(tournaments)
+    for key, entry in (custom or {}).items():
+        rec = custom_record(key, entry)
+        if rec is None:
+            log.warning("custom.json 的 %r 形狀不對，略過這一筆。", key)
+            continue
+        if str(rec["topic_id"]) in tournaments:
+            # 手動新增的 id 是負數，爬蟲的是正數，正常不會走到這裡。
+            # 真走到了代表有人把爬蟲的 id 抄進來 —— 那該用 overrides.json 改它，
+            # 而不是在這裡疊一筆重複的。
+            log.warning("custom.json 的 %r 撞到爬蟲抓來的 topic id，略過。", key)
+            continue
+        records[str(rec["topic_id"])] = rec
+    return records

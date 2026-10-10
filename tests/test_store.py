@@ -248,6 +248,131 @@ def test_null_means_clear_this_field():
 
 
 # --------------------------------------------------------------------------
+# data/custom.json
+#
+# 站長在看板上手動新增的賽事。跟 overrides.json 同一種關係（只有人會寫），
+# 但多兩件事要釘：id 一定是負整數，而且 merge 進去看板時爬蟲記錄必須是
+# **同一個物件**。
+# --------------------------------------------------------------------------
+
+
+def _custom(text: str):
+    d = tempfile.TemporaryDirectory()
+    path = Path(d.name) / "custom.json"
+    path.write_text(text, encoding="utf-8")
+    return d, path
+
+
+def test_a_missing_custom_file_is_simply_empty():
+    """還沒有人手動新增過時，這個檔案不存在 —— 正常狀態，不是錯誤。"""
+    with tempfile.TemporaryDirectory() as d:
+        assert store.load_custom(Path(d) / "custom.json") == {}
+
+
+def test_load_custom_reads_what_is_there():
+    d, path = _custom('{"-1": {"topic_id": -1, "name": "社群自辦盃"}}')
+    try:
+        assert store.load_custom(path) == {"-1": {"topic_id": -1, "name": "社群自辦盃"}}
+    finally:
+        d.cleanup()
+
+
+def test_a_broken_custom_file_raises_instead_of_reading_as_empty():
+    """壞掉必須拋錯，理由跟 overrides.json 一字不差：
+
+    當成空檔的話，看板上每一筆手動新增的賽事會整批消失，而且因為 dashboard_sha
+    跟著變了，這個「消失」還會被當成一次正常更新提交出去。
+    """
+    d, path = _custom('{"-1": {"name": "少了收尾的括號"')
+    try:
+        try:
+            store.load_custom(path)
+        except store.CustomError as exc:
+            assert "custom.json" in str(exc)
+        else:
+            raise AssertionError("壞掉的 JSON 竟然沒有拋錯")
+    finally:
+        d.cleanup()
+
+
+def test_a_custom_json_array_is_rejected():
+    d, path = _custom('["-1"]')
+    try:
+        try:
+            store.load_custom(path)
+        except store.CustomError:
+            pass
+        else:
+            raise AssertionError("最外層是陣列竟然被接受了")
+    finally:
+        d.cleanup()
+
+
+def test_custom_record_normalises_one_entry():
+    """單筆整理成跟爬蟲記錄同構的 dict。
+
+    topic_id 一定要是**整數**：看板的排序是 `int(r["topic_id"])`，身分比對也是，
+    而 custom.json 是手寫得出來的檔案，有人把 id 寫成字串是完全可能的。
+    """
+    rec = store.custom_record("-1", {"topic_id": "-1", "name": "  社群自辦盃  "})
+    assert rec["topic_id"] == -1 and isinstance(rec["topic_id"], int)
+    assert rec["name"] == "社群自辦盃", "兩邊的空白要清掉，不然卡片標題會歪掉"
+    assert rec["custom"] is True
+    # 這三個是看板與草稿都讀的欄位，沒有就補預設值。
+    assert rec["decision"] == "include"
+    assert rec["kind"] == "player"
+    assert rec["status"] == "unknown"
+    assert rec["first_seen_utc"] == ""
+
+
+def test_custom_record_key_is_the_fallback_id():
+    """記錄本身沒有 topic_id 時，用外層的 key 當 id。"""
+    assert store.custom_record("-7", {"name": "只有名字"})["topic_id"] == -7
+
+
+def test_custom_record_drops_entries_that_cannot_be_a_card():
+    """形狀不對的單筆只濾掉那一筆，不讓整個看板陪葬（跟 override_for 一樣）。"""
+    assert store.custom_record("-1", "整筆寫成字串") is None
+    assert store.custom_record("-1", {"topic_id": "不是數字", "name": "X"}) is None
+    # 沒有名字 = 一張沒有標題的卡片。那是壞掉的一筆，不是「還沒填完」——
+    # 看板上根本存不了半成品（儲存前就擋掉了）。
+    assert store.custom_record("-1", {"topic_id": -1}) is None
+    assert store.custom_record("-1", {"topic_id": -1, "name": "   "}) is None
+
+
+def test_merge_custom_keeps_crawled_records_by_identity():
+    """**這一條是整個設計的關鍵。**
+
+    `_write_drafts` 會把 `record["draft_sha"]` 寫回記錄，而那個記錄正是稍後要存進
+    tournaments.json 的那一個物件。merge_custom 若做 deep copy，雜湊會寫進一個
+    用完就丟的複本 —— tournaments.json 永遠記不住自己寫過哪份草稿，於是每次跑都
+    認為草稿被人手改過，或反過來把手改的草稿蓋掉。
+    """
+    crawled = {"2252361": {"topic_id": 2252361, "name": "SMST 84"}}
+    merged = store.merge_custom(crawled, {"-1": {"topic_id": -1, "name": "社群自辦盃"}})
+    assert merged["2252361"] is crawled["2252361"], "爬蟲記錄被複製了 —— 雜湊會寫不回資料檔"
+    assert merged["-1"]["custom"] is True
+    assert set(merged) == {"2252361", "-1"}
+
+
+def test_merge_custom_skips_an_id_that_collides_with_a_crawled_one():
+    """手動新增的 id 是負數，爬蟲的是正數，正常不會撞到。
+
+    真撞到了（有人把爬蟲的 id 抄進來）也不該讓那一筆悄悄蓋掉爬蟲的資料 ——
+    要改爬蟲那筆請用 overrides.json。
+    """
+    crawled = {"2252361": {"topic_id": 2252361, "name": "爬蟲的"}}
+    merged = store.merge_custom(crawled, {"2252361": {"topic_id": 2252361, "name": "手動的"}})
+    assert merged["2252361"]["name"] == "爬蟲的"
+
+
+def test_merge_custom_without_a_file_is_just_the_crawled_records():
+    crawled = {"2252361": {"topic_id": 2252361}}
+    assert store.merge_custom(crawled, None) == crawled
+    assert store.merge_custom(crawled, {}) == crawled
+
+
+# --------------------------------------------------------------------------
 
 def main() -> int:
     tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]

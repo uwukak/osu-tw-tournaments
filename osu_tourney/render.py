@@ -12,7 +12,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from . import store
+from . import rules, store
 
 try:
     TAIPEI = ZoneInfo("Asia/Taipei")
@@ -39,6 +39,15 @@ STATUS_LABEL = {
     "expired": "表定已截止",
 }
 
+# 徵求工作人員的帖子（kind == "staff"）用的措辭。草稿是直接貼出去的，
+# 寫「報名開放中」會讓讀者以為是去報名比賽 —— 那場比賽根本不收選手。
+STAFF_STATUS_LABEL = {
+    "open": "工作人員招募中",
+    "closed": "工作人員招募已截止",
+    "unknown": "工作人員招募狀態未標明",
+    "expired": "表定已截止",
+}
+
 # 收錄／排除的原因，翻成台灣讀者看得懂的話。
 REASON_LABEL = {
     "no-region": "無區域限制（全球開放）",
@@ -47,7 +56,9 @@ REASON_LABEL = {
     "named-region": "限定特定國家／區域",
     "code-deny": "限定特定國家（代碼）",
     "language-gate": "限定特定語言",
-    "staff-topic": "徵求工作人員，非選手賽事",
+    # 舊資料裡還有記錄帶著這個 reason（那時的規則是「徵工作人員＝排除」）。
+    # 現在徵人帖改走 kind 分頁，analyze 不再產生它，但標籤要留著才讀得懂舊資料。
+    "staff-topic": "徵求工作人員的帖子",
     "unknown-code": "區域代碼無法判定（需人工確認）",
     "lan": "線下賽（LAN），需人工確認地點",
     "invitational": "邀請賽／選拔，非公開報名",
@@ -145,6 +156,7 @@ def effective_status(
 # 只該忽略它，維持程式自動判定的結果。
 _MODE_VALUES = tuple(MODE_LABEL)
 _DECISION_VALUES = ("include", "review", "exclude")
+_KIND_VALUES = (rules.KIND_PLAYER, rules.KIND_STAFF, rules.KIND_BOTH)
 
 # 可以填 null 表示「清空這一欄」的欄位。
 # 列舉型的（name／mode／status／decision）沒有「空」這個狀態：清掉它們只等於退回
@@ -199,6 +211,11 @@ def apply_override(record: dict[str, Any], own: dict[str, Any]) -> dict[str, Any
         elif key == "decision":
             if value in _DECISION_VALUES:
                 out["decision"] = value
+        elif key == "kind":
+            # 分頁歸屬。判定是啟發式（見 rules.detect_kind），一定有判錯的時候 ——
+            # 所以它跟 decision 一樣是手改得動的列舉欄位。
+            if value in _KIND_VALUES:
+                out["kind"] = value
         elif key == "teams":
             out["teams"] = _split_teams(value)
         elif key == "region":
@@ -230,11 +247,16 @@ def raw_fields(record: dict[str, Any]) -> dict[str, str]:
         "region": _region_note(record),
         "status": record.get("status") or "unknown",
         "decision": record.get("decision") or "",
+        "kind": record.get("kind") or rules.KIND_PLAYER,
         "deadline_iso": record.get("deadline_iso") or "",
         "deadline_raw": record.get("deadline_raw") or "",
         "discord": record.get("discord") or "",
         "signup_form": record.get("signup_form") or "",
         "stream": record.get("stream") or "",
+        # 手動新增的賽事才會有值（爬蟲那批的網址是從 topic id 算出來的，不存檔）。
+        # 放在這裡是為了讓編輯器那格顯示得出「現在的值」—— 少了它，站長打開表單
+        # 會看到資訊連結是空的，而卡片上明明有。
+        "url": record.get("url") or "",
     }
 
 
@@ -247,11 +269,23 @@ def _region_note(record: dict[str, Any]) -> str:
     return REASON_LABEL.get(record.get("reason", ""), record.get("reason", ""))
 
 
+def _record_url(record: dict[str, Any], topic_id: Any) -> str:
+    """這筆賽事的資訊連結。
+
+    手動新增的賽事沒有論壇原帖（id 是負數，連過去只會看到 404），網址由站長自己填。
+    沒填就回空字串 —— 卡片與草稿都據此把那一行整條收起來，而不是留一個壞連結。
+    """
+    if record.get("custom"):
+        return str(record.get("url") or "").strip()
+    return f"https://osu.ppy.sh/community/forums/topics/{topic_id}"
+
+
 def build_payload(
     tournaments: dict[str, Any],
     meta: dict[str, Any],
     now_iso: str,
     overrides: Optional[dict[str, Any]] = None,
+    custom: Optional[dict[str, Any]] = None,
 ) -> dict[str, Any]:
     """把內部記錄整理成看板要用的資料（只放 include 與 review）。
 
@@ -265,20 +299,25 @@ def build_payload(
     改過 `decision` 的（例如把「待確認」直接升成「收錄」、或反過來排除掉）也在這裡生效，
     否則手改的判定只會顯示錯、過濾對。
 
+    `custom` 是站長手動新增的賽事（data/custom.json）。它們**不受**上面那道新鮮度閘門
+    限制 —— 論壇上抓不到的比賽沒有「最後出現在列表上」這種時間，而且站長要的是
+    「一直留著，只能手動刪除」，所以那條閘門對它們整條跳過。
+
     它**不覆蓋** excerpt，而是另外兩個獨立欄位並存：看板要據此決定那段字是
     「原帖節錄」還是「站長說明」——後者不能標成節錄，那是把別人的話記在我們頭上。
     """
     overrides = overrides or {}
     rows: list[dict[str, Any]] = []
 
-    for record in tournaments.values():
+    for record in store.merge_custom(tournaments, custom).values():
         tid = record.get("topic_id")
+        is_custom = bool(record.get("custom"))
         own = store.override_for(overrides, tid)
         rec = apply_override(record, own)
         if rec.get("decision") not in ("include", "review"):
             continue
         status = effective_status(rec, now_iso, own)
-        if status != "open" and not store.is_fresh(rec, now_iso):
+        if not is_custom and status != "open" and not store.is_fresh(rec, now_iso):
             continue
 
         rows.append(
@@ -308,10 +347,15 @@ def build_payload(
                 "note": own.get("note") or "",
                 "decision": rec.get("decision"),
                 "reason": rec.get("reason", ""),
+                # 分頁：player / staff / both。舊資料沒有這個欄位，一律當成 player ——
+                # 所以不會有既有賽事在某次改版後突然跳進工作人員分頁。
+                "kind": rec.get("kind") or rules.KIND_PLAYER,
+                # 手動新增的賽事：沒有論壇原帖，網址由站長自己填（可能是空的）。
+                "custom": is_custom,
                 "created_at": rec.get("created_at") or "",
                 "first_seen_utc": rec.get("first_seen_utc") or "",
                 "first_seen_display": _display_date(rec.get("first_seen_utc")) or "",
-                "url": f"https://osu.ppy.sh/community/forums/topics/{tid}",
+                "url": _record_url(rec, tid),
                 "discord": rec.get("discord") or "",
                 "signup_form": rec.get("signup_form") or "",
                 "stream": rec.get("stream") or "",
@@ -328,7 +372,11 @@ def build_payload(
     # 完全相同，少了它，平手的順序就取決於 dict 的迭代順序 —— 而「這回合新建的 dict」
     # 與「從 sort_keys 過的 JSON 載回來的 dict」順序不一樣（後者是 id 遞增），
     # 看板每換一次環境就整片跳位，dashboard_sha 也會跟著抖動而產生假提交。
-    rows.sort(key=lambda r: r["topic_id"], reverse=True)
+    #
+    # int() 是防禦性的：手動新增的賽事來自人手寫的 JSON，id 有可能是字串。
+    # 這裡混到 str 與 int 的話 Python 3 直接拋 TypeError（整頁生不出來），
+    # 而 store.custom_record 已經會轉，這只是第二道。
+    rows.sort(key=lambda r: int(r["topic_id"]), reverse=True)
     rows.sort(key=lambda r: r["first_seen_utc"], reverse=True)
     rows.sort(key=lambda r: r["decision"] != "include")
 
@@ -380,6 +428,9 @@ def render_draft(
     草稿 —— 名次判錯、Discord 抓錯，正是他動手改的原因，看板改了而貼出去的是舊的，
     比兩邊都錯更難查。`summary`／`note` 則相反：那兩個是**看板專用**的註解
     （說明這筆為什麼這樣判、哪裡要留意），貼到 Facebook 上會很突兀，所以不進草稿。
+
+    徵求工作人員的帖子（`kind == "staff"`）走另一組措辭：標題與「報名」那一行都改成
+    「招募」。貼文是給人看的，寫「報名開放中」會讓人以為是去報名比賽。
     """
     own = own or {}
     record = apply_override(record, own)
@@ -387,9 +438,13 @@ def render_draft(
     mode = record.get("mode_label") or MODE_LABEL.get(record.get("mode", "std"), "osu!standard")
     name = record.get("name") or record.get("title", "")
     rank = record.get("rank_compact") or ""
-    status = STATUS_LABEL.get(effective_status(record, now_iso, own), "報名狀態未標明")
-    tid = record["topic_id"]
-    url = f"https://osu.ppy.sh/community/forums/topics/{tid}"
+    kind = record.get("kind") or rules.KIND_PLAYER
+    status_code = effective_status(record, now_iso, own)
+    status = STATUS_LABEL.get(status_code, "報名狀態未標明")
+    if kind == rules.KIND_STAFF:
+        status = STAFF_STATUS_LABEL.get(status_code, "工作人員招募狀態未標明")
+    # 手動新增的賽事可能沒有網址（沒有論壇原帖）—— 那就整行不寫，不留壞連結。
+    url = _record_url(record, record["topic_id"])
 
     title = f"【{mode}】{name}"
     if rank:
@@ -412,8 +467,14 @@ def render_draft(
     if teams:
         lines.append(f"👥 形式｜{' / '.join(teams)}")
     lines.append(f"🌏 區域｜{record.get('region') or _region_note(record)}")
-    lines.append(f"📝 報名｜{status}・{_deadline_line(record)}")
-    lines.append(f"🔗 資訊｜{url}")
+    subject = "🙋 招募" if kind == rules.KIND_STAFF else "📝 報名"
+    lines.append(f"{subject}｜{status}・{_deadline_line(record)}")
+    if kind == rules.KIND_BOTH:
+        # 這場比賽同時缺人手。不寫的話，讀者只看得到報名資訊，
+        # 而工作人員分頁上那張卡片會顯得跟這裡兜不起來。
+        lines.append("🙋 招募｜同時徵求工作人員")
+    if url:
+        lines.append(f"🔗 資訊｜{url}")
     if record.get("discord"):
         lines.append(f"💬 Discord｜{record['discord']}")
     if record.get("signup_form"):
@@ -436,8 +497,14 @@ def render_index_markdown(payload: dict[str, Any]) -> str:
     rows = payload["tournaments"]
     lines = ["# 待發送的貼文草稿", "", f"共 {len(rows)} 筆（收錄 {payload['counts']['include']}／待確認 {payload['counts']['review']}）", ""]
     for r in rows:
-        flag = "⚠️ " if r["decision"] == "review" else ""
-        lines.append(f"- {flag}[{r['name']}]({r['topic_id']}.md) — {r['mode_label']}｜{STATUS_LABEL.get(r['status'], '')}")
+        flags = "⚠️ " if r["decision"] == "review" else ""
+        staff = r.get("kind") == rules.KIND_STAFF
+        # 「兩者都列」的賽事也會出現在工作人員分頁上，這裡就跟著標一下 ——
+        # 草稿最後一行本來就寫著同時徵人，索引看得到同一件事才對得上。
+        if staff or r.get("kind") == rules.KIND_BOTH:
+            flags += "🙋 "
+        label = (STAFF_STATUS_LABEL if staff else STATUS_LABEL).get(r["status"], "")
+        lines.append(f"- {flags}[{r['name']}]({r['topic_id']}.md) — {r['mode_label']}｜{label}")
     lines.append("")
     return "\n".join(lines)
 
@@ -504,7 +571,25 @@ h1 .accent{color:var(--accent)}
 .stat{text-align:right}
 .stat b{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:26px; font-weight:700; display:block; line-height:1.1}
 .stat span{font-size:12px; color:var(--muted)}
-.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:24px 0 20px}
+/* 分頁：選手報名／工作人員報名。刻意長得**不像**下面的篩選器 —— 篩選器是一顆顆
+   有框的按鈕，分頁是底線式的頁籤。兩者緊鄰，共用同一種外觀會被讀成「兩排篩選器」，
+   而分頁是切換整份清單，語意上完全是另一回事。 */
+.tabs{display:flex; flex-wrap:wrap; gap:4px; margin:28px 0 0; border-bottom:1px solid var(--border)}
+.tabs button{
+  font:inherit; font-size:15px; font-weight:700; padding:10px 16px 12px;
+  border:0; border-bottom:3px solid transparent; margin-bottom:-1px; border-radius:6px 6px 0 0;
+  background:none; color:var(--muted); cursor:pointer;
+  display:flex; align-items:center; gap:8px;
+}
+.tabs button:hover{color:var(--text)}
+.tabs button[aria-selected="true"]{color:var(--accent); border-bottom-color:var(--accent)}
+.tabs button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
+.tab-count{
+  font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:12px; font-weight:600;
+  min-width:22px; padding:2px 7px; border-radius:999px; text-align:center;
+  background:var(--accent-soft); color:var(--accent);
+}
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:16px 0 20px}
 .group{display:flex; gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--surface)}
 .group button{
   font:inherit; font-size:13px; padding:8px 13px; border:0; background:transparent; color:var(--muted);
@@ -537,6 +622,11 @@ h1 .accent{color:var(--accent)}
 /* 「表定已截止」跟標題明寫的「已截止」用同一組顏色：對讀者來說兩者都是「不能報了」。
    差別寫在 pill 的文字與卡片上的提示，不靠顏色區分。 */
 .pill.expired{background:var(--closed-bg); color:var(--closed)}
+/* 同時徵選手又徵工作人員的賽事。兩頁都會出現，所以在選手頁上也要看得出這件事 ——
+   否則讀者只看到報名資訊，不知道這場比賽同時在找人手。
+   margin-left 要歸零：`.pill` 本身帶著 margin-left:auto（把狀態膠囊推到右邊），
+   兩顆都 auto 的話會把剩餘空間從中間平分掉，晶片和膠囊之間就開了一個大洞。 */
+.pill.staff{background:var(--accent-soft); color:var(--accent); margin-left:0}
 .card h2{font-size:19px; font-weight:700; margin:0; line-height:1.35; text-wrap:balance}
 .meta{display:flex; flex-direction:column; gap:7px; font-size:13px; color:var(--muted); margin:0}
 .meta div{display:flex; gap:10px}
@@ -643,6 +733,15 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 .ed-revert{border:1px solid var(--border); background:transparent; color:var(--muted)}
 .ed-revert:hover{color:var(--text); border-color:var(--muted)}
 .ed-save:focus-visible,.ed-revert:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+/* 刪除。只有手動新增的賽事有這顆，而且按一次只會「上膛」——要按第二次才真的刪。 */
+.ed-danger{
+  font:inherit; font-size:13px; padding:8px 14px; border-radius:10px; cursor:pointer;
+  white-space:nowrap; margin-left:auto; border:1px solid var(--border);
+  background:transparent; color:var(--closed);
+}
+.ed-danger:hover{border-color:var(--closed); color:var(--text)}
+.ed-danger:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.ed-danger[data-armed]{border-color:var(--accent); color:var(--accent); font-weight:600}
 .edit-status{font-size:12px; color:var(--muted); line-height:1.5}
 .edit-status.bad{color:var(--accent); font-weight:500}
 .ed-warn{font-size:12px; line-height:1.6; border-radius:8px; padding:8px 10px; color:var(--review); background:var(--review-bg)}
@@ -669,7 +768,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   <header class="top">
     <div>
       <h1>台灣 osu! <span class="accent">賽事看板</span></h1>
-      <div class="sub" id="sub">自動彙整 osu! 論壇 Tournaments 版中，台灣玩家可報名的錦標賽</div>
+      <div class="sub" id="sub">自動彙整 osu! 論壇 Tournaments 版中，台灣玩家可報名的錦標賽與工作人員招募</div>
     </div>
     <div class="stats">
       <div class="stat"><b id="s-open">–</b><span>報名中</span></div>
@@ -677,6 +776,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       <div class="stat"><b id="s-review">–</b><span>待確認</span></div>
     </div>
   </header>
+
+  <div class="tabs" id="f-kind" role="tablist" aria-label="分頁"></div>
 
   <div class="controls">
     <div class="group" id="f-mode" role="group" aria-label="依模式篩選"></div>
@@ -686,8 +787,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
          要進來有兩條路，都不留東西在頁面上：
            1. 在頁面上直接打 edit（焦點不在輸入框時）
            2. 網址後面加 #edit
-         進來之後才會長出這一行，並附上出口。 -->
+         進來之後才會長出這一行，並附上出口。「新增賽事」也在這裡 ——
+         它是編輯功能，訪客不該看到。 -->
     <div class="edit-hint" id="edit-hint" hidden>
+      <button type="button" class="ed-save" id="eh-add">＋ 新增賽事</button>
       <span id="eh-text"></span>
       <button type="button" class="linkbtn" id="eh-token">更換權杖</button>
       <button type="button" class="linkbtn" id="eh-exit">結束編輯</button>
@@ -723,7 +826,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       </p>
       <p class="tk-help">
         看板是 GitHub Pages 的靜態頁，沒有後端。「在看板上直接改」＝ 這個頁面拿著一把你的
-        GitHub 權杖，直接呼叫 GitHub API 把 <code>data/overrides.json</code> 提交回 repo。
+        GitHub 權杖，直接呼叫 GitHub API 把修改提交回 repo —— 改既有賽事寫
+        <code>data/overrides.json</code>，手動新增或刪除的比賽寫 <code>data/custom.json</code>。
         權杖<b>只存在這個瀏覽器</b>（localStorage），不會寫進 repo；其他訪客的頁面沒有它，
         他們看到的永遠是已提交的內容。
       </p>
@@ -764,7 +868,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 跑完之後才還原。若用 JS 變數另外記一份，兩者就會分岔 —— 勾勾看起來是取消的，
   // 卡片卻還在（變數仍是 true）；再點一下反而變成「已勾選」，畫面毫無反應，
   // 整個開關就像壞掉。讓真相只剩一個地方，就不會分岔。
-  var state = { mode: 'all', status: 'all' };
+  var state = { kind: 'player', mode: 'all', status: 'all' };
   var reviewToggle = document.getElementById('f-review');
 
   // ------------------------------------------------------------------
@@ -786,6 +890,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   //   所以存完會順手觸發一次排程（需要權杖額外有 Actions 權限，沒有也照常運作）。
   var TOKEN_KEY = 'osu-tw-board-token';
   var OVERRIDES_PATH = 'data/overrides.json';
+  // 手動新增的賽事住在自己的檔案裡，跟 overrides.json 同一種關係：只有人會寫它
+  // （就是這個頁面），爬蟲只讀不寫。分開的理由是兩者的生命週期不同 ——
+  // 覆寫是「蓋在爬蟲記錄上的顯示修正」，手動賽事是「爬蟲根本沒看過的比賽」。
+  var CUSTOM_PATH = 'data/custom.json';
   var REPO = (payload.meta && payload.meta.repo) || '';
   var BRANCH = (payload.meta && payload.meta.branch) || 'main';
   var editOn = false;
@@ -839,8 +947,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     return 'GitHub 回了 ' + s + '，請稍後再試。';
   }
 
-  function fetchOverrides(){
-    return api('/contents/' + OVERRIDES_PATH + '?ref=' + encodeURIComponent(BRANCH), {method:'GET'})
+  // 讀一份 JSON 檔（overrides.json 或 custom.json）。兩個檔案形狀一樣
+  // （key → 物件），所以共用同一支；差別只有路徑。
+  function fetchJson(path){
+    return api('/contents/' + path + '?ref=' + encodeURIComponent(BRANCH), {method:'GET'})
       .then(function(res){
         if(res.status === 404) return { sha:null, data:{} };  // 還沒建檔，正常
         if(!res.ok) throw new Error(explainStatus(res.status));
@@ -848,14 +958,18 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         var data = {};
         try{
           var parsed = JSON.parse(text);
-          if(parsed && typeof parsed === 'object') data = parsed;
+          // 陣列也是 object，但這種檔案的最外層一定要是「id → 內容」的對照表。
+          // 收下一個陣列的話，下面每個 Object.keys 都會拿到 0、1、2… 這種假 id。
+          if(parsed && typeof parsed === 'object' && !Array.isArray(parsed)) data = parsed;
         }catch(e){ data = {}; }
         return { sha:(res.json && res.json.sha) || null, data:data };
       });
   }
 
-  function putOverrides(data, sha, message){
-    // 依 topic id 數字排序再寫回去。不清的話，每次存檔新 key 都往後追加，
+  // 寫回去。`sha` 是這份檔案目前的版本；**沒有 sha 就是建立新檔**（GitHub 的
+  // contents API 就是這樣分辨新增與更新）。custom.json 第一次用時就是這條路。
+  function putJson(path, data, sha, message){
+    // 依 id 數字排序再寫回去。不清的話，每次存檔新 key 都往後追加，
     // 幾次之後這個檔案就沒人讀得懂了 —— 而它本來是設計成可以手改的。
     var sorted = {};
     Object.keys(data).sort(function(a,b){ return Number(a) - Number(b); })
@@ -867,7 +981,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       branch: BRANCH
     };
     if(sha) body.sha = sha;
-    return api('/contents/' + OVERRIDES_PATH, {
+    return api('/contents/' + path, {
       method:'PUT',
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(body)
@@ -895,9 +1009,13 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 回傳 {wrote}：內容跟原本一字不差時**不送出**。GitHub 的 contents API 不做去重，
   // 內容一樣照樣產生一個 commit —— 打開來看一下、順手按儲存，就會在歷史裡留一筆
   // 什麼都沒改的提交。
-  function saveOverride(r, edits){
+  //
+  // 寫哪個檔由 r.custom 決定：手動新增的賽事寫進 custom.json（那筆記錄本身就在那裡），
+  // 其餘寫進 overrides.json（蓋在爬蟲記錄上的顯示修正）。
+  function saveEntry(r, edits){
+    var path = r.custom ? CUSTOM_PATH : OVERRIDES_PATH;
     function attempt(left){
-      return fetchOverrides().then(function(cur){
+      return fetchJson(path).then(function(cur){
         var data = cur.data, key = String(r.topic_id);
         var before = JSON.stringify(data[key] || {});
         // 從既有的內容出發、只覆蓋表單管得到的欄位 —— 檔案裡可能有我們不認識的
@@ -905,16 +1023,78 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         // 反過來，表單管到的欄位要先全部清掉：這次沒填的＝要退回自動判定，
         // 留著上一次的舊值就退不回去了。
         var entry = Object.assign({}, data[key] || {});
-        MANAGED.forEach(function(k){ delete entry[k]; });
+        (r.custom ? MANAGED.concat(['url']) : MANAGED).forEach(function(k){ delete entry[k]; });
         Object.keys(edits).forEach(function(k){ entry[k] = edits[k]; });
+        // custom 記錄的 topic_id 是它唯一的身分（負整數，由看板配發），
+        // 不寫回去的話下次就再也認不出這筆是誰了。它不是表單欄位，所以另外補。
+        if(r.custom) entry.topic_id = r.topic_id;
         if(JSON.stringify(entry) === before) return { wrote:false };
         if(Object.keys(entry).length) data[key] = entry; else delete data[key];
 
-        return putOverrides(data, cur.sha, '看板編輯：' + r.name + '（topic ' + key + '）')
+        return putJson(path, data, cur.sha, '看板編輯：' + r.name + '（' + key + '）')
           .then(function(res){
             if(res.status === 409 || res.status === 422){
               if(left > 0) return attempt(left - 1);
               throw new Error('有人同時改了這個檔案，請再按一次儲存。');
+            }
+            if(!res.ok) throw new Error(explainStatus(res.status));
+            return { wrote:true };
+          });
+      });
+    }
+    return attempt(1);
+  }
+
+  // 手動新增的賽事要一個 id。一律取「現有負數裡最小的再減一」→ -1、-2、-3…
+  //
+  // 為什麼一定要負數：爬蟲的 topic id 永遠是正整數，兩邊就永遠不可能相撞。
+  // 為什麼不重用刪掉的號碼：草稿檔名是 drafts/{id}.md，重用等於新賽事會蓋掉
+  // 舊賽事留下的那份草稿（而刪除時草稿刻意不刪，見 README）。
+  function allocateId(data){
+    var ids = Object.keys(data).map(Number).filter(function(n){ return isFinite(n) && n < 0; });
+    return Math.min.apply(null, [0].concat(ids)) - 1;
+  }
+
+  function createCustom(entry){
+    function attempt(left){
+      return fetchJson(CUSTOM_PATH).then(function(cur){
+        var id = allocateId(cur.data);
+        var data = Object.assign({}, cur.data);
+        data[String(id)] = Object.assign({}, entry, {topic_id:id});
+        return putJson(CUSTOM_PATH, data, cur.sha,
+                       '看板編輯：新增賽事（' + (entry.name || '未命名') + '）')
+          .then(function(res){
+            if(res.status === 409 || res.status === 422){
+              if(left > 0) return attempt(left - 1);
+              throw new Error('有人同時改了這個檔案，請再按一次儲存。');
+            }
+            if(!res.ok) throw new Error(explainStatus(res.status));
+            return { wrote:true, id:id };
+          });
+      });
+    }
+    return attempt(1);
+  }
+
+  // 刪除手動新增的賽事：把 key 從 custom.json 拿掉再寫回去。
+  // **不碰 drafts/** —— 那份草稿可能已經貼出去了，刪掉就查不到自己發過什麼。
+  //
+  // 跟存檔走同一條重試路：中間只要有人先寫了一次，帶舊 sha 的寫回就會被 GitHub 拒絕。
+  // 刪除尤其不能半途而廢 —— 卡在「檔案改了、刪除沒成」的狀態下，畫面說刪掉了而檔案
+  // 裡還在，下一回合那筆又自己長回來。
+  function deleteCustom(r){
+    var key = String(r.topic_id);
+    function attempt(left){
+      return fetchJson(CUSTOM_PATH).then(function(cur){
+        var data = Object.assign({}, cur.data);
+        if(!Object.prototype.hasOwnProperty.call(data, key)) return { wrote:false };
+        delete data[key];
+        return putJson(CUSTOM_PATH, data, cur.sha,
+                       '看板編輯：刪除手動新增的賽事（' + r.name + '）')
+          .then(function(res){
+            if(res.status === 409 || res.status === 422){
+              if(left > 0) return attempt(left - 1);
+              throw new Error('有人同時改了這個檔案，請再按一次刪除。');
             }
             if(!res.ok) throw new Error(explainStatus(res.status));
             return { wrote:true };
@@ -930,14 +1110,36 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   }
 
   var STATUS = {open:'報名開放中', closed:'報名已截止', unknown:'報名狀態未標明', expired:'表定已截止'};
+  // 工作人員招募帖的措辭。它跟選手賽事走同一組狀態判定，但「報名開放中」用在一篇
+  // 徵人帖上會讓人以為那場比賽收選手 —— 那場比賽根本不收。
+  var STAFF_STATUS = {open:'工作人員招募中', closed:'工作人員招募已截止',
+                      unknown:'工作人員招募狀態未標明', expired:'表定已截止'};
   var MODE_LABEL = {std:'osu!standard', taiko:'osu!taiko', catch:'osu!catch', mania:'osu!mania'};
   var MODES = [['all','全部'],['std','Standard'],['taiko','Taiko'],['catch','Catch'],['mania','Mania']];
   var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
+  // 分頁。跟 MODES 那種「篩選器」是不同的東西：分頁切換的是整份清單，
+  // 而且一筆賽事只屬於一頁（`both` 例外，兩頁都列）。
+  var KINDS = [['player','選手報名'],['staff','工作人員報名']];
+  var KIND_LABEL = {player:'選手報名', staff:'工作人員報名', both:'兩者都列'};
+
+  // 這筆屬於目前這一頁嗎。kind === 'both'（標題同時明講徵選手與工作人員）兩頁都算 ——
+  // 見 rules.detect_kind：那種比賽的資訊對兩邊的讀者都有用，只在其中一頁出現
+  // 等於有一半的人看不到。
+  function onTab(r){
+    var k = r.kind || 'player';
+    return k === 'both' || k === state.kind;
+  }
+
+  // 一筆賽事在目前這一頁要顯示的狀態文字。純徵人帖整篇都是招募資訊，
+  // 沿用「報名開放中」會誤導。
+  function statusLabel(r){
+    return ((r.kind === 'staff') ? STAFF_STATUS : STATUS)[r.status] || '';
+  }
 
   // 編輯表單管的欄位。存檔時會先把這些 key 從既有的覆寫裡清掉再填新的 ——
   // 這次沒填的＝要退回自動判定，留著舊值就退不回去了。
   var MANAGED = ['name','mode','mania_keys','rank_compact','rank_full','teams','region',
-                 'status','decision','deadline_iso','deadline_raw','discord','signup_form',
+                 'status','decision','kind','deadline_iso','deadline_raw','discord','signup_form',
                  'stream','summary','note'];
 
   // 表單欄位。`raw`（程式自動判定的原值）沒有的欄位放這裡，純粹是顯示與否的差別。
@@ -953,6 +1155,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
      options:[['open','報名開放中'],['closed','報名已截止'],['unknown','未標明']],
      hint:'以你選的為準，不會再被內文寫的截止時間改寫。'},
     {k:'decision', label:'收錄判定', options:[['include','收錄'],['review','待人工確認'],['exclude','排除（不顯示）']]},
+    {k:'kind', label:'分頁', options:[['player','選手報名'],['staff','工作人員報名'],['both','兩頁都列']],
+     hint:'這筆要出現在哪一頁。判定是啟發式，判錯了改這裡。'},
+    {k:'url', label:'資訊連結', custom:true,
+     hint:'手動新增的賽事沒有論壇原帖，這是你唯一的資訊來源連結。留空＝卡片上不顯示。'},
     {k:'deadline_iso', label:'截止時間（UTC）', hint:'ISO 8601，例如 2026-10-16T15:59:00+00:00。'},
     {k:'deadline_raw', label:'截止時間（主辦原句）', wide:true},
     {k:'discord', label:'Discord 連結'},
@@ -962,7 +1168,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 可以清空的欄位（見 store.override_for：JSON 的 null＝清空）。
   // 列舉型的欄位不在裡面 —— name／mode／status／decision 清掉只等於退回自動判定，
   // 寫一個 null 進檔案只是噪音。
-  var CLEARABLE = {mania_keys:1, rank_compact:1, rank_full:1, teams:1, region:1,
+  var CLEARABLE = {mania_keys:1, rank_compact:1, rank_full:1, teams:1, region:1, url:1,
                    deadline_iso:1, deadline_raw:1, discord:1, signup_form:1, stream:1};
 
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
@@ -1037,12 +1243,37 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     });
   }
 
+  // 分頁列。每一顆按鈕帶一個數字（那一頁有幾筆），數字在 render() 裡更新 ——
+  // 它會跟著新增／刪除／改判定而變，寫死在這裡會對不上。
+  function buildTabs(){
+    var host = document.getElementById('f-kind');
+    KINDS.forEach(function(opt){
+      var b = el('button');
+      b.type = 'button';
+      b.setAttribute('role','tab');
+      b.setAttribute('aria-selected', String(state.kind===opt[0]));
+      b.appendChild(document.createTextNode(opt[1]));
+      var n = el('span','tab-count','0');
+      n.id = 'k-' + opt[0];
+      b.appendChild(n);
+      b.addEventListener('click', function(){
+        state.kind = opt[0];
+        Array.prototype.forEach.call(host.children, function(c){
+          c.setAttribute('aria-selected', String(c===b));
+        });
+        render();
+      });
+      host.appendChild(b);
+    });
+  }
+
   // 「表定已截止」在篩選上跟標題明寫的「已截止」算同一格 —— 對使用者來說兩者都只是
   // 「不能報了」，多開一格只會讓篩選列更難懂。
   function statusBucket(s){ return s==='expired' ? 'closed' : s; }
 
   function visible(){
     return rows.filter(function(r){
+      if(!onTab(r)) return false;
       if(r.decision==='review' && !reviewToggle.checked) return false;
       if(state.mode!=='all' && r.mode!==state.mode) return false;
       if(state.status!=='all' && statusBucket(r.status)!==state.status) return false;
@@ -1056,6 +1287,14 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     a.href = href; a.target='_blank'; a.rel='noopener';
     a.addEventListener('click', function(e){ e.stopPropagation(); });
     return a;
+  }
+
+  // 資訊連結。手動新增的賽事沒有論壇原帖（id 是負數，連過去只會看到 404），
+  // 網址是站長自己填的 —— 所以文字不能寫「查看原帖」，而且沒填時整條不顯示，
+  // 不留一個連到空字串的壞連結。
+  function infoLink(r){
+    if(!r.url) return null;
+    return link(r.url, r.custom ? '活動資訊 →' : '查看 osu! 原帖 →');
   }
 
   function card(r){
@@ -1077,7 +1316,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
     var top = el('div','card-top');
     top.appendChild(el('span','chip', r.mode_label));
-    top.appendChild(el('span','pill '+r.status, STATUS[r.status]||''));
+    top.appendChild(el('span','pill '+r.status, statusLabel(r)));
+    if(r.kind==='both') top.appendChild(el('span','pill staff','同時徵工作人員'));
     c.appendChild(top);
 
     c.appendChild(el('h2', null, r.name));
@@ -1100,7 +1340,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     }
 
     var foot = el('div','card-foot');
-    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    var il = infoLink(r);
+    if(il) foot.appendChild(il);
     if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
     if(r.stream) foot.appendChild(link(r.stream, '直播'));
     foot.appendChild(el('span','more', editOn ? '編輯 ▸' : '詳細說明 ▸'));
@@ -1134,11 +1375,15 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     r.rank_full = text('rank_full', '');
     r.region = text('region', r.region);
     r.decision = text('decision', r.decision);
+    r.kind = text('kind', r.kind || 'player');
     r.status = text('status', r.status);
     r.deadline_raw = text('deadline_raw', '');
     r.discord = text('discord', '');
     r.signup_form = text('signup_form', '');
     r.stream = text('stream', '');
+    // 只有手動新增的賽事才有自己的資訊連結；爬蟲那批的網址是從 topic id 算出來的，
+    // 表單裡也沒有那一格。
+    if(r.custom) r.url = text('url', r.url || '');
     if(has('mode')){
       r.mode = entry.mode;
       r.mode_label = MODE_LABEL[entry.mode] || r.mode_label;
@@ -1155,6 +1400,39 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     r.own = entry;
   }
 
+  // 給「新增賽事」用的空白一筆。形狀刻意跟 payload 的一列一模一樣 ——
+  // editorFor 只認得那一種形狀，讓它同時吃得到「新增」與「編輯」的關鍵就是這個。
+  //
+  // raw 全空（＝沒有自動判定可言），所以使用者填的每一個字都會被寫進檔案；
+  // 沒填的欄位則因為跟 raw 相同而被跳過，自然就落回 custom_record 的預設值
+  // （decision=include、kind=player、status=unknown）—— 不必另外寫一份預設邏輯。
+  function blankRow(){
+    return {
+      topic_id:0, custom:true, kind:'player', decision:'include', status:'unknown',
+      name:'', mode:'std', mode_label:MODE_LABEL.std, mania_keys:'', rank:'', rank_full:'',
+      teams:[], region:'', deadline:'', deadline_raw:'', deadline_iso:'', title:'', author:'',
+      excerpt:'', summary:'', note:'', url:'', discord:'', signup_form:'', stream:'',
+      first_seen_utc:'', first_seen_display:'',
+      raw:{name:'', mode:'std', mania_keys:'', rank_compact:'', rank_full:'', teams:'',
+           region:'', status:'unknown', decision:'include', kind:'player',
+           deadline_iso:'', deadline_raw:'', discord:'', signup_form:'', stream:''},
+      own:{}
+    };
+  }
+
+  // 台北的「MM/DD」，跟 Python 的 render._display_date 同一個格式。
+  function displayDate(iso){
+    if(!iso) return '';
+    var d = new Date(iso);
+    return isNaN(d.getTime()) ? '' : taipeiStamp(d).slice(0,5);
+  }
+
+  // new Date().toISOString() 尾端是 "Z"，而 Python 3.10 以前的 fromisoformat
+  // 讀不懂那個 Z（會直接拋 ValueError，日期就變成空的）。寫成 +00:00 兩邊都認得。
+  function isoNow(){
+    return new Date().toISOString().replace(/\.\d+Z$/, '+00:00');
+  }
+
   // 編輯模式下的表單。刻意讓每個欄位**預先填好現在生效的值**（站長改過的，
   // 沒有的話就是程式自動判定的），因為需求是「把不對的改掉」——
   // 從空白開始等於要你重打一次。
@@ -1167,7 +1445,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   //   * 原本就沒值 → 沒事
   //   * 原本有值   → 寫入 null，代表「這一欄就是要空的」（例如解析錯的 Discord）
   // 少了 null 這一種，清空只會被當成「沒覆寫」，下一回合那個值又自己長回來。
-  function editorFor(r){
+  // 一筆全新的賽事走同一份表單（isNew）。差別只在標題那行字、按鈕的文字，
+  // 以及儲存時送去哪裡 —— 欄位本身一模一樣，沒有理由寫第二份。
+  function editorFor(r, isNew){
     var box = el('div','editor');
 
     if(!REPO){
@@ -1176,11 +1456,16 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         + '所以存不回去。在 GitHub Actions 產生的版本上就會正常。'));
     }
 
-    box.appendChild(el('div','ed-label','欄位（跟自動判定一樣的就不會寫進檔案）'));
+    box.appendChild(el('div','ed-label', isNew
+      ? '新賽事的欄位（只有「賽事名稱」是必填，其餘留空就用預設值）'
+      : '欄位（跟自動判定一樣的就不會寫進檔案）'));
     var grid = el('div','ed-grid');
     var inputs = {};
 
     FIELDS.forEach(function(f){
+      // 資訊連結只有手動新增的賽事才有意義 —— 爬蟲那批的網址是從 topic id 算出來的，
+      // 給它一格可以填的框只會讓人以為改得動。
+      if(f.custom && !r.custom) return;
       var field = el('label','ed-field' + (f.wide ? ' wide' : ''));
       field.appendChild(el('span', null, f.label));
 
@@ -1213,7 +1498,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       // 報名狀態這一格要講清楚「畫面上顯示的」跟「你在這裡選的」是兩回事。
       // 沒這行說明，站長會看到選單寫「未標明」而卡片寫「表定已截止」，不知道該改哪個。
       if(f.k === 'status' && ov === undefined && r.status !== r.raw.status){
-        hint = '目前看板顯示「' + (STATUS[r.status] || r.status)
+        hint = '目前看板顯示「' + (statusLabel(r) || r.status)
              + '」—— 內文寫的截止時間已經過去，程式自己校正的。' + (hint || '');
       }
       if(hint) field.appendChild(el('em', null, hint));
@@ -1224,7 +1509,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     box.appendChild(el('hr','ed-divider'));
     box.appendChild(el('div','ed-label','看板專用的說明（不會進到 Facebook 草稿）'));
 
-    var lab1 = el('label','ed-label','說明');
+    var lab1 = el('label','ed-label', r.custom ? '說明（卡片與詳細面板都會顯示）' : '說明');
     lab1.htmlFor = 'e-summary';
     box.appendChild(lab1);
     var ta = document.createElement('textarea');
@@ -1232,12 +1517,15 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     ta.id = 'e-summary';
     ta.rows = 4;
     ta.value = r.summary || r.excerpt || '';
-    ta.placeholder = '留空 ＝ 用程式自動抓的原帖首段節錄';
+    ta.placeholder = r.custom ? '這場比賽是什麼、在哪裡報名、有什麼要注意的。'
+                              : '留空 ＝ 用程式自動抓的原帖首段節錄';
     box.appendChild(ta);
 
     box.appendChild(el('div','ed-hint', r.summary
       ? '目前顯示的是你寫的說明。清空再儲存就會退回自動節錄。'
-      : '這格現在是程式抓的原帖首段。直接改成中文就好 —— 內容若跟原節錄一字不差，不會建立覆寫。'));
+      : (r.custom
+         ? '手動新增的賽事沒有原帖可以節錄，這格就是它的說明 —— 留空的話卡片上不會有說明。'
+         : '這格現在是程式抓的原帖首段。直接改成中文就好 —— 內容若跟原節錄一字不差，不會建立覆寫。')));
 
     var lab2 = el('label','ed-label','站長補充（附加在下面，可留空）');
     lab2.htmlFor = 'e-note';
@@ -1251,30 +1539,69 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     box.appendChild(nb);
 
     var bar = el('div','ed-bar');
-    var save = el('button','ed-save','儲存到 GitHub');
+    var save = el('button','ed-save', isNew ? '新增到看板' : '儲存到 GitHub');
     save.type = 'button';
     save.disabled = !REPO;
-    var revert = el('button','ed-revert','還原成自動判定');
+    var revert = el('button','ed-revert', isNew ? '清空重填' : '還原成自動判定');
     revert.type = 'button';
     var status = el('span','edit-status','');
     status.id = 'e-status';
     bar.appendChild(save);
     bar.appendChild(revert);
+    // 刪除只給手動新增的賽事 —— 爬蟲抓來的那批要「不要」，是把收錄判定改成排除，
+    // 不是刪掉資料（下一回合照樣會抓到它）。
+    var del = null;
+    if(r.custom && !isNew){
+      del = el('button','ed-danger','刪除這筆');
+      del.type = 'button';
+      bar.appendChild(del);
+    }
     bar.appendChild(status);
     box.appendChild(bar);
 
     revert.addEventListener('click', function(){
       // 只把內容填回去，不動 repo —— 要按「儲存」才會寫。否則這個按鈕會變成
       // 一顆沒有確認步驟的刪除鍵。
-      FIELDS.forEach(function(f){ inputs[f.k].value = r.raw[f.k] || ''; });
+      // 要 guard：資訊連結那一格只給手動新增的賽事（見上面 FIELDS 的迴圈），
+      // 對爬蟲抓來的賽事 inputs['url'] 根本不存在，直接取值會拋 TypeError，
+      // 整顆「還原成自動判定」按下去毫無反應。
+      FIELDS.forEach(function(f){ if(inputs[f.k]) inputs[f.k].value = r.raw[f.k] || ''; });
       ta.value = r.excerpt || '';
       nb.value = '';
-      setEditStatus('按「儲存到 GitHub」才會生效。');
+      setEditStatus('按「' + save.textContent + '」才會生效。');
     });
+
+    // 刪除要按兩次。這裡刻意不用 confirm()：那是一個跟整頁無關的系統彈窗，
+    // 而且手機上很容易誤觸。改成同一顆按鈕換字＋旁邊多一行說明 ——
+    // 第二次點擊才是真的刪。
+    if(del){
+      del.addEventListener('click', function(){
+        if(del.dataset.armed){
+          del.disabled = true; save.disabled = true; revert.disabled = true;
+          setEditStatus('刪除中…');
+          deleteCustom(r).then(function(){
+            // 從畫面上的資料裡拿掉，再重畫 —— 不必等下一回合。
+            rows = rows.filter(function(x){ return String(x.topic_id) !== String(r.topic_id); });
+            dlg.close();
+            render();
+            dispatchRun();
+          }).catch(function(err){
+            del.disabled = false; save.disabled = false; revert.disabled = false;
+            setEditStatus((err && err.message) || '刪除失敗。', true);
+          });
+          return;
+        }
+        del.dataset.armed = '1';
+        del.textContent = '確定刪除（無法復原）';
+        setEditStatus('再按一次就會從 data/custom.json 刪掉這筆。'
+                    + 'drafts/ 裡的草稿檔會留著，要自己刪。');
+      });
+    }
 
     save.addEventListener('click', function(){
       var entry = {};
       FIELDS.forEach(function(f){
+        if(!inputs[f.k]) return;                     // url 那格對爬蟲的賽事不存在
         var v = inputs[f.k].value.trim();
         if(v === (r.raw[f.k] || '').trim()) return;   // 跟自動判定一字不差 → 不留覆寫
         if(v === ''){ if(CLEARABLE[f.k]) entry[f.k] = null; return; }
@@ -1288,9 +1615,42 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       if(summary) entry.summary = summary;
       if(note) entry.note = note;
 
+      // 名稱是這筆唯一的標題來源。空的存進去只會變成一張沒有名字的卡片，
+      // 而且 custom_record 會直接把它濾掉 —— 等於存了一個看不到的東西。
+      if(isNew && !entry.name){
+        setEditStatus('請至少填「賽事名稱」。', true);
+        return;
+      }
+
       save.disabled = true; revert.disabled = true;
-      setEditStatus('儲存中…');
-      saveOverride(r, entry).then(function(res){
+      if(del) del.disabled = true;
+      setEditStatus(isNew ? '新增中…' : '儲存中…');
+
+      var done = isNew ? createCustom(Object.assign({}, entry, {
+        custom: true,
+        first_seen_utc: isoNow()
+      })) : saveEntry(r, entry);
+
+      done.then(function(res){
+        if(isNew){
+          // 新增的賽事要當場出現在看板上。直接用剛剛填的內容組一列 ——
+          // 等下一回合重繪的話，站長會不確定到底存進去了沒有。
+          var row = blankRow();
+          row.topic_id = res.id;
+          row.first_seen_utc = isoNow();
+          row.first_seen_display = displayDate(row.first_seen_utc);
+          applyEditsToRow(row, entry);
+          row.summary = summary;
+          row.note = note;
+          rows.push(row);
+          render();
+          return dispatchRun().then(function(ok){
+            openDetail(row);
+            setEditStatus(ok
+              ? '已新增 ✓ 已觸發更新，看板大約 1 分鐘後跟著變。'
+              : '已新增 ✓ 看板最多 30 分鐘後跟著變。');
+          });
+        }
         // 先更新自己畫面上的那一筆，再重畫面板 —— 存檔的人不該等 30 分鐘才看到結果。
         applyEditsToRow(r, entry);
         r.summary = summary;
@@ -1309,7 +1669,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         });
       }).catch(function(err){
         save.disabled = false; revert.disabled = false;
-        setEditStatus((err && err.message) || '儲存失敗。', true);
+        if(del) del.disabled = false;
+        setEditStatus((err && err.message) || (isNew ? '新增失敗。' : '儲存失敗。'), true);
       });
     });
 
@@ -1317,13 +1678,17 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   }
 
   var dlg = document.getElementById('detail');
+  // 面板上這筆是不是「還沒存過的新賽事」。redrawDetail 也要知道，
+  // 否則切換編輯模式時表單會從「新增」跳成「編輯」。
+  var currentIsNew = false;
 
-  function openDetail(r){
+  function openDetail(r, isNew){
     current = r;
+    currentIsNew = !!isNew;
     document.getElementById('d-chip').textContent = r.mode_label;
     var pill = document.getElementById('d-pill');
     pill.className = 'pill ' + r.status;
-    pill.textContent = STATUS[r.status] || '';
+    pill.textContent = statusLabel(r);
     document.getElementById('d-name').textContent = r.name;
 
     var body = document.getElementById('d-body');
@@ -1348,7 +1713,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     }
 
     if(editOn){
-      body.appendChild(editorFor(r));
+      body.appendChild(editorFor(r, currentIsNew));
     } else {
       // 摘要＝原帖首段原文，只截不改。加註出處，避免被當成我們的轉述。
       // 站長自己寫的說明用同一種排版但換來源字樣與直條顏色 —— 那種情況下
@@ -1382,7 +1747,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
     var foot = document.getElementById('d-foot');
     foot.textContent = '';
-    foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
+    var il = infoLink(r);
+    if(il) foot.appendChild(il);
     if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
     if(r.signup_form) foot.appendChild(link(r.signup_form, '報名表單'));
     if(r.stream) foot.appendChild(link(r.stream, '直播'));
@@ -1433,7 +1799,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     editHint.hidden = !editOn;
     if(!editOn) return;
     ehText.textContent = REPO
-      ? '編輯模式：點任一張卡片就能改它的資料（改完按「儲存到 GitHub」）。'
+      ? '編輯模式：點任一張卡片就能改它的資料，或按左邊新增一筆（改完按「儲存到 GitHub」）。'
       : '編輯模式：可以改字，但這個看板沒有 repo 資訊，存不回去。';
   }
 
@@ -1446,7 +1812,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   }
 
   function redrawDetail(){
-    if(current && dlg.open) openDetail(current);   // 面板開著就當場換成對應的版本
+    // 面板開著就當場換成對應的版本。isNew 要一起帶過去 —— 少了它，切進編輯模式時
+    // 一張填到一半的「新增」表單會變成「編輯」，存檔就變成寫覆寫而不是新增。
+    if(current && dlg.open) openDetail(current, currentIsNew);
   }
 
   function enterEdit(){
@@ -1475,6 +1843,14 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   document.getElementById('eh-token').addEventListener('click', openTokenDialog);
   document.getElementById('eh-exit').addEventListener('click', exitEdit);
+  // 「＋ 新增賽事」。整行（含這顆按鈕）平常是 hidden 的，所以訪客看不到它 ——
+  // 它跟編輯模式的其他入口一樣，只是門面，真正擋住寫入的是那把權杖。
+  //
+  // 沒有 repo 資訊時照樣開得起來：表單裡本來就有一條警告講明存不回去
+  // （跟一般編輯走同一條路），不必另外擋。
+  document.getElementById('eh-add').addEventListener('click', function(){
+    openDetail(blankRow(), true);
+  });
 
   document.getElementById('t-close').addEventListener('click', function(){ tdlg.close(); });
   tdlg.addEventListener('click', function(e){ if(e.target === tdlg) tdlg.close(); });
@@ -1505,13 +1881,33 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var grid = document.getElementById('grid');
     grid.textContent='';
     var list = visible();
-    document.getElementById('empty').hidden = list.length>0;
+    // 這一頁「本來有幾筆」（不吃模式／狀態篩選，但要吃分頁）—— 拿來分辨
+    // 「這頁本來就沒東西」和「是你的篩選把它濾光了」。這兩件事的空畫面
+    // 講同一句話是錯的：工作人員頁空的，不代表今天沒有比賽。
+    var tabRows = rows.filter(onTab);
+    var emptyNode = document.getElementById('empty');
+    emptyNode.hidden = list.length>0;
+    emptyNode.textContent = (state.kind==='staff' && !tabRows.length)
+      ? '目前沒有徵求工作人員的賽事。'
+      : '沒有符合條件的賽事。';
     list.forEach(function(r){ grid.appendChild(card(r)); });
 
-    var inc = rows.filter(function(r){return r.decision==='include';});
+    // 三個標題數字跟著分頁算。payload.counts 前端從來沒讀過（一直都是這裡自己
+    // 從 rows 重算），所以 Python 那邊不必動。
+    var inc = tabRows.filter(function(r){return r.decision==='include';});
     document.getElementById('s-open').textContent = inc.filter(function(r){return r.status==='open';}).length;
     document.getElementById('s-total').textContent = inc.length;
-    document.getElementById('s-review').textContent = rows.filter(function(r){return r.decision==='review';}).length;
+    document.getElementById('s-review').textContent = tabRows.filter(function(r){return r.decision==='review';}).length;
+
+    // 分頁按鈕上的數字。算的是「這一頁有幾筆」，跟篩選器無關 ——
+    // 它要回答的是「另一頁有沒有東西可看」，跟著篩選器變就沒意義了。
+    KINDS.forEach(function(opt){
+      var n = document.getElementById('k-' + opt[0]);
+      if(n) n.textContent = rows.filter(function(r){
+        var k = r.kind || 'player';
+        return k === 'both' || k === opt[0];
+      }).length;
+    });
 
     var m = payload.meta||{};
     document.getElementById('foot-meta').textContent =
@@ -1523,6 +1919,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   buildGroup(document.getElementById('f-mode'), MODES, 'mode');
   buildGroup(document.getElementById('f-status'), STATUSES, 'status');
+  buildTabs();
   // 不再用 JS 把 checked 設回 true：那會跟瀏覽器還原的狀態打架，而且誰贏要看時機。
   // 交給 HTML 的 checked 屬性決定預設值就好。
   reviewToggle.addEventListener('change', render);

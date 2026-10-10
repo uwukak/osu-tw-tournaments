@@ -42,6 +42,9 @@ RECORD = {
     "status": "open",
     "decision": "review",
     "reason": "unknown-code",
+    # 工作人員分頁的措辭（招募 vs 報名）走的是另一條路，所以這裡刻意用 staff，
+    # 讓那一條也在看板的資料裡出現一次。
+    "kind": "staff",
     "title": "[7K]SMST 84 50K-100K [Open]",
     "author": "someone",
     "excerpt": "Welcome to SMST 84.",
@@ -79,20 +82,53 @@ def inline_script(html: str) -> str:
     return blocks[-1]
 
 
+def embedded_data(html: str) -> dict:
+    """抽出看板內嵌的那份 JSON —— 前端讀的就是這一份。"""
+    blob = re.search(r'<script type="application/json" id="data">(.*?)</script>', html, re.S)
+    assert blob, "找不到內嵌的資料 JSON"
+    return json.loads(blob.group(1).replace("<\\/", "</"))
+
+
 def test_the_payload_the_editor_reads_is_serialisable():
     """編輯器要的 raw／own 必須真的進得了 JSON，而且值都是字串（或 null）。
 
     少了 raw，編輯器就沒有比對基準；少了 own，就分不清「值一樣」是巧合還是刻意。
     這兩個都是後加的欄位，很容易在某次改動裡被漏掉。
     """
-    html = dashboard_html()
-    blob = re.search(r'<script type="application/json" id="data">(.*?)</script>', html, re.S)
-    assert blob, "找不到內嵌的資料 JSON"
-    data = json.loads(blob.group(1).replace("<\\/", "</"))
-    row = data["tournaments"][0]
+    row = embedded_data(dashboard_html())["tournaments"][0]
     assert row["raw"]["name"] == "SMST 84"
     assert row["own"]["name"] == "手改的名字"
     assert row["own"]["discord"] is None, "清空要用 null 表達，編輯器才分得出「沒改」與「要空的」"
+    for key, value in row["raw"].items():
+        assert isinstance(value, str), f"raw[{key!r}] 不是字串，跟 <input> 的值比不了"
+
+
+def test_a_hand_added_tournament_reaches_the_editor_with_its_link():
+    """手動新增的賽事要帶著 custom 與 url 進到看板。
+
+    `url` 同時出現在兩個地方，缺一不可：row 上的那份是卡片與詳細面板的連結，
+    `raw.url` 是編輯器那格的比對基準。少了後者，站長一打開表單就看到空白格，
+    存一次就把自己填的連結抹掉了。
+    """
+    hand = {
+        "-1": {
+            "topic_id": -1,
+            "name": "社群自辦盃",
+            "mode": "std",
+            "decision": "include",
+            "kind": "player",
+            "status": "unknown",
+            "first_seen_utc": "2025-01-01T00:00:00+00:00",
+            "last_seen_utc": "2025-01-01T00:00:00+00:00",
+            "url": "https://example.com/signup",
+        }
+    }
+    payload = render.build_payload({}, META, "2026-10-10T08:00:00+00:00", None, hand)
+    row = embedded_data(render.render_dashboard(payload))["tournaments"][0]
+
+    assert row["custom"] is True
+    assert row["url"] == "https://example.com/signup"
+    assert row["raw"]["url"] == "https://example.com/signup"
     for key, value in row["raw"].items():
         assert isinstance(value, str), f"raw[{key!r}] 不是字串，跟 <input> 的值比不了"
 

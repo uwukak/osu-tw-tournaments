@@ -384,6 +384,199 @@ def test_a_hand_edited_field_changes_the_dashboard_bytes():
 
 
 # --------------------------------------------------------------------------
+# 分頁：選手報名／工作人員報名
+#
+# 分頁是**檢視**，不是把資料切成兩半：同時徵選手又徵工作人員的賽事兩頁都要出現，
+# 所以 kind 有三個值（player／staff／both），而不是一個布林。
+# --------------------------------------------------------------------------
+
+
+def test_the_payload_carries_the_tab_a_record_belongs_to():
+    rec = dict(SMST83, kind="staff")
+    row = render.build_payload({"2246109": rec}, META, NOW)["tournaments"][0]
+    assert row["kind"] == "staff"
+
+
+def test_records_from_before_the_tabs_existed_are_players():
+    """kind 是後加的欄位，既有的資料檔裡一筆都沒有它。
+
+    少了這個預設值，前端的兩個分頁都不收它們 —— 整批既有賽事會從看板上消失，
+    而資料一個字都沒錯。這種「改版把舊資料掃掉」的失敗最難查，值得釘住。
+    """
+    row = render.build_payload({"2246109": SMST83}, META, NOW)["tournaments"][0]
+    assert row["kind"] == "player"
+
+
+def test_a_hand_edited_kind_moves_a_record_to_the_other_tab():
+    """分頁判定是啟發式（`(Staff Wanted)` 這種順便徵人的算選手賽事），
+    一定有站長不認同的時候 —— 所以它跟 decision 一樣是手改得動的列舉欄位。"""
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"kind": "staff"}}
+    )["tournaments"][0]
+    assert row["kind"] == "staff"
+    assert row["raw"]["kind"] == "player", "原值要留著，編輯器才比對得出「這次改了沒」"
+
+
+def test_a_typo_in_a_hand_edited_kind_is_ignored():
+    """打錯字只該忽略那一欄（跟 mode／decision 同一條規矩）。
+
+    不濾的話 `stafff` 會進到 payload，前端兩個分頁都不收它 —— 那筆就從看板上
+    無聲無息地消失了，而且資料檔裡看起來一切正常。
+    """
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"kind": "stafff"}}
+    )["tournaments"][0]
+    assert row["kind"] == "player"
+
+
+def test_a_staff_post_is_worded_as_a_recruitment_in_the_draft():
+    """徵人帖的草稿寫「報名開放中」，讀者會以為是去報名比賽 —— 那是發錯文。
+
+    草稿是直接貼出去的，措辭錯了比看板上標錯更難補救。
+    """
+    rec = dict(SMST83, kind="staff", deadline_iso="2026-11-01T23:59:00+00:00")
+    draft = render.render_draft(rec, NOW)
+    assert "工作人員招募中" in draft
+    assert "🙋 招募｜" in draft
+    assert "報名開放中" not in draft
+
+
+def test_a_both_kind_keeps_the_player_wording_and_says_staff_are_wanted_too():
+    """兩者都徵的賽事本體是比賽：措辭照選手走，另外加一行說明也在缺人手。
+
+    少了那一行，讀者只知道報名，而工作人員分頁上那張卡片會顯得跟這裡兜不起來。
+    """
+    rec = dict(SMST83, kind="both", deadline_iso="2026-11-01T23:59:00+00:00")
+    draft = render.render_draft(rec, NOW)
+    assert "報名開放中" in draft
+    assert "同時徵求工作人員" in draft
+    assert "工作人員招募中" not in draft, "本體是比賽，標題不該寫成招募帖"
+
+
+def test_the_staff_tab_is_flagged_in_the_draft_index():
+    """純徵人帖在索引（drafts/README.md）上也要一眼看得出來是徵人。
+
+    索引是「有哪些待發草稿」的清單，一整個工作人員分頁的草稿混在裡面卻沒有任何記號，
+    就得一份一份點開才知道哪些是徵人帖。
+    """
+    rec = dict(SMST83, kind="staff", deadline_iso="2026-11-01T23:59:00+00:00")
+    payload = render.build_payload({"2246109": rec}, META, NOW)
+    index = render.render_index_markdown(payload)
+    assert "🙋" in index
+    assert "工作人員招募中" in index
+
+
+# --------------------------------------------------------------------------
+# 手動新增的賽事（data/custom.json）
+#
+# 跟爬蟲抓來的差在兩件事：id 是負數（看板配發的），而且**不受 45 天的新鮮度
+# 限制** —— 站長要的是「一直留著，只能手動刪除」，實作點就是下面那條閘門放行
+# `custom` 旗標。
+# --------------------------------------------------------------------------
+
+HAND_ADDED = {
+    "topic_id": -1,
+    "name": "社群自辦盃",
+    "mode": "std",
+    "decision": "include",
+    "kind": "player",
+    "status": "unknown",
+    # 一年前。同樣的時間戳若是爬蟲抓來的，早就掉出看板了（見上面
+    # test_long_forgotten_expired_card_drops_off）—— 差別只在 custom 這個旗標。
+    "first_seen_utc": "2025-01-01T00:00:00+00:00",
+    "last_seen_utc": "2025-01-01T00:00:00+00:00",
+    "url": "https://example.com/signup",
+}
+
+
+def test_a_hand_added_tournament_never_ages_off_the_board():
+    """站長決定的生命週期：一直留著，只能手動刪除。"""
+    crawled = dict(
+        SMST83,
+        first_seen_utc="2025-01-01T00:00:00+00:00",
+        last_seen_utc="2025-01-01T00:00:00+00:00",
+    )
+    assert render.build_payload({"2246109": crawled}, META, NOW)["tournaments"] == [], "前提"
+
+    rows = render.build_payload({}, META, NOW, None, {"-1": HAND_ADDED})["tournaments"]
+    assert [r["name"] for r in rows] == ["社群自辦盃"]
+
+
+def test_a_hand_added_tournament_is_marked_and_keeps_its_own_link():
+    """沒有論壇原帖（id 是負數，連過去只會 404），網址由站長自己填。"""
+    row = render.build_payload({}, META, NOW, None, {"-1": HAND_ADDED})["tournaments"][0]
+    assert row["custom"] is True
+    assert row["url"] == "https://example.com/signup"
+
+
+def test_a_crawled_tournament_still_links_to_its_forum_topic():
+    row = render.build_payload({"2246109": SMST83}, META, NOW)["tournaments"][0]
+    assert row["custom"] is False
+    assert row["url"] == "https://osu.ppy.sh/community/forums/topics/2246109"
+
+
+def test_a_hand_added_tournament_without_a_link_gets_none():
+    """沒填網址時整條收起來 —— 寧可沒有連結，也不要一個連到 404 的。
+
+    負數的 topic id 拼出來的論壇網址看起來完全正常，只是點進去是 404。
+    這種壞連結比沒有連結更糟，所以 `_record_url` 對 custom 一律不自己拼。
+    """
+    hand = dict(HAND_ADDED, url="")
+    row = render.build_payload({}, META, NOW, None, {"-1": hand})["tournaments"][0]
+    assert row["url"] == ""
+
+    draft = render.render_draft(store.custom_record("-1", hand), NOW)
+    assert "osu.ppy.sh" not in draft
+    assert "🔗 資訊" not in draft
+
+
+def test_a_hand_added_tournament_reaches_the_draft_with_its_link():
+    draft = render.render_draft(store.custom_record("-1", HAND_ADDED), NOW)
+    assert "🔗 資訊｜https://example.com/signup" in draft
+
+
+def test_the_editor_shows_the_existing_link_of_a_hand_added_tournament():
+    """編輯器的「資訊連結」那格讀的是 raw.url。
+
+    少了它，站長打開表單會看到一格空白，而卡片上明明有一條連結 ——
+    按一次儲存就把那條連結抹掉了（比對基準是空的、畫面上也是空的）。
+    """
+    row = render.build_payload({}, META, NOW, None, {"-1": HAND_ADDED})["tournaments"][0]
+    assert row["raw"]["url"] == "https://example.com/signup"
+
+
+def test_a_crawled_row_has_an_empty_url_in_its_raw_fields():
+    """爬蟲那批的網址是從 topic id 算出來的，不存檔。
+
+    前端靠 `f.custom` 把那格藏起來；這裡釘住它至少不會是一個會寫進
+    overrides.json 的壞基準值。
+    """
+    row = render.build_payload({"2246109": SMST83}, META, NOW)["tournaments"][0]
+    assert row["raw"]["url"] == ""
+
+
+def test_hand_added_tournaments_change_the_dashboard_bytes():
+    """手動新增也要走 dashboard_sha 這條路，否則排程看不到「該重繪了」。
+
+    少了它，站長新增的比賽只會在他自己那台機器上出現 —— 排程下一回合算出
+    一模一樣的 sha，判定「無變更」，整個 repo 都不會被更新。
+    """
+    before = render.render_dashboard(render.build_payload({}, META, NOW))
+    after = render.render_dashboard(
+        render.build_payload({}, META, NOW, None, {"-1": HAND_ADDED})
+    )
+    assert before != after
+
+
+def test_a_malformed_hand_added_entry_does_not_take_the_board_down():
+    """單筆形狀不對只濾掉那一筆，好的一筆照常顯示（跟 override_for 同一條規矩）。"""
+    payload = render.build_payload(
+        {}, META, NOW, None, {"-1": HAND_ADDED, "-2": "整筆寫成字串"}
+    )
+    assert [r["name"] for r in payload["tournaments"]] == ["社群自辦盃"]
+
+
+# --------------------------------------------------------------------------
 # 草稿標題
 # --------------------------------------------------------------------------
 
