@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 22 筆（收錄 18／待確認 4）
+共 21 筆（收錄 18／待確認 3）
 
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
 - [The Taiko Poop Cup](2252609.md) — osu!taiko｜報名開放中
@@ -18,7 +18,6 @@
 - 🙋 [Sonus Scope 2](2247819.md) — osu!standard｜報名開放中
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名開放中
 - 🙋 [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名開放中
-- ⚠️ 🙋 [osu!MayniLAN 2026 LAN](2250628.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - ⚠️ [Lion's osu! Cup](2250185.md) — osu!standard｜報名開放中
 - ⚠️ [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
