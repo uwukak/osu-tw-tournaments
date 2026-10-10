@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 25 筆（收錄 19／待確認 6）
+共 24 筆（收錄 19／待確認 5）
 
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
 - [SMST 84](2252361.md) — osu!standard｜報名開放中
@@ -26,4 +26,3 @@
 - ⚠️ [Lazer std tournaments](2251780.md) — osu!standard｜報名狀態未標明
 - [SMST 84](2250525.md) — osu!standard｜表定已截止
 - [SMST 83](2246109.md) — osu!standard｜表定已截止
-- ⚠️ [The Bronco Brawl osu! LAN](2246751.md) — osu!standard｜表定已截止
