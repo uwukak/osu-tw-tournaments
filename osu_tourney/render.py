@@ -1587,13 +1587,14 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     box.appendChild(nb);
 
     var bar = el('div','ed-bar');
-    // 沒有 repo 資訊時整顆按鈕是死的。這是最惡的一種失敗：disabled 的按鈕會把點擊
-    // **整顆吃掉**，不報錯、不進處理函式、畫面上什麼都不會發生 —— 看起來就只是「按了
-    // 沒用」。光靠變淡（opacity .5）看不出一回事，所以把原因直接寫在按鈕上。
+    // **刻意不用 disabled。**
+    //
+    // disabled 的按鈕會把點擊整顆吃掉：不報錯、不進處理函式、畫面上什麼都不會發生。
+    // 看起來就只是「按了沒用」，而這個狀態從外面完全看不出原因 —— 光靠變淡
+    // （opacity .5）不足為憑，是這個頁面最難查的一種失敗。留著可按，按下去再講原因。
     var saveLabel = isNew ? '新增到看板' : '儲存到 GitHub';
-    var save = el('button','ed-save', REPO ? saveLabel : '無法儲存：看板沒有 repo 資訊');
+    var save = el('button','ed-save', saveLabel);
     save.type = 'button';
-    save.disabled = !REPO;
     var revert = el('button','ed-revert', isNew ? '清空重填' : '還原成自動判定');
     revert.type = 'button';
     var status = el('span','edit-status','');
@@ -1651,6 +1652,11 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     }
 
     save.addEventListener('click', function(){
+      // 見上面：按鈕不再 disabled，所以「沒有 repo 資訊」要在這裡明講。
+      if(!REPO){
+        setEditStatus('這個看板的 HTML 沒有 repo 資訊（本機跑 scrape 沒帶 --repo 就會這樣），所以存不回去。', true);
+        return;
+      }
       var entry = {};
       FIELDS.forEach(function(f){
         if(!inputs[f.k]) return;                     // url 那格對爬蟲的賽事不存在
@@ -1850,8 +1856,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   function paintEdit(){
     editHint.hidden = !editOn;
     if(!editOn) return;
+    // 把 repo 名稱直接寫出來。這是「我眼前這頁到底知不知道要存去哪」唯一的目視證據 ——
+    // 沒有的話，遇到「存不回去」時只能猜是快取、是舊頁面、還是頁面本來就沒帶資訊。
     ehText.textContent = REPO
-      ? '編輯模式：點任一張卡片就能改它的資料，或按左邊新增一筆（改完按「儲存到 GitHub」）。'
+      ? '編輯模式（存回 ' + REPO + '）：點任一張卡片就能改它的資料，或按左邊新增一筆。'
       : '編輯模式：可以改字，但這個看板沒有 repo 資訊，存不回去。';
   }
 
