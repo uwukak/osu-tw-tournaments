@@ -969,6 +969,20 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     // 寧可少一層保護，也不要整個功能因為這個而壞掉。
     var ctl = (typeof AbortController === 'function') ? new AbortController() : null;
     if(ctl) opt.signal = ctl.signal;
+    // 不要讓瀏覽器快取這些回應。
+    //
+    // GitHub 的 API 回應帶著 Cache-Control: private, max-age=60，瀏覽器可以（也真的會）
+    // 把 GET /contents/<檔>?ref=main 的結果存 60 秒。而我們寫回時打的是
+    // PUT /contents/<檔>（**沒有** ?ref）—— 網址不一樣，所以那個 PUT 不會讓這份快取失效。
+    //
+    // 下場：存一次（sha S1 → S2），60 秒內再存第二次時 fetchJson 從快取拿回舊的 S1，
+    // 帶著 S1 去 PUT 就被 GitHub 用 409 拒絕；重試一次讀到的還是同一份快取，還是 409。
+    // 畫面於是說「有人同時改了這個檔案，請再按一次儲存」—— 但根本沒有人在改，
+    // 再按幾次都一樣，要等快取過期才會好。
+    //
+    // overrides.json 與 custom.json 都只有這一個瀏覽器會寫（爬蟲只讀），
+    // 所以那個 409 幾乎永遠是這一隻 bug，不是真的撞到別人。
+    opt.cache = 'no-store';
     var timer = setTimeout(function(){ if(ctl) ctl.abort(); }, API_TIMEOUT_MS);
     return fetch('https://api.github.com/repos/' + REPO + path, opt).then(function(res){
       // 先把 body 讀成文字再試著 parse：GitHub 出錯時回的不一定是 JSON

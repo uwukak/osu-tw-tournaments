@@ -133,6 +133,27 @@ def test_a_hand_added_tournament_reaches_the_editor_with_its_link():
         assert isinstance(value, str), f"raw[{key!r}] 不是字串，跟 <input> 的值比不了"
 
 
+def test_the_api_calls_opt_out_of_the_browser_cache():
+    """每一支 GitHub API 呼叫都要明確關掉瀏覽器快取。
+
+    GitHub 的 API 回應帶 `Cache-Control: private, max-age=60`，而**讀檔**打的是
+    `GET /contents/<檔>?ref=main`、**寫檔**打的是 `PUT /contents/<檔>`（沒有 ?ref）。
+    網址不一樣，所以寫回不會讓那份讀取的快取失效。
+
+    少了 `no-store`：存一次（sha S1 → S2），60 秒內再存第二次時讀到的還是快取的 S1，
+    帶著 S1 去 PUT 被 GitHub 用 409 拒絕，重試一次讀到同一份快取、還是 409 ——
+    畫面於是說「有人同時改了這個檔案，請再按一次儲存」，但根本沒有人在改。
+
+    這條特別值得釘住，因為它壞掉時**測試全綠、提交照跑、Pages 照部署**，
+    只有實際動手連續編輯的人會看到，而且訊息把人指向完全錯誤的方向。
+    """
+    script = inline_script(dashboard_html())
+    assert "no-store" in script, (
+        "api() 沒有關掉瀏覽器快取 —— 連續存檔會被自己剛剛存下的快取用 409 擋下來，"
+        "而畫面會說是「有人同時改了這個檔案」"
+    )
+
+
 def test_the_inline_script_parses():
     """整支前端交給 node 做語法檢查。"""
     node = shutil.which("node")
