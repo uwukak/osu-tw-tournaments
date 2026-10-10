@@ -98,7 +98,9 @@ def _deadline_passed(deadline_iso: Optional[str], now_iso: Optional[str]) -> boo
     return deadline < now
 
 
-def effective_status(record: dict[str, Any], now_iso: Optional[str]) -> str:
+def effective_status(
+    record: dict[str, Any], now_iso: Optional[str], own: Optional[dict[str, Any]] = None
+) -> str:
     """標題寫的報名狀態，用帖子內文的截止時間校正過。
 
     為什麼需要這一層：`status` 只讀標題（`[Open]` / `[REGS CLOSED]`），但主辦常常
@@ -115,15 +117,125 @@ def effective_status(record: dict[str, Any], now_iso: Optional[str]) -> str:
     從一句話猜出來的 —— 講保守一點，卡片繼續留在看板上（只是變灰），
     人還點得進原帖自己確認。
 
+    站長手改過報名狀態時（`own["status"]`），一律以他寫的為準，**不再**用截止時間校正。
+    他看的是原帖，而 deadline_iso 終究是猜的；拿猜測去覆蓋人的判斷，等於讓修正永遠
+    無效 —— 他改成 open，下一回合又被同一條規則算回「表定已截止」，而且畫面上
+    完全看不出是被誰改回去的。
+
     刻意**不**寫回 data/tournaments.json：那裡要忠實保留「標題當時怎麼寫」，
     這是判斷主辦有沒有更新標題的依據。
     """
+    forced = (own or {}).get("status")
+    if forced in ("open", "closed", "unknown"):
+        return forced
     status = record.get("status") or "unknown"
     if status == "closed":
         return "closed"
     if _deadline_passed(record.get("deadline_iso"), now_iso):
         return "expired"
     return status
+
+
+# --------------------------------------------------------------------------
+# 站長手改的欄位（data/overrides.json）
+# --------------------------------------------------------------------------
+
+# 疊上手改值之後，這幾個欄位只能是這幾種值。檔案是手寫的，打錯字
+# （`"decision": "inclue"`）不該讓那一筆從看板上消失、也不該炸掉整頁 ——
+# 只該忽略它，維持程式自動判定的結果。
+_MODE_VALUES = tuple(MODE_LABEL)
+_DECISION_VALUES = ("include", "review", "exclude")
+
+# 可以填 null 表示「清空這一欄」的欄位。
+# 列舉型的（name／mode／status／decision）沒有「空」這個狀態：清掉它們只等於退回
+# 自動判定，所以那幾個填 null 一律當作沒覆寫，不要寫進資料檔當噪音。
+_CLEARABLE = (
+    "mania_keys", "rank_compact", "rank_full", "teams",
+    "region", "deadline_iso", "deadline_raw",
+    "discord", "signup_form", "stream",
+)
+
+# 純粹給看板看的註解，不參與記錄本身的欄位疊加。
+_ANNOTATION_KEYS = ("summary", "note")
+
+
+def _split_teams(text: str) -> Optional[list[str]]:
+    """`"1v1 / 2v2"`（或 / ，、分隔）→ `["1v1", "2v2"]`。空字串 → None。"""
+    parts = [p.strip() for p in text.replace("、", "/").replace("，", "/").replace(",", "/").split("/")]
+    teams = [p for p in parts if p]
+    return teams or None
+
+
+def apply_override(record: dict[str, Any], own: dict[str, Any]) -> dict[str, Any]:
+    """把站長手改的欄位疊到一筆記錄上，回傳複本（原物件不動）。
+
+    刻意**不**寫回 data/tournaments.json。理由是那裡的責任不同：
+
+      * 寫回去就分不清哪些欄位是抓來的、哪些是人寫的
+      * 解析器改版之後（例如名次規則修好）重算的結果會被舊的手改值蓋掉，
+        而且從資料檔完全看不出來 —— 正是 `--refetch-details` 存在的那種困境
+      * `title`／`author` 這些「原帖怎麼說」的欄位會失去證據力
+
+    疊在顯示層就沒有這些問題：資料檔永遠是「機器看到的」，看板是「機器看到 ＋ 人修正」。
+    要退出手改，把 overrides.json 裡對應的 key 刪掉就好。
+
+    `status` 刻意不在這裡處理 —— 它牽涉到「要不要再用截止時間校正」，
+    那是 `effective_status(..., own)` 的責任，只放一個地方才不會兩邊打架。
+    """
+    out = dict(record)
+    for key, value in own.items():
+        if key == "status" or key in _ANNOTATION_KEYS:
+            continue
+        if value is None:
+            if key in _CLEARABLE:
+                out[key] = None
+            continue
+        if key == "mode":
+            if value in _MODE_VALUES:
+                out["mode"] = value
+                # 標籤跟著換。漏了這一步，看板上會出現 mode=mania 卻寫著
+                # 「osu!standard」的卡片 —— 而那正是手改模式要修的東西。
+                out["mode_label"] = MODE_LABEL[value]
+        elif key == "decision":
+            if value in _DECISION_VALUES:
+                out["decision"] = value
+        elif key == "teams":
+            out["teams"] = _split_teams(value)
+        elif key == "region":
+            # 區域是顯示層的概念（記錄裡存的是 reason 這個規則代碼）。
+            # 疊進來之後，卡片與草稿都優先讀它。
+            out["region"] = value
+        else:
+            out[key] = value
+    return out
+
+
+def raw_fields(record: dict[str, Any]) -> dict[str, str]:
+    """程式自動判定的原值，給看板編輯器當「有沒有被改過」的比對基準。
+
+    編輯器拿它跟輸入框的內容逐欄比對：一字不差就不寫進 overrides.json。
+    少了這個基準，使用者只是打開來看一下、順手按了儲存，就會把當下自動判定的結果
+    整批**凍結**成手改值 —— 之後規則修好、重算出正確結果，看板上卻還是那批舊的，
+    而且從畫面上完全看不出原因。
+
+    每個值都是字串，這樣才能直接跟 `<input>` 的內容比較。
+    """
+    return {
+        "name": record.get("name") or record.get("title", ""),
+        "mode": record.get("mode") or "std",
+        "mania_keys": record.get("mania_keys") or "",
+        "rank_compact": record.get("rank_compact") or "",
+        "rank_full": record.get("rank_full") or "",
+        "teams": " / ".join(record.get("teams") or []),
+        "region": _region_note(record),
+        "status": record.get("status") or "unknown",
+        "decision": record.get("decision") or "",
+        "deadline_iso": record.get("deadline_iso") or "",
+        "deadline_raw": record.get("deadline_raw") or "",
+        "discord": record.get("discord") or "",
+        "signup_form": record.get("signup_form") or "",
+        "stream": record.get("stream") or "",
+    }
 
 
 # --------------------------------------------------------------------------
@@ -149,54 +261,64 @@ def build_payload(
     狀態一律經過 `effective_status` 校正 —— 標題沒改、內文早已截止的（例如 SMST 83）
     會變成 "expired"，因此不再算進「報名中」，也不再無條件常駐看板。
 
-    `overrides` 是站長自己寫的說明（見 store.load_overrides）。它**不覆蓋** excerpt，
-    而是兩個獨立欄位並存：看板要據此決定那段字是「原帖節錄」還是「站長說明」——
-    後者不能標成節錄，那是把別人的話記在我們頭上。
+    `overrides` 是站長手改的內容（見 store.override_for），每筆先疊上去再決定要不要顯示：
+    改過 `decision` 的（例如把「待確認」直接升成「收錄」、或反過來排除掉）也在這裡生效，
+    否則手改的判定只會顯示錯、過濾對。
+
+    它**不覆蓋** excerpt，而是另外兩個獨立欄位並存：看板要據此決定那段字是
+    「原帖節錄」還是「站長說明」——後者不能標成節錄，那是把別人的話記在我們頭上。
     """
     overrides = overrides or {}
     rows: list[dict[str, Any]] = []
 
     for record in tournaments.values():
-        if record.get("decision") not in ("include", "review"):
+        tid = record.get("topic_id")
+        own = store.override_for(overrides, tid)
+        rec = apply_override(record, own)
+        if rec.get("decision") not in ("include", "review"):
             continue
-        status = effective_status(record, now_iso)
-        if status != "open" and not store.is_fresh(record, now_iso):
+        status = effective_status(rec, now_iso, own)
+        if status != "open" and not store.is_fresh(rec, now_iso):
             continue
 
-        tid = record["topic_id"]
-        own = store.override_for(overrides, tid)
         rows.append(
             {
                 "topic_id": tid,
-                "name": record.get("name") or record.get("title", ""),
-                "mode": record.get("mode", "std"),
-                "mode_label": record.get("mode_label") or MODE_LABEL.get(record.get("mode", "std"), "osu!standard"),
-                "rank": record.get("rank_compact") or "",
-                "teams": record.get("teams") or [],
-                "region": _region_note(record),
+                "name": rec.get("name") or rec.get("title", ""),
+                "mode": rec.get("mode", "std"),
+                "mode_label": rec.get("mode_label") or MODE_LABEL.get(rec.get("mode", "std"), "osu!standard"),
+                "mania_keys": rec.get("mania_keys") or "",
+                "rank": rec.get("rank_compact") or "",
+                "teams": rec.get("teams") or [],
+                "region": rec.get("region") or _region_note(rec),
                 "status": status,
-                "deadline": to_taipei(record.get("deadline_iso"), "%m/%d %H:%M") or "",
-                "deadline_raw": (record.get("deadline_raw") or "")[:200],
+                "deadline": to_taipei(rec.get("deadline_iso"), "%m/%d %H:%M") or "",
+                "deadline_raw": (rec.get("deadline_raw") or "")[:200],
                 # 給卡片上的倒數用。deadline 是已經算好的台北時間字串（人看的），
                 # deadline_iso 是原始 UTC 時間（機器算剩餘時間用的）—— 兩個都需要。
-                "deadline_iso": record.get("deadline_iso") or "",
+                "deadline_iso": rec.get("deadline_iso") or "",
                 # 詳細面板才有空間放這些，卡片上塞不下。
-                "title": record.get("title", ""),
-                "rank_full": record.get("rank_full") or "",
-                "author": record.get("author") or "",
-                "excerpt": record.get("excerpt") or "",
+                "title": rec.get("title", ""),
+                "rank_full": rec.get("rank_full") or "",
+                "author": rec.get("author") or "",
+                "excerpt": rec.get("excerpt") or "",
                 # 站長寫的。summary 有值時就取代 excerpt 顯示；excerpt 仍然照傳，
                 # 因為編輯面板要用它當預設內容、也要拿它比對「有沒有真的改過」。
-                "summary": own.get("summary", ""),
-                "note": own.get("note", ""),
-                "decision": record.get("decision"),
-                "reason": record.get("reason", ""),
-                "created_at": record.get("created_at") or "",
-                "first_seen_utc": record.get("first_seen_utc") or "",
-                "first_seen_display": _display_date(record.get("first_seen_utc")) or "",
+                "summary": own.get("summary") or "",
+                "note": own.get("note") or "",
+                "decision": rec.get("decision"),
+                "reason": rec.get("reason", ""),
+                "created_at": rec.get("created_at") or "",
+                "first_seen_utc": rec.get("first_seen_utc") or "",
+                "first_seen_display": _display_date(rec.get("first_seen_utc")) or "",
                 "url": f"https://osu.ppy.sh/community/forums/topics/{tid}",
-                "discord": record.get("discord") or "",
-                "signup_form": record.get("signup_form") or "",
+                "discord": rec.get("discord") or "",
+                "signup_form": rec.get("signup_form") or "",
+                "stream": rec.get("stream") or "",
+                # 編輯器要的兩個對照組：`raw` 是程式自動判定的原值（比對用），
+                # `own` 是這個檔案裡現在寫了什麼（才分得出「值一樣」是巧合還是刻意）。
+                "raw": raw_fields(record),
+                "own": own,
             }
         )
 
@@ -243,17 +365,29 @@ def _deadline_line(record: dict[str, Any]) -> str:
     return "報名時間以官方公告為準"
 
 
-def render_draft(record: dict[str, Any], now_iso: Optional[str] = None) -> str:
+def render_draft(
+    record: dict[str, Any],
+    now_iso: Optional[str] = None,
+    own: Optional[dict[str, Any]] = None,
+) -> str:
     """繁中 Facebook 貼文草稿。標題格式：模式＋賽事名＋報名時間。
 
     `now_iso` 用來校正報名狀態（見 `effective_status`）。草稿是要貼出去的，
     標題寫「報名開放中」而實際已截止，比看板上標錯更嚴重 —— 那是直接發錯文。
     沒傳 `now_iso` 時退回標題狀態（`_deadline_passed` 會回 False），不會亂猜。
+
+    `own` 是站長手改的欄位（見 store.override_for）。手改過的**欄位**要照手改的寫進
+    草稿 —— 名次判錯、Discord 抓錯，正是他動手改的原因，看板改了而貼出去的是舊的，
+    比兩邊都錯更難查。`summary`／`note` 則相反：那兩個是**看板專用**的註解
+    （說明這筆為什麼這樣判、哪裡要留意），貼到 Facebook 上會很突兀，所以不進草稿。
     """
+    own = own or {}
+    record = apply_override(record, own)
+
     mode = record.get("mode_label") or MODE_LABEL.get(record.get("mode", "std"), "osu!standard")
     name = record.get("name") or record.get("title", "")
     rank = record.get("rank_compact") or ""
-    status = STATUS_LABEL.get(effective_status(record, now_iso), "報名狀態未標明")
+    status = STATUS_LABEL.get(effective_status(record, now_iso, own), "報名狀態未標明")
     tid = record["topic_id"]
     url = f"https://osu.ppy.sh/community/forums/topics/{tid}"
 
@@ -277,7 +411,7 @@ def render_draft(record: dict[str, Any], now_iso: Optional[str] = None) -> str:
     teams = record.get("teams") or []
     if teams:
         lines.append(f"👥 形式｜{' / '.join(teams)}")
-    lines.append(f"🌏 區域｜{_region_note(record)}")
+    lines.append(f"🌏 區域｜{record.get('region') or _region_note(record)}")
     lines.append(f"📝 報名｜{status}・{_deadline_line(record)}")
     lines.append(f"🔗 資訊｜{url}")
     if record.get("discord"):
@@ -488,6 +622,20 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 }
 .ed-input:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
 .ed-hint{font-size:12px; color:var(--muted); line-height:1.6}
+/* 欄位表。用 auto-fit 而不是固定欄數：詳細面板在手機上只有一個窄欄，
+   在桌機上寬度夠就自動排成兩欄，不必另外寫 media query。 */
+.ed-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px}
+.ed-field{display:flex; flex-direction:column; gap:5px; min-width:0}
+.ed-field.wide{grid-column:1/-1}
+.ed-field>span{font-size:11px; font-weight:700; letter-spacing:.02em}
+.ed-field em{font-size:11px; font-style:normal; line-height:1.5; color:var(--muted)}
+.ed-field select{
+  font:inherit; font-size:13px; padding:8px 10px; border:1px solid var(--border);
+  border-radius:9px; background:var(--bg); color:var(--text); width:100%;
+}
+.ed-field select:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+.ed-input{font-size:13px; padding:8px 10px; border-radius:9px}
+.ed-divider{border:0; border-top:1px solid var(--border); margin:6px 0 0}
 .ed-bar{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:4px}
 .ed-save,.ed-revert{font:inherit; font-size:13px; padding:8px 14px; border-radius:10px; cursor:pointer; white-space:nowrap}
 .ed-save{border:1px solid var(--accent); background:var(--accent); color:var(--on-accent); font-weight:600}
@@ -747,16 +895,18 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 回傳 {wrote}：內容跟原本一字不差時**不送出**。GitHub 的 contents API 不做去重，
   // 內容一樣照樣產生一個 commit —— 打開來看一下、順手按儲存，就會在歷史裡留一筆
   // 什麼都沒改的提交。
-  function saveOverride(r, summary, note){
+  function saveOverride(r, edits){
     function attempt(left){
       return fetchOverrides().then(function(cur){
         var data = cur.data, key = String(r.topic_id);
         var before = JSON.stringify(data[key] || {});
-        // 逐欄合併，不用整個物件覆蓋 —— 這樣未來多出的欄位（或你手寫的註解欄位）
-        // 不會被這次存檔默默吃掉。
+        // 從既有的內容出發、只覆蓋表單管得到的欄位 —— 檔案裡可能有我們不認識的
+        // 欄位（例如你自己加的註解），不該被這次存檔默默吃掉。
+        // 反過來，表單管到的欄位要先全部清掉：這次沒填的＝要退回自動判定，
+        // 留著上一次的舊值就退不回去了。
         var entry = Object.assign({}, data[key] || {});
-        if(summary) entry.summary = summary; else delete entry.summary;
-        if(note) entry.note = note; else delete entry.note;
+        MANAGED.forEach(function(k){ delete entry[k]; });
+        Object.keys(edits).forEach(function(k){ entry[k] = edits[k]; });
         if(JSON.stringify(entry) === before) return { wrote:false };
         if(Object.keys(entry).length) data[key] = entry; else delete data[key];
 
@@ -780,8 +930,40 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   }
 
   var STATUS = {open:'報名開放中', closed:'報名已截止', unknown:'報名狀態未標明', expired:'表定已截止'};
+  var MODE_LABEL = {std:'osu!standard', taiko:'osu!taiko', catch:'osu!catch', mania:'osu!mania'};
   var MODES = [['all','全部'],['std','Standard'],['taiko','Taiko'],['catch','Catch'],['mania','Mania']];
   var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
+
+  // 編輯表單管的欄位。存檔時會先把這些 key 從既有的覆寫裡清掉再填新的 ——
+  // 這次沒填的＝要退回自動判定，留著舊值就退不回去了。
+  var MANAGED = ['name','mode','mania_keys','rank_compact','rank_full','teams','region',
+                 'status','decision','deadline_iso','deadline_raw','discord','signup_form',
+                 'stream','summary','note'];
+
+  // 表單欄位。`raw`（程式自動判定的原值）沒有的欄位放這裡，純粹是顯示與否的差別。
+  var FIELDS = [
+    {k:'name', label:'賽事名稱', hint:'只當顯示用。身分是 topic id，改名字不影響抓取。'},
+    {k:'mode', label:'模式', options:[['std','osu!standard'],['taiko','osu!taiko'],['catch','osu!catch'],['mania','osu!mania']]},
+    {k:'mania_keys', label:'鍵數', hint:'例如 4K / 7K。'},
+    {k:'rank_compact', label:'名次（卡片顯示）', hint:'例如 50K–100K。'},
+    {k:'rank_full', label:'名次（完整）', hint:'詳細面板用。留空＝沿用上面那個。'},
+    {k:'teams', label:'隊伍形式', hint:'多個用 / 分隔，例如 1v1 / 2v2。'},
+    {k:'region', label:'區域'},
+    {k:'status', label:'報名狀態',
+     options:[['open','報名開放中'],['closed','報名已截止'],['unknown','未標明']],
+     hint:'以你選的為準，不會再被內文寫的截止時間改寫。'},
+    {k:'decision', label:'收錄判定', options:[['include','收錄'],['review','待人工確認'],['exclude','排除（不顯示）']]},
+    {k:'deadline_iso', label:'截止時間（UTC）', hint:'ISO 8601，例如 2026-10-16T15:59:00+00:00。'},
+    {k:'deadline_raw', label:'截止時間（主辦原句）', wide:true},
+    {k:'discord', label:'Discord 連結'},
+    {k:'signup_form', label:'報名表單連結'},
+    {k:'stream', label:'直播連結'}
+  ];
+  // 可以清空的欄位（見 store.override_for：JSON 的 null＝清空）。
+  // 列舉型的欄位不在裡面 —— name／mode／status／decision 清掉只等於退回自動判定，
+  // 寫一個 null 進檔案只是噪音。
+  var CLEARABLE = {mania_keys:1, rank_compact:1, rank_full:1, teams:1, region:1,
+                   deadline_iso:1, deadline_raw:1, discord:1, signup_form:1, stream:1};
 
   function el(tag, cls, text){ var e=document.createElement(tag); if(cls) e.className=cls; if(text!=null) e.textContent=text; return e; }
 
@@ -882,7 +1064,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     // 裡面還有真的連結，所以不能用 <button> 包起來（互動元素不能嵌套）。
     c.tabIndex = 0;
     c.setAttribute('role','button');
-    c.setAttribute('aria-label', r.name + (editOn ? '，編輯說明' : '，顯示詳細說明'));
+    c.setAttribute('aria-label', r.name + (editOn ? '，編輯資料' : '，顯示詳細說明'));
     function show(e){ if(e) e.preventDefault(); openDetail(r); }
     c.addEventListener('click', show);
     c.addEventListener('keydown', function(e){
@@ -902,6 +1084,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
     var meta = el('dl','meta');
     metaRow(meta, '名次', r.rank, null, true);
+    metaRow(meta, '鍵數', r.mania_keys);
     metaRow(meta, '形式', (r.teams||[]).join(' / '));
     metaRow(meta, '區域', r.region);
     metaRow(meta, '截止', null, deadlineNode(r));
@@ -919,14 +1102,71 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var foot = el('div','card-foot');
     foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
     if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
+    if(r.stream) foot.appendChild(link(r.stream, '直播'));
     foot.appendChild(el('span','more', editOn ? '編輯 ▸' : '詳細說明 ▸'));
     c.appendChild(foot);
     return c;
   }
 
-  // 編輯模式下的「說明」欄位。刻意讓 textarea **預先填好現在顯示的那段字**
-  // （你自己的說明，沒有的話就是程式抓的原帖節錄），因為需求是「刪減修改裡面的字」——
+  // 把剛存好的覆寫就地套回畫面上那一筆 —— 存檔的人不該等 30 分鐘才看到結果。
+  //
+  // 這裡刻意只做「值搬過去」，判定邏輯一律留在 Python：
+  //   * status 直接用站長選的（他選的就是定論，不再跑 effective_status）
+  //   * region 直接用他寫的字（Python 那邊一樣優先讀它）
+  //   * deadline 要從 UTC 換成台北字串，跟 render.to_taipei 的格式對齊
+  // 反向（把 overrides.json 解讀成畫面）不做，那是爬蟲的責任。
+  function taipeiStamp(d){
+    var t = new Date(d.getTime() + 8*3600000);
+    function p(n){ return (n < 10 ? '0' : '') + n; }
+    return p(t.getUTCMonth()+1) + '/' + p(t.getUTCDate()) + ' ' + p(t.getUTCHours()) + ':' + p(t.getUTCMinutes());
+  }
+
+  function applyEditsToRow(r, entry){
+    function has(k){ return Object.prototype.hasOwnProperty.call(entry, k); }
+    // 有這個 key 就用它（null＝清空），沒有就維持原值。
+    function text(k, fallback){
+      if(!has(k)) return fallback;
+      return entry[k] === null ? '' : entry[k];
+    }
+    r.name = text('name', r.name);
+    r.mania_keys = text('mania_keys', '');
+    r.rank = text('rank_compact', '');
+    r.rank_full = text('rank_full', '');
+    r.region = text('region', r.region);
+    r.decision = text('decision', r.decision);
+    r.status = text('status', r.status);
+    r.deadline_raw = text('deadline_raw', '');
+    r.discord = text('discord', '');
+    r.signup_form = text('signup_form', '');
+    r.stream = text('stream', '');
+    if(has('mode')){
+      r.mode = entry.mode;
+      r.mode_label = MODE_LABEL[entry.mode] || r.mode_label;
+    }
+    if(has('teams')){
+      r.teams = entry.teams === null ? [] : entry.teams.split('/')
+        .map(function(s){ return s.trim(); }).filter(Boolean);
+    }
+    if(has('deadline_iso')){
+      r.deadline_iso = entry.deadline_iso === null ? '' : entry.deadline_iso;
+      var d = r.deadline_iso ? new Date(r.deadline_iso) : null;
+      r.deadline = (d && !isNaN(d.getTime())) ? taipeiStamp(d) : '';
+    }
+    r.own = entry;
+  }
+
+  // 編輯模式下的表單。刻意讓每個欄位**預先填好現在生效的值**（站長改過的，
+  // 沒有的話就是程式自動判定的），因為需求是「把不對的改掉」——
   // 從空白開始等於要你重打一次。
+  //
+  // 存檔時逐欄跟 r.raw（程式自動判定的原值）比對，一字不差的欄位**不**寫進
+  // overrides.json。少了這道比對，打開來看一下、順手按了儲存，就會把當下自動
+  // 判定的結果整批凍結成手改值 —— 之後規則修好也改不動，而且從畫面上看不出原因。
+  //
+  // 清空一個欄位有兩種意思，這裡刻意分開：
+  //   * 原本就沒值 → 沒事
+  //   * 原本有值   → 寫入 null，代表「這一欄就是要空的」（例如解析錯的 Discord）
+  // 少了 null 這一種，清空只會被當成「沒覆寫」，下一回合那個值又自己長回來。
   function editorFor(r){
     var box = el('div','editor');
 
@@ -936,13 +1176,61 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         + '所以存不回去。在 GitHub Actions 產生的版本上就會正常。'));
     }
 
+    box.appendChild(el('div','ed-label','欄位（跟自動判定一樣的就不會寫進檔案）'));
+    var grid = el('div','ed-grid');
+    var inputs = {};
+
+    FIELDS.forEach(function(f){
+      var field = el('label','ed-field' + (f.wide ? ' wide' : ''));
+      field.appendChild(el('span', null, f.label));
+
+      var node;
+      if(f.options){
+        node = document.createElement('select');
+        f.options.forEach(function(o){
+          var op = document.createElement('option');
+          op.value = o[0]; op.textContent = o[1];
+          node.appendChild(op);
+        });
+      } else {
+        node = document.createElement('input');
+        node.type = 'text';
+        node.autocomplete = 'off';
+        node.spellcheck = false;
+      }
+      node.className = 'ed-input';
+      node.id = 'e-' + f.k;
+
+      // 填「現在生效的值」：站長改過的優先（null 代表他就是要空的），
+      // 沒有的話才是程式自動判定的。
+      var ov = (r.own || {})[f.k];
+      if(ov === undefined) node.value = r.raw[f.k] || '';
+      else node.value = ov === null ? '' : ov;
+      inputs[f.k] = node;
+      field.appendChild(node);
+
+      var hint = f.hint;
+      // 報名狀態這一格要講清楚「畫面上顯示的」跟「你在這裡選的」是兩回事。
+      // 沒這行說明，站長會看到選單寫「未標明」而卡片寫「表定已截止」，不知道該改哪個。
+      if(f.k === 'status' && ov === undefined && r.status !== r.raw.status){
+        hint = '目前看板顯示「' + (STATUS[r.status] || r.status)
+             + '」—— 內文寫的截止時間已經過去，程式自己校正的。' + (hint || '');
+      }
+      if(hint) field.appendChild(el('em', null, hint));
+      grid.appendChild(field);
+    });
+    box.appendChild(grid);
+
+    box.appendChild(el('hr','ed-divider'));
+    box.appendChild(el('div','ed-label','看板專用的說明（不會進到 Facebook 草稿）'));
+
     var lab1 = el('label','ed-label','說明');
     lab1.htmlFor = 'e-summary';
     box.appendChild(lab1);
     var ta = document.createElement('textarea');
     ta.className = 'ed-input';
     ta.id = 'e-summary';
-    ta.rows = 5;
+    ta.rows = 4;
     ta.value = r.summary || r.excerpt || '';
     ta.placeholder = '留空 ＝ 用程式自動抓的原帖首段節錄';
     box.appendChild(ta);
@@ -966,34 +1254,45 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var save = el('button','ed-save','儲存到 GitHub');
     save.type = 'button';
     save.disabled = !REPO;
-    var revert = el('button','ed-revert','還原成原帖節錄');
+    var revert = el('button','ed-revert','還原成自動判定');
     revert.type = 'button';
     var status = el('span','edit-status','');
     status.id = 'e-status';
     bar.appendChild(save);
-    if(r.summary) bar.appendChild(revert);
+    bar.appendChild(revert);
     bar.appendChild(status);
     box.appendChild(bar);
 
     revert.addEventListener('click', function(){
       // 只把內容填回去，不動 repo —— 要按「儲存」才會寫。否則這個按鈕會變成
       // 一顆沒有確認步驟的刪除鍵。
+      FIELDS.forEach(function(f){ inputs[f.k].value = r.raw[f.k] || ''; });
       ta.value = r.excerpt || '';
-      nb.value = r.note || '';
+      nb.value = '';
       setEditStatus('按「儲存到 GitHub」才會生效。');
     });
 
     save.addEventListener('click', function(){
+      var entry = {};
+      FIELDS.forEach(function(f){
+        var v = inputs[f.k].value.trim();
+        if(v === (r.raw[f.k] || '').trim()) return;   // 跟自動判定一字不差 → 不留覆寫
+        if(v === ''){ if(CLEARABLE[f.k]) entry[f.k] = null; return; }
+        entry[f.k] = v;
+      });
       var summary = ta.value.trim(), note = nb.value.trim();
       // 跟自動節錄一字不差時不建立覆寫。少了這條，使用者只是打開來看一下、順手按了
       // 儲存，就會凍結一段覆寫 —— 之後原帖更新、程式重抓了新的節錄，看板上卻還是
       // 這一句，而且從畫面上完全看不出原因。
       if(summary === (r.excerpt || '').trim()) summary = '';
+      if(summary) entry.summary = summary;
+      if(note) entry.note = note;
 
       save.disabled = true; revert.disabled = true;
       setEditStatus('儲存中…');
-      saveOverride(r, summary, note).then(function(res){
+      saveOverride(r, entry).then(function(res){
         // 先更新自己畫面上的那一筆，再重畫面板 —— 存檔的人不該等 30 分鐘才看到結果。
+        applyEditsToRow(r, entry);
         r.summary = summary;
         r.note = note;
         if(!res.wrote){
@@ -1001,6 +1300,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
           setEditStatus('內容沒有變，沒有送出。');
           return;
         }
+        render();   // decision 改過的話卡片要跟著消失／出現
         return dispatchRun().then(function(ok){
           openDetail(r);
           setEditStatus(ok
@@ -1031,11 +1331,13 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
     var meta = el('dl','meta');
     metaRow(meta, '名次', r.rank_full || r.rank, null, true);
+    metaRow(meta, '鍵數', r.mania_keys);
     metaRow(meta, '形式', (r.teams||[]).join(' / '));
     metaRow(meta, '區域', r.region);
     metaRow(meta, '截止', null, deadlineNode(r));
     metaRow(meta, '主辦', r.author);
     metaRow(meta, '發現', r.first_seen_display);
+    metaRow(meta, '收錄', r.decision === 'include' ? '收錄' : '待人工確認');
     body.appendChild(meta);
 
     if(r.decision === 'review'){
@@ -1083,6 +1385,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     foot.appendChild(link(r.url, '查看 osu! 原帖 →'));
     if(r.discord) foot.appendChild(link(r.discord, 'Discord'));
     if(r.signup_form) foot.appendChild(link(r.signup_form, '報名表單'));
+    if(r.stream) foot.appendChild(link(r.stream, '直播'));
 
     tickCountdowns();
     if(!dlg.open) dlg.showModal();
@@ -1130,7 +1433,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     editHint.hidden = !editOn;
     if(!editOn) return;
     ehText.textContent = REPO
-      ? '編輯模式：點任一張卡片就能改它的說明。'
+      ? '編輯模式：點任一張卡片就能改它的資料（改完按「儲存到 GitHub」）。'
       : '編輯模式：可以改字，但這個看板沒有 repo 資訊，存不回去。';
   }
 

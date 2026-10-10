@@ -220,9 +220,31 @@ def test_override_for_drops_anything_that_is_not_a_string():
     assert store.override_for({"2": "整筆寫成字串"}, 2) == {}
 
 
+def test_override_for_only_keeps_whitelisted_fields():
+    """白名單，不是「除了這幾個之外都行」。
+
+    overrides.json 是手寫的檔案，打錯字（`regionn`）要能被濾掉，而不是讓一個
+    不存在的欄位靜靜流進看板。`topic_id` 與 `title` 更是刻意不在名單裡 ——
+    前者是這筆賽事的身分，後者是「原帖怎麼寫」的證據。
+    """
+    ov = {"1": {"decision": "include", "region": "亞洲", "regionn": "打錯字", "topic_id": "999", "title": "改標題"}}
+    assert store.override_for(ov, 1) == {"decision": "include", "region": "亞洲"}
+
+
 def test_blank_overrides_count_as_no_override():
-    """看板上「清空再儲存」的語意就是刪掉覆寫，所以空白等於沒有。"""
-    assert store.override_for({"1": {"summary": "   ", "note": "\n"}}, 1) == {}
+    """把欄位清空＝退回自動判定，所以空白等於沒有覆寫。"""
+    assert store.override_for({"1": {"summary": "   ", "note": "\n", "discord": ""}}, 1) == {}
+
+
+def test_null_means_clear_this_field():
+    """清空一個自動抓到的值是手改的常見需求（解析錯的 Discord、猜錯的截止時間）。
+
+    沒有 null 這一種寫法，「清空」只會被當成「沒覆寫」—— 下一回合那個值又自己長回來，
+    而且從畫面上完全看不出原因。所以空白與 null 的語意必須分開。
+    """
+    ov = {"1": {"discord": None, "signup_form": ""}}
+    # 空字串＝沒覆寫（key 被丟掉），null＝明確清空（key 留著、值是 None）。
+    assert store.override_for(ov, 1) == {"discord": None}
 
 
 # --------------------------------------------------------------------------

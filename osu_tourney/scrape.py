@@ -106,23 +106,32 @@ def _write_drafts(
     baseline: Optional[int],
     drafts_dir: Path,
     now_iso: str,
+    overrides: Optional[dict[str, Any]] = None,
 ) -> list[str]:
     """為 baseline 之後的收錄／待確認賽事產生草稿。
 
     若使用者手改過草稿（檔案雜湊與我們上次寫入的不同），就**不要覆蓋**他的修改。
+
+    `overrides` 是站長在看板上手改的內容。草稿要照手改的走 —— 名次判錯、Discord
+    抓錯正是他動手改的原因，草稿卻寫著舊的，貼出去就是發錯文，而且比看板標錯更難查
+    （貼出去就收不回來了）。
     """
+    overrides = overrides or {}
     written: list[str] = []
     drafts_dir.mkdir(parents=True, exist_ok=True)
 
     for record in tournaments.values():
-        if record.get("decision") not in ("include", "review"):
+        own = store.override_for(overrides, record.get("topic_id"))
+        # 收錄判定也可能被手改（把「待確認」直接升成「收錄」、或反過來排除掉）。
+        # 這裡要用疊過去的結果，否則會出現「看板收錄了、草稿卻沒產生」這種對不上的狀態。
+        if render.apply_override(record, own).get("decision") not in ("include", "review"):
             continue
         tid = int(record["topic_id"])
         if baseline is not None and tid <= baseline:
             continue
 
         # 傳 now_iso：草稿是要貼出去的，標題的報名狀態必須先被截止時間校正過。
-        content = render.render_draft(record, now_iso)
+        content = render.render_draft(record, now_iso, own)
         path = drafts_dir / f"{tid}.md"
         digest = _sha(content)
 
@@ -332,7 +341,7 @@ def run(args: argparse.Namespace) -> int:
     if args.seed_only:
         log.info("--seed-only：不產生草稿（baseline topic id = %s）。", baseline)
     else:
-        written = _write_drafts(tournaments, baseline, DRAFTS_DIR, now_iso)
+        written = _write_drafts(tournaments, baseline, DRAFTS_DIR, now_iso, overrides)
         if written:
             log.info("產生 %d 份草稿：%s", len(written), ", ".join(written))
         with (DRAFTS_DIR / "README.md").open("w", encoding="utf-8", newline="\n") as fh:

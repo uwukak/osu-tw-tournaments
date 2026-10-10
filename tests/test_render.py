@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from osu_tourney import render  # noqa: E402
+from osu_tourney import render, store  # noqa: E402
 
 # 真實資料，取自 data/tournaments.json 的 2246109（欄位只留測試用得到的）。
 SMST83 = {
@@ -229,13 +229,158 @@ def test_an_override_changes_the_dashboard_bytes():
 
 
 def test_an_override_does_not_leak_into_the_draft():
-    """刻意釘住一條界線：站長說明是**看板專用**的註解。
+    """刻意釘住一條界線：`summary`／`note` 是**看板專用**的註解。
 
-    草稿是要貼到 Facebook 的貼文，內容一律照規則產生。哪天有人「順手」把 overrides
-    接進 render_draft，這條會擋下來 —— 草稿裡冒出只有看板才有的字，貼出去會很突兀。
+    草稿是要貼到 Facebook 的貼文。那兩欄寫的是「這筆為什麼這樣判」「哪裡要留意」，
+    貼出去會很突兀。哪天有人「順手」把它們接進 render_draft，這條會擋下來。
     """
-    render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"summary": "只有看板看得到的字"}})
-    assert "只有看板看得到的字" not in render.render_draft(SMST83, NOW)
+    own = store.override_for({"2246109": {"summary": "只有看板看得到的字", "note": "也只有看板"}}, 2246109)
+    draft = render.render_draft(SMST83, NOW, own)
+    assert "只有看板看得到的字" not in draft
+    assert "也只有看板" not in draft
+
+
+# --------------------------------------------------------------------------
+# 站長手改所有欄位（data/overrides.json 的白名單欄位）
+#
+# 需求是「看板上可以人工改掉所有資訊」：模式判錯、名次抓錯、Discord 抓錯、
+# 「待確認」其實該收錄 —— 都要能當場改掉，而且改完不會被下一回合的抓取蓋回來。
+# 這裡釘的是那條路的兩端：疊上去的值有沒有生效，以及沒改的欄位有沒有被動到。
+# --------------------------------------------------------------------------
+
+
+def test_a_hand_edited_name_replaces_the_scraped_one():
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"name": "SMST 83（中文名）"}}
+    )["tournaments"][0]
+    assert row["name"] == "SMST 83（中文名）"
+    assert row["title"] == SMST83["title"], "原帖標題要留著 —— 那是狀態判定的依據"
+
+
+def test_a_hand_edited_mode_also_relabels_it():
+    """改了模式卻沒換標籤，看板上會出現 mode=mania 卻寫著 osu!standard 的卡片。"""
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"mode": "mania", "mania_keys": "7K"}}
+    )["tournaments"][0]
+    assert row["mode"] == "mania"
+    assert row["mode_label"] == "osu!mania"
+    assert row["mania_keys"] == "7K"
+
+
+def test_a_hand_edited_decision_moves_the_record_between_the_two_buckets():
+    """「待確認」升成「收錄」是站長最常做的一件事 —— 判定要在過濾前就生效。"""
+    review = dict(SMST83, decision="review", reason="unknown-code")
+    payload = render.build_payload({"2246109": review}, META, NOW, {"2246109": {"decision": "include"}})
+    assert payload["counts"]["include"] == 1
+    assert payload["counts"]["review"] == 0, "升成收錄之後就不該再算進待確認"
+
+    # 反過來：排除掉就不該出現在看板上，即使它本來是收錄的。
+    payload = render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"decision": "exclude"}})
+    assert payload["tournaments"] == []
+
+
+def test_a_hand_edited_status_is_not_corrected_by_the_deadline_again():
+    """站長說 open 就是 open —— 否則他的修正下一回合就被同一條規則改回去。
+
+    這正是「報名狀態未標明」的痛點：內文的截止時間早就過去了，程式把它算成
+    「表定已截止」，但那場比賽其實延長了報名。站長知道，程式不知道。
+    """
+    assert render.effective_status(SMST83, NOW) == "expired", "前提：沒手改時是 expired"
+    assert render.effective_status(SMST83, NOW, {"status": "open"}) == "open"
+    # 打錯字不可以當成定論 —— 退回自動判定比照著錯的值顯示好。
+    assert render.effective_status(SMST83, NOW, {"status": "oppen"}) == "expired"
+
+
+def test_a_hand_edited_status_reaches_the_draft_title():
+    """草稿的標題是直接貼出去的，改過的狀態一定要跟著走。"""
+    title = render.render_draft(SMST83, NOW, {"status": "open"}).splitlines()[0]
+    assert "報名開放中" in title
+    assert "表定已截止" not in title
+
+
+def test_a_hand_edited_field_reaches_the_draft():
+    """看板改了、貼出去的卻是舊的，比兩邊都錯更難查 —— 貼出去就收不回來了。"""
+    own = {"name": "SMST 83（中文名）", "discord": "https://discord.gg/correct", "rank_compact": "1–10K"}
+    draft = render.render_draft(SMST83, NOW, own)
+    assert "SMST 83（中文名）" in draft
+    assert "https://discord.gg/correct" in draft
+
+
+def test_a_hand_edited_region_wins_over_the_rule():
+    """區域是規則最常判錯的一欄（`MN` 是 Minnesota 還是 Mongolia？）。"""
+    own = {"region": "不限區域（站長已確認）"}
+    row = render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": own})["tournaments"][0]
+    assert row["region"] == "不限區域（站長已確認）"
+    assert "不限區域（站長已確認）" in render.render_draft(SMST83, NOW, own)
+
+
+def test_teams_are_split_back_into_a_list():
+    """表單上是一個文字框，但卡片與草稿要的是清單。"""
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"teams": "1v1 / 2v2"}}
+    )["tournaments"][0]
+    assert row["teams"] == ["1v1", "2v2"]
+
+
+def test_null_clears_a_field_instead_of_being_ignored():
+    """清空一個自動抓到的值，是手改的常見需求（Discord 抓錯、截止時間猜錯）。
+
+    沒有 null 這一種寫法，「清空」只會被當成「沒覆寫」—— 下一回合那個值又自己
+    長回來，而且從畫面上完全看不出原因。
+    """
+    rec = dict(SMST83, discord="https://discord.gg/wrong")
+    own = store.override_for({"2246109": {"discord": None, "deadline_iso": None}}, 2246109)
+    assert own == {"discord": None, "deadline_iso": None}, "null 要在 override_for 存活下來"
+    row = render.build_payload({"2246109": rec}, META, NOW, {"2246109": own})["tournaments"][0]
+    assert row["discord"] == ""
+    assert row["deadline_iso"] == "", "清掉猜錯的截止時間，卡片才會退回顯示主辦的原句"
+    assert row["deadline_raw"], "原句要留著"
+
+
+def test_null_on_an_enum_field_is_treated_as_no_override():
+    """name／mode／status 沒有「空」這個狀態，寫 null 只是噪音，不該生效。"""
+    assert store.override_for({"1": {"name": None, "mode": None}}, 1) == {"name": None, "mode": None}
+    row = render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"name": None}})["tournaments"][0]
+    assert row["name"] == "SMST 83", "清掉名字只會退回自動判定，不該變成空白卡片"
+
+
+def test_a_typo_in_a_hand_edited_value_is_ignored_not_fatal():
+    """檔案是手寫的。打錯字只該忽略那一欄，不該讓整頁壞掉或那筆消失。"""
+    row = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"mode": "standard", "decision": "inclue"}}
+    )["tournaments"][0]
+    assert row["mode"] == "std"
+    assert row["decision"] == "include"
+
+
+def test_the_payload_carries_what_the_editor_needs_to_diff():
+    """編輯器靠 raw（自動判定的原值）比對「有沒有真的改過」。
+
+    少了它，打開來看一眼、順手按儲存，就會把當下自動判定的結果整批凍結成手改值 ——
+    之後規則修好也改不動，而且看不出原因。own 則用來分辨「值一樣」是巧合還是刻意。
+    """
+    ov = {"2246109": {"name": "手改的名字", "region": None}}
+    row = render.build_payload({"2246109": SMST83}, META, NOW, ov)["tournaments"][0]
+    assert row["raw"]["name"] == "SMST 83"
+    assert row["raw"]["mode"] == "std"
+    assert row["raw"]["region"] == "無區域限制（全球開放）", "raw.region 是規則算出來的那個標籤"
+    assert row["own"] == {"name": "手改的名字", "region": None}
+
+
+def test_apply_override_does_not_touch_the_original_record():
+    """疊在複本上，原記錄不准動 —— 否則 data/tournaments.json 會被寫進手改值。"""
+    before = dict(SMST83)
+    render.apply_override(SMST83, {"name": "改過的", "status": "closed"})
+    assert SMST83 == before
+
+
+def test_a_hand_edited_field_changes_the_dashboard_bytes():
+    """手改的欄位也要走 dashboard_sha 這條路，否則排程看不到「該重繪了」。"""
+    before = render.render_dashboard(render.build_payload({"2246109": SMST83}, META, NOW))
+    after = render.render_dashboard(
+        render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": {"name": "改過的"}})
+    )
+    assert before != after
 
 
 # --------------------------------------------------------------------------

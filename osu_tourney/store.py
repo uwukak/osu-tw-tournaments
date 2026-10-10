@@ -172,12 +172,34 @@ def get(tournaments: dict[str, Any], topic_id: int) -> Optional[dict[str, Any]]:
 
 
 # --------------------------------------------------------------------------
-# data/overrides.json：站長自己寫的說明
+# data/overrides.json：站長手改的內容
 # --------------------------------------------------------------------------
 
 
 class OverridesError(ValueError):
     """data/overrides.json 壞掉，沒辦法解讀。"""
+
+
+# 站長可以在看板上手改的欄位。
+#
+# 只放「改了之後，下一回合重抓也不會蓋掉」的**顯示欄位**。刻意不含：
+#   topic_id                        —— 這筆賽事的身分，改掉等於指向另一篇文
+#   title／author／posts／views／last_reply_at
+#                                   —— 「原帖當時怎麼寫」的紀錄，也是規則判定的
+#                                      依據。改掉它一來等於篡改來源，二來下一回合
+#                                      就會被列表頁蓋回來，只是白忙一場
+#   mode_confidence／reason／is_staff_topic
+#                                   —— 規則的中間產物，不是給人看的內容
+#                                      （要改區域請改 region）
+#
+# 這是**白名單**，不是「除了這幾個之外都行」：overrides.json 是手寫的檔案，
+# 打錯字要能被濾掉，而不是讓一個不存在的欄位靜靜地流進看板。
+OVERRIDE_KEYS = (
+    "name", "mode", "mania_keys", "rank_compact", "rank_full", "teams",
+    "region", "status", "decision",
+    "deadline_iso", "deadline_raw", "discord", "signup_form", "stream",
+    "summary", "note",
+)
 
 
 def load_overrides(path: Path) -> dict[str, Any]:
@@ -205,19 +227,31 @@ def load_overrides(path: Path) -> dict[str, Any]:
     return data
 
 
-def override_for(overrides: dict[str, Any], topic_id: Any) -> dict[str, str]:
-    """取出某一筆的覆寫，順手把格式不對的部分濾掉。
+def override_for(overrides: dict[str, Any], topic_id: Any) -> dict[str, Any]:
+    """取出某一筆的手改內容，順手把格式不對的部分濾掉。
 
     檔案是給人改的，所以要有這層：`{"2252361": "一段字"}` 這種寫法（整筆寫成字串
     而不是物件）不該讓整個看板炸掉，也不該讓那段字變成半個欄位。
-    空的字串一律當作「沒有覆寫」—— 那正是看板上「清空再儲存」的語意。
+
+    值的語意刻意分成三種：
+      * 非空字串            → 覆寫成這個值
+      * 空字串／沒有這個 key → **沒有覆寫**，退回程式自動判定的結果
+      * JSON 的 null        → **清空這一欄**
+
+    少了 null 這一種，就沒辦法把自動抓到的值刪掉：把欄位清空只會被當成「沒覆寫」，
+    下一回合那個值又自己長回來，而畫面上完全看不出原因。最常見的就是解析錯的
+    Discord 連結 —— 想拿掉它，只能靠 null。
     """
     entry = overrides.get(str(topic_id))
     if not isinstance(entry, dict):
         return {}
-    out: dict[str, str] = {}
-    for key in ("summary", "note"):
-        value = entry.get(key)
-        if isinstance(value, str) and value.strip():
+    out: dict[str, Any] = {}
+    for key in OVERRIDE_KEYS:
+        if key not in entry:
+            continue
+        value = entry[key]
+        if value is None:
+            out[key] = None
+        elif isinstance(value, str) and value.strip():
             out[key] = value.strip()
     return out
