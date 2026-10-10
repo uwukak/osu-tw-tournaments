@@ -10,6 +10,9 @@
     "status": "open",
     "deadline_iso": "2026-10-17T23:59:00+00:00"
   },
+  "2250185": {
+    "decision": "exclude"
+  },
   "2250525": {
     "decision": "exclude"
   },
