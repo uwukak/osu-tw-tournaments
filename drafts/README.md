@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 23 筆（收錄 18／待確認 5）
+共 22 筆（收錄 18／待確認 4）
 
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
 - [The Taiko Poop Cup](2252609.md) — osu!taiko｜報名開放中
@@ -23,5 +23,4 @@
 - ⚠️ [Lion's osu! Cup](2250185.md) — osu!standard｜報名開放中
 - ⚠️ [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
 - 🙋 [Bai Yu Cup 2026](2251606.md) — osu!mania 4K｜工作人員招募狀態未標明
-- ⚠️ [Lazer std tournaments](2251780.md) — osu!standard｜報名狀態未標明
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
