@@ -8,7 +8,7 @@
 - [Yimasu‘s Hidden Tournament 2](2251619.md) — osu!standard｜報名狀態未標明
 - [Beginner's Taiko Tournament 10](2251298.md) — osu!taiko｜報名狀態未標明
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名開放中
-- [SMST 84](2250525.md) — osu!standard｜報名開放中
+- [SMST 84](2250525.md) — osu!standard｜表定已截止
 - [Fast Food Cup](2250321.md) — osu!standard｜報名開放中
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名狀態未標明
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜報名開放中
