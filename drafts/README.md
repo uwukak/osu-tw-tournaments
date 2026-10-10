@@ -10,6 +10,7 @@
 - [Beginner's Taiko Tournament 10](2251298.md) — osu!taiko｜報名開放中
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名開放中
 - [Fast Food Cup](2250321.md) — osu!standard｜報名開放中
+- [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
 - 🙋 [The Aphelion 2026](2249574.md) — osu!mania 4K｜報名開放中
 - [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名開放中
 - [Advanced TCT](2248645.md) — osu!taiko｜報名開放中
@@ -22,6 +23,5 @@
 - ⚠️ [Lion's osu! Cup](2250185.md) — osu!standard｜報名開放中
 - ⚠️ [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
 - 🙋 [Bai Yu Cup 2026](2251606.md) — osu!mania 4K｜工作人員招募狀態未標明
-- [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Lazer std tournaments](2251780.md) — osu!standard｜報名狀態未標明
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
