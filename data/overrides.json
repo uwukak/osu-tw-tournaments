@@ -24,6 +24,9 @@
     "region": "無區域限制（全球開放）",
     "status": "open"
   },
+  "2251780": {
+    "decision": "exclude"
+  },
   "2252609": {
     "rank_compact": "∞",
     "status": "open",
