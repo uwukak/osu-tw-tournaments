@@ -974,7 +974,12 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   function explainStatus(s){
     if(s === 401) return '權杖無效或已經過期，請重新輸入（🔑）。';
-    if(s === 403) return '權杖權限不足：需要這個 repo 的 Contents 讀寫權限。';
+    // 403 跟 404 在 GitHub 上是兩件不同的事，別混為一談：權杖**沒有選到**這個 repo
+    // 時，GitHub 會回 404（連存在都不承認）；選到了、但權限不夠，才回 403。
+    // 所以 403 的處方很明確 —— 去把 Contents 的 Write 打開，不必重發權杖。
+    if(s === 403) return '權杖權限不足：這把權杖有讀到這個 repo，但沒有寫入權。'
+                      + '請到 GitHub → Settings → Developer settings → Personal access tokens，'
+                      + '把這個 repo 的 Contents 權限改成 Read and write（權杖字串不變，不必重貼）。';
     if(s === 404) return '找不到這個 repo，或這把權杖沒有它的權限。';
     return 'GitHub 回了 ' + s + '，請稍後再試。';
   }
@@ -1926,15 +1931,10 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   //   * 處理函式根本沒被叫到 → 那行會停在「（剛剛點了 button#…）」，不會再變
   //   * 處理函式有跑，只是訊息被寫到看不見的地方 → 那行會立刻被蓋成「新增中…」
   // capture 階段（第三個參數 true）先跑，所以按鈕自己的處理函式若有跑，一定蓋得掉它。
-  document.addEventListener('click', function(e){
-    var t = e.target || {};
-    var hint = document.getElementById('eh-text');
-    var box = document.getElementById('edit-hint');
-    if(!hint || !box || box.hidden) return;
-    var cls = (typeof t.className === 'string' && t.className) ? '.' + t.className.split(' ')[0] : '';
-    hint.textContent = '（剛剛點了 ' + String(t.tagName || '?').toLowerCase()
-                     + (t.id ? '#' + t.id : '') + cls + '）';
-  }, true);
+  //
+  // 2026-10-10：靠它查出根因是權杖只有 Contents: Read（見 explainStatus 的 403），
+  // 收工，移除。留著註解是因為下次再有「按了沒反應」時，這是第一個該拿回來的東西。
+  // document.addEventListener('click', function(e){ ... }, true);
   // 「＋ 新增賽事」。整行（含這顆按鈕）平常是 hidden 的，所以訪客看不到它 ——
   // 它跟編輯模式的其他入口一樣，只是門面，真正擋住寫入的是那把權杖。
   //
