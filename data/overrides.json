@@ -8,5 +8,10 @@
   },
   "2250525": {
     "decision": "exclude"
+  },
+  "2252609": {
+    "rank_compact": "∞",
+    "status": "open",
+    "deadline_iso": "None"
   }
 }
