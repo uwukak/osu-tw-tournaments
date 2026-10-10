@@ -578,6 +578,18 @@ header.top{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; justify
 h1{font-family:"Saira","Noto Sans TC",sans-serif; font-size:clamp(22px,4vw,32px); font-weight:700; margin:0; letter-spacing:-.01em}
 h1 .accent{color:var(--accent)}
 .sub{color:var(--muted); font-size:13px; margin-top:6px}
+/* 粉專的入口，放在標題旁邊。圖示只用 currentColor 畫，兩套配色（淺／深）自己會跟著走 ——
+   不另外寫死顏色，就不會出現「深色主題下一顆淺灰圖示糊在背景裡」這種事。 */
+.brand{display:flex; align-items:center; gap:12px}
+.fb{
+  display:inline-flex; align-items:center; justify-content:center; flex:none;
+  width:36px; height:36px; border-radius:50%;
+  background:var(--surface); border:1px solid var(--border); color:var(--muted);
+  transition:color .15s, border-color .15s, background .15s;
+}
+.fb:hover{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
+.fb:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.fb svg{display:block; fill:currentColor}
 .stats{display:flex; gap:24px}
 .stat{text-align:right}
 .stat b{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:26px; font-weight:700; display:block; line-height:1.1}
@@ -778,7 +790,16 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 <div class="wrap">
   <header class="top">
     <div>
-      <h1>台灣 osu! <span class="accent">賽事看板</span></h1>
+      <div class="brand">
+        <h1>台灣 osu! <span class="accent">賽事看板</span></h1>
+        <!-- 粉專。這是訪客唯一一個「對外」的出口 —— 看板本身是靜態頁，沒有留言、
+             沒有通知，想知道新賽事或想問問題就只有這裡。
+             target/rel 兩個都要：不開新分頁會把人帶離看板，而少了 noopener
+             的話新開的那一頁拿得到這個視窗的參照（window.opener）。 -->
+        <a class="fb" href="https://www.facebook.com/profile.php?id=61595204582627"
+           target="_blank" rel="noopener" title="Facebook 粉絲專頁"
+           aria-label="Facebook 粉絲專頁"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+      </div>
       <div class="sub" id="sub">自動彙整 osu! 論壇 Tournaments 版中，台灣玩家可報名的錦標賽與工作人員招募</div>
     </div>
     <div class="stats">
