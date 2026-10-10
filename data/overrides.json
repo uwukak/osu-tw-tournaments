@@ -6,6 +6,10 @@
     "status": "closed",
     "decision": "exclude"
   },
+  "2249349": {
+    "region": "線下賽（新加坡）",
+    "note": "能到的都可以參加"
+  },
   "2250173": {
     "status": "open",
     "deadline_iso": "2026-10-17T23:59:00+00:00"
