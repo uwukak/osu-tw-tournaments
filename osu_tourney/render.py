@@ -1139,6 +1139,11 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   function setEditStatus(msg, bad){
     var n = document.getElementById('e-status');
     if(n){ n.textContent = msg; n.className = 'edit-status' + (bad ? ' bad' : ''); }
+    // 也寫到編輯模式那一行。那行在面板外面、一定看得到；#e-status 在窄視窗下會被
+    // .ed-bar 的 flex-wrap 擠到按鈕**下面**，寫在那裡等於寫在一個沒人會看的地方 ——
+    // 「按了沒反應」有很大一部分可能只是訊息跑到了看不見的位置。
+    var hint = document.getElementById('eh-text');
+    if(hint && msg) hint.textContent = msg;
   }
 
   // 沒被接住的錯誤也要有人看見。
@@ -1914,6 +1919,22 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var r = e.reason;
     reportFatal('未處理的錯誤：' + ((r && r.message) || String(r)));
   });
+
+  // **暫時的診斷工具**，查出「按了沒反應」之後就拿掉。
+  //
+  // 任何點擊都在編輯模式那一行留一個痕跡。這是為了分辨兩件從外面看起來一模一樣的事：
+  //   * 處理函式根本沒被叫到 → 那行會停在「（剛剛點了 button#…）」，不會再變
+  //   * 處理函式有跑，只是訊息被寫到看不見的地方 → 那行會立刻被蓋成「新增中…」
+  // capture 階段（第三個參數 true）先跑，所以按鈕自己的處理函式若有跑，一定蓋得掉它。
+  document.addEventListener('click', function(e){
+    var t = e.target || {};
+    var hint = document.getElementById('eh-text');
+    var box = document.getElementById('edit-hint');
+    if(!hint || !box || box.hidden) return;
+    var cls = (typeof t.className === 'string' && t.className) ? '.' + t.className.split(' ')[0] : '';
+    hint.textContent = '（剛剛點了 ' + String(t.tagName || '?').toLowerCase()
+                     + (t.id ? '#' + t.id : '') + cls + '）';
+  }, true);
   // 「＋ 新增賽事」。整行（含這顆按鈕）平常是 hidden 的，所以訪客看不到它 ——
   // 它跟編輯模式的其他入口一樣，只是門面，真正擋住寫入的是那把權杖。
   //
