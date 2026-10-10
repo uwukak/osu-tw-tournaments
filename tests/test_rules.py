@@ -29,6 +29,7 @@ from osu_tourney.rules import (  # noqa: E402
     extract_rank_range,
     extract_status,
     extract_team_formats,
+    find_deadline_sentence,
     is_staff_topic,
 )
 
@@ -261,6 +262,175 @@ def test_deadline_without_a_parseable_date_keeps_the_raw_sentence():
 
 def test_no_deadline_sentence_at_all():
     assert extract_deadline("Welcome to the tournament!", None) == (None, None)
+
+
+# --------------------------------------------------------------------------
+# 標籤式的截止句（2026-10-10 加）
+#
+# 下面每一句的「原文」欄都是當天從 forum 55 列表上真實抓到的首帖內文，不是造出來的。
+# 加這批規則之前，50 篇裡只有 8 篇找得到截止句；漏掉的全是這種「標籤：日期」的寫法。
+# --------------------------------------------------------------------------
+
+LABEL_CASES = [
+    # (原文, 期望 ISO)。這些都在 10 月，created_at 統一給 2026-10-01。
+    ("Registrations: 9th - 25th October Screening: 26th October - 1st November",
+     "2026-10-25T23:59:00+00:00"),
+    ("Player Registrations: October 2, 2026 - October 16, 2026",
+     "2026-10-16T23:59:00+00:00"),
+    ("Registration Phase: 29 September - 13 October 2026 (23:59 UTC)",
+     "2026-10-13T23:59:00+00:00"),
+    ("Registrations » October 5th - October 18th Screening » October 19th - November 1st",
+     "2026-10-18T23:59:00+00:00"),
+    ("Signups: 28 September - 11 October • Qualifiers: 12 October - 18 October",
+     "2026-10-11T23:59:00+00:00"),
+    ("Player Registrations : September 28th - October 18th",
+     "2026-10-18T23:59:00+00:00"),
+    ("玩家報名: Oct 3 ~ Oct 18 23:59 審核緩衝: Oct 19 ~ Oct 25",
+     "2026-10-18T23:59:00+00:00"),
+]
+
+# 這兩個的發文時間是 9 月底，用它自己的日期才不會被判成跨年。
+SEPTEMBER_CASES = [
+    ("Regs: September 27th -> October 10th 0 UTC", "2026-09-28T00:00:00+00:00",
+     "2026-10-10T23:59:00+00:00"),
+    ("Registration -> Sept 28th - 2 Oct Qualifiers -> Oct 2nd - Oct 4th",
+     "2026-09-28T00:00:00+00:00", "2026-10-02T23:59:00+00:00"),
+]
+
+
+def test_label_form_deadline_is_found_and_parsed():
+    for raw, want in LABEL_CASES:
+        got_raw, got_iso = extract_deadline(raw, "2026-10-01T12:00:00+00:00")
+        assert got_raw, f"沒有挑到截止句：{raw!r}"
+        assert got_iso == want, f"{raw!r}\n      得到 {got_iso}，預期 {want}"
+
+
+def test_label_form_around_september():
+    for raw, created, want in SEPTEMBER_CASES:
+        got_raw, got_iso = extract_deadline(raw, created)
+        assert got_raw, f"沒有挑到截止句：{raw!r}"
+        assert got_iso == want, f"{raw!r}\n      得到 {got_iso}，預期 {want}"
+
+
+def test_range_takes_the_end_date_not_the_start():
+    """區間寫法的截止是後面那個日期。
+
+    少了這條，「Registrations: 28 September - 11 October」會被讀成 9 月 28 日 ——
+    早了快三週，比賽還在報名就被看板標成「表定已截止」。
+    """
+    _, iso = extract_deadline(
+        "Registrations: 28 September - 11 October", "2026-09-20T00:00:00+00:00"
+    )
+    assert iso == "2026-10-11T23:59:00+00:00"
+
+
+def test_a_second_phase_is_not_a_range():
+    """兩個日期之間沒有連接詞時，就取第一個 —— 不能一路往後抓。
+
+    「Registrations Close: October 25th Screening Period: October 26th – November 1st」
+    的截止是 10/25，不是 11/1。中間夾的是「 Screening Period: 」，不是「-」。
+    """
+    _, iso = extract_deadline(
+        "Registrations Close: October 25th Screening Period: October 26th - November 1st",
+        "2026-10-01T00:00:00+00:00",
+    )
+    assert iso == "2026-10-25T23:59:00+00:00"
+
+
+def test_a_decorative_arrow_is_a_range_connector():
+    """真實內文用裝飾性箭頭 ➔ 代替「-」。
+
+    這是 2026-10-10 實跑才發現的：漏掉 ➔ 會讓「18th September ➔ 9th October」
+    被讀成 9 月 18 日，早了整整三週。
+    """
+    raw, iso = extract_deadline(
+        "Player Registrations ■ 18th September ➔ 9th October "
+        "Screening Buffer ■ 10th October ➔ 11th October",
+        "2026-10-01T00:00:00+00:00",
+    )
+    assert raw.startswith("Player Registrations"), raw
+    assert iso == "2026-10-09T23:59:00+00:00"
+
+
+def test_between_and_is_a_range():
+    """「between 19 September and 27 September」的截止是 27 日。"""
+    _, iso = extract_deadline(
+        "Registrations will be open between 19th September 2026 and 27th September 2026",
+        "2026-09-20T00:00:00+00:00",
+    )
+    assert iso == "2026-09-27T23:59:00+00:00"
+
+
+def test_a_bare_and_is_not_a_range():
+    """沒有 between／from 時，and 是**列舉**不是區間 —— 截止仍是 10/16。
+
+    這一條是 test_between_and_is_a_range 的煞車。少了它，「Registrations close
+    Oct 16 and screening starts Oct 20」會被讀成 10/20，把截止往後推四天。
+    """
+    _, iso = extract_deadline(
+        "Registrations close October 16th and screening starts October 20th",
+        "2026-10-01T00:00:00+00:00",
+    )
+    assert iso == "2026-10-16T23:59:00+00:00"
+
+
+def test_a_month_day_written_with_a_period_is_not_cut_short():
+    """「September.23」的句點是月日分隔符，不是句尾。
+
+    Sonus Scope 2（2247819）的真實內文開頭。切在句點上會得到「Registration:
+    September」—— 一句半截話，看板會照抄給讀者看。
+    """
+    raw, iso = extract_deadline(
+        "Registration: September.23 - October.11 Screening: October.12 - October.18 "
+        "Qualifiers: October.19 - October.25",
+        "2026-09-23T06:12:42+00:00",
+    )
+    assert raw.startswith("Registration: September.23 - October.11"), raw
+    assert iso == "2026-10-11T23:59:00+00:00"
+
+
+def test_a_dated_sentence_wins_over_an_earlier_vague_one():
+    """內文先順帶提到「報名截止」，真正的截止在後面 —— 要挑有日期的那句。
+
+    Yimasu's Hidden Tournament 2 的真實內文順序。
+    """
+    body = (
+        "Players must be between 20,000-99,999BWS when registrations close. "
+        "There is no rank buffer. "
+        "Registrations » October 5th - October 18th Screening » October 19th"
+    )
+    raw, iso = extract_deadline(body, "2026-10-05T13:52:58+00:00")
+    assert raw.startswith("Registrations » October 5th"), raw
+    assert iso == "2026-10-18T23:59:00+00:00"
+
+
+def test_a_registration_label_without_a_date_is_not_a_deadline_sentence():
+    """「Registrations: OPEN」沒有日期，不該被當成截止句。
+
+    看板會把挑到的句子照抄給讀者看，挑到這種等於在幫主辦亂說話。
+    """
+    assert find_deadline_sentence("Registrations: OPEN Joining the Discord is mandatory") is None
+
+
+def test_a_link_row_is_not_a_deadline_sentence():
+    """真實首帖開頭的一排連結。沒有日期，不該被當成截止句。"""
+    assert (
+        find_deadline_sentence(
+            "Main Sheet | Discord | QQ | Rules Document | Challonge "
+            "Team Registrations | Free Agent Registrations | Staff Registrations "
+            "FFC 是面向所有中国四、五位数排名玩家的常规比赛"
+        )
+        is None
+    )
+
+
+def test_rank_range_is_not_read_as_a_date():
+    """名次區間不該被當成日期。
+
+    「2-99,999」長得像「2 月 99 日」；「1-9,500」更像，會安靜地解析成 9 月 1 日。
+    """
+    assert find_deadline_sentence("Registrations: 2-99,999 Rank Range") is None
+    assert find_deadline_sentence("Player Registrations 1-9,500 BWS") is None
 
 
 # --------------------------------------------------------------------------

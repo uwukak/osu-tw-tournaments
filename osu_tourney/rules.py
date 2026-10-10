@@ -381,15 +381,64 @@ def analyze(title: str) -> Verdict:
 # 首帖內文：報名截止時間
 # --------------------------------------------------------------------------
 
-# 截止時間寫在散文裡，例如：
-#   "Registrations will end for both brackets at 23:59 October 16th(Friday UTC+0)"
+# 截止時間有兩種寫法，而真實語料裡**標籤式比動詞式常見得多**：
+#
+#   (A) 動詞式：「Registrations will end for both brackets at 23:59 October 16th」
+#   (B) 標籤式：「Registrations: 9th - 25th October」
+#               「Signups » October 5th - October 18th」
+#               「Regs -> September 27th」「玩家報名: Oct 3 ~ Oct 18」
+#
+# 2026-10-10 對 forum 55 列表上 50 篇首帖實測：只認動詞式時只過得了 8 篇。
+# 漏掉的幾乎全是標籤式 —— 主辦把賽程整個貼出來，每一行都是「標籤：日期」，
+# 而動詞式那條要求「報名」後面**直接接** end／close／until，接不上就整句漏掉。
+#
 # 句子抓得到，但把裡面的日期解析成精確時間**不可靠** —— 同一句可能還夾帶賽程日期
 # （October 17th / 18th），而且年份通常沒寫。所以 deadline_raw 一律保存，
 # deadline_iso 只做低信心猜測；猜不出來就讓草稿顯示原句，不捏造。
+_MONTH_NAMES = r"(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)"
+
+# 「報名」這個概念的各種寫法。中英夾雜是常態，台灣與中國的賽事尤其如此。
+_REG_WORD = (
+    r"(?:registrations?|registros?|regs?|sign[ -]?ups?|entries|applications?|報名|报名)"
+)
+
+# 只拿來判斷「標籤後面不遠處有沒有日期」，不用來取值 —— 取值是 DATE_IN_TEXT 的事。
+# 所以這裡刻意寬鬆（連中文的 10月16日 都算），把關留給 parse_deadline_iso。
+# 數字式後面的 (?![\d,]) 是為了擋掉「2-99,999」「1-9,500」這種名次區間。
+_DATEISH = (
+    r"(?:\d{1,2}\s*(?:st|nd|rd|th)?\s*" + _MONTH_NAMES + r"[a-z]*"
+    r"|" + _MONTH_NAMES + r"[a-z]*\.?\s*\d{1,2}(?:st|nd|rd|th)?"
+    r"|(?<![\d.,])\d{1,2}\s*[/\-]\s*\d{1,2}(?![\d,])"
+    r"|\d{1,2}\s*月\s*\d{1,2}\s*日?"
+    r")"
+)
+
+# 句尾：. ! ? 以及中文的 。！？。
+#
+# `.` 有一個例外：「September.30」「Sept. 30」的句點是「月.日」的分隔符，不是句尾。
+# 2026-10-10 實測踩到過：Sonus Scope 2 的內文寫「Registration: September.30 -
+# December.6」，切在句點上會得到「Registration: September」這半截話 —— 看板會
+# 把它當成主辦寫的截止句顯示出來。挑錯句子比顯示「未標明」更糟。
+_STOP = r"(?:[^.!?。！？]|\.(?=\s*\d))"
+
 DEADLINE_SENTENCE = re.compile(
-    r"(?i)(?:registrations?|sign[ -]?ups?|entries|regs?|applications?)\s+"
-    r"(?:will\s+|are\s+|is\s+)?(?:end|ends|ending|close|closes|closing|closed|"
-    r"deadline|due|until|open\s+until)[^.]{0,160}"
+    r"(?i)(?:"
+    # (A) 動詞式
+    + _REG_WORD
+    + r"\s+(?:will\s+|are\s+|is\s+)?"
+    r"(?:end|ends|ending|close|closes|closing|closed|deadline|due|until|open\s+until)"
+    # (B) 標籤式：報名的字 → 可有可無的階段詞 → 可有可無的分隔符 → 不遠處要有日期。
+    # 最後那個 (?=...) 是必要的守門：「Registrations: OPEN」「Team Regs | Free Agent
+    # Regs」這種沒有日期的命中會被它擋掉，否則看板會把「截止那句」顯示成一句跟截止
+    # 無關的話 —— 那比顯示「未標明」更糟，讀者會以為主辦就是那樣寫的。
+    r"|(?:player\s+|staff\s+|team\s+|free\s+agent\s+)?"
+    + _REG_WORD
+    + r"(?:\s+(?:phase|period|window|timeline|closes?|ends?|deadline|opens?|starts?|截止))?"
+    r"\s*[:：»>~=\-–—]?\s*"
+    r"(?=" + _STOP + r"{0,40}?" + _DATEISH + r")"
+    r")"
+    + _STOP
+    + r"{0,160}"
 )
 
 _MONTHS = {
@@ -403,28 +452,76 @@ _MONTHS = {
 # `59 October`，把 59 當成「日」→ datetime() 爆掉 → 整個截止時間變 None。
 # `12:30 October 16th` 更糟：30 是合法日期，會安靜地解析成 10 月 30 日。
 # 要求日期前面不是數字或冒號（也不是千分位的 . 與 ,），才不會把時分讀成日。
+#
+# 月名與日之間是 \s* 而非 \s+：「September.30」「Sept. 30」這種把句點當分隔符的寫法
+# 在語料裡真的出現過（Sonus Scope 2）。`\.?` 後面接 `\s*` 兩者都吃得下；
+# 而「Oct2026」不會誤判 —— `\b` 卡在 20 與 26 之間，兩個都是數字，不成立。
 DATE_IN_TEXT = re.compile(
     r"(?i)(?<![\d:.,])\b(\d{1,2})(?:st|nd|rd|th)?\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b"
-    r"|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b"
+    r"|\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s*(\d{1,2})(?:st|nd|rd|th)?\b"
 )
 
 TIME_IN_TEXT = re.compile(r"\b(\d{1,2}):(\d{2})\b")
 
 
 def find_deadline_sentence(body_text: str) -> Optional[str]:
-    """從首帖內文挑出提到報名截止的那一句（原文，不改寫）。"""
-    m = DEADLINE_SENTENCE.search(body_text or "")
-    return m.group(0).strip() if m else None
+    """從首帖內文挑出提到報名截止的那一句（原文，不改寫）。
+
+    一個帖子裡常常有好幾處沾到「報名」兩個字。Yimasu's Hidden Tournament 2 就是
+    現成的例子：內文先出現「Players must be between 20,000-99,999BWS when
+    registrations close」——那只是順帶一提，真正的截止寫在後面的 Schedule 區塊
+    （「Registrations » October 5th - October 18th」）。只回第一個命中的話，
+    看板上的「主辦寫的截止那句」就會是前面那句廢話。
+
+    所以掃過**所有**命中，優先回傳「句子裡真的有日期」的那一個；都沒有才退回
+    第一個。挑錯句子比顯示「未標明」更糟 —— 讀者會以為主辦就是那樣寫的。
+    """
+    first: Optional[str] = None
+    for m in DEADLINE_SENTENCE.finditer(body_text or ""):
+        hit = m.group(0).strip()
+        if first is None:
+            first = hit
+        if DATE_IN_TEXT.search(hit):
+            return hit
+    return first
 
 
-def _deadline_date_candidates(raw: str) -> list[tuple[int, int]]:
-    """依序吐出句子裡的 (日, 月) 候選，由呼叫端驗證合法性。"""
-    out: list[tuple[int, int]] = []
+# 日期區間的連接詞。中英西越語的寫法都在真實語料裡出現過：
+#   「Registrations: 28 September - 11 October」（-）
+#   「Regs: September 27th -> October 10th」（->）
+#   「Player Registrations ■ 18th September ➔ 9th October」（➔，裝飾性箭頭）
+#   「Registrations: 9th to 25th October」（to）
+#   「Inicio y Fin de regs Mie 23/09 a Sab 17/10」（a，西語）
+#
+# 箭頭那幾個是 2026-10-10 實測才發現的 —— 漏掉 ➔ 會讓「18th September ➔ 9th
+# October」被讀成 9 月 18 日，早了整整三週。
+_RANGE_JOIN = re.compile(
+    r"(?i)(?:[-–—~→➔➜➝➞➤⟶]|->|\bto\b|\buntil\b|\bthrough\b|\ba\b|至|到)"
+)
+
+# 「between 19 September and 27 September」也是一種區間，但連接詞是 and。
+# and 單獨出現時多半是**列舉**而不是區間 —— 「Registrations close Oct 16 and
+# screening starts Oct 20」的截止是 10/16，不是 10/20。所以只有在 and 前面出現過
+# between／from／desde 這類字時，才把它當成區間連接詞。
+_RANGE_AND = re.compile(r"(?i)\band\b")
+_RANGE_LEAD = re.compile(r"(?i)\b(?:between|entre|from|desde)\b")
+
+
+def _deadline_date_candidates(raw: str) -> list[tuple[int, int, int, int]]:
+    """依序吐出句子裡的 (日, 月, 起點, 終點)，由呼叫端驗證合法性。
+
+    位置是給 parse_deadline_iso 分辨「這是單日還是區間」用的。
+    """
+    out: list[tuple[int, int, int, int]] = []
     for m in DATE_IN_TEXT.finditer(raw):
         if m.group(1):
-            out.append((int(m.group(1)), _MONTHS[m.group(2).lower()[:3]]))
+            out.append(
+                (int(m.group(1)), _MONTHS[m.group(2).lower()[:3]], m.start(), m.end())
+            )
         else:
-            out.append((int(m.group(4)), _MONTHS[m.group(3).lower()[:3]]))
+            out.append(
+                (int(m.group(4)), _MONTHS[m.group(3).lower()[:3]], m.start(), m.end())
+            )
     return out
 
 
@@ -449,10 +546,27 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
     hm = TIME_IN_TEXT.search(raw)
     hour, minute = (int(hm.group(1)), int(hm.group(2))) if hm else (23, 59)
 
+    cands = _deadline_date_candidates(raw)
+
+    # 區間寫法（「Registrations: 28 September - 11 October」）的截止是**後面**那個
+    # 日期；單日寫法（「Registrations Close: October 25th」）就是那一個。
+    # 分辨方式：看前兩個候選之間夾的是不是連接詞，是的話往後推一格。
+    #
+    # 少了這一步，「Registrations: 28 September - 11 October」會被讀成 9 月 28 日 ——
+    # 早了快三週，比賽還在報名就被看板標成「表定已截止」。
+    start = 0
+    if len(cands) >= 2:
+        gap = raw[cands[0][3] : cands[1][2]]
+        joined = _RANGE_JOIN.search(gap) or (
+            _RANGE_LEAD.search(raw[: cands[0][2]]) and _RANGE_AND.search(gap)
+        )
+        if joined:
+            start = 1
+
     # 候選一律用 datetime() 驗過才採用：不合法就換下一個，而不是整句放棄。
     # 這是第二層防線 —— 第一層是 DATE_IN_TEXT 的 lookbehind。
     dt = None
-    for day, month in _deadline_date_candidates(raw):
+    for day, month, _start, _end in cands[start:]:
         if not 1 <= day <= 31:
             continue
         try:

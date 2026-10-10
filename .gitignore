@@ -16,3 +16,5 @@ Desktop.ini
 forum55.html
 tournaments.html
 inspect_*.py
+# inspect_deadlines.py 的輸出。裡面是原帖內文的節錄，留著只會髒版控。
+inspect_*.txt
