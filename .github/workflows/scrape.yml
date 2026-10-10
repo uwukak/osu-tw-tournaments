@@ -36,6 +36,7 @@ jobs:
           python tests/test_parse.py
           python tests/test_gitio.py
           python tests/test_dashboard_js.py
+          python tests/test_custom_roundtrip.py
 
       - name: 抓取並更新
         run: python -m osu_tourney.scrape --push
