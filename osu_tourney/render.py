@@ -39,6 +39,16 @@ STATUS_LABEL = {
     "expired": "表定已截止",
 }
 
+# 看板列表的排序：還能報的排最前面。
+#
+# 讀者是來找「現在還能報名的比賽」的。三種狀態混在一起時，每一列都得先讀狀態才知道
+# 要不要停下來；把開放中的集中在上半頁，掃視就有效率。
+#
+# closed 與 expired 刻意同分：對讀者來說兩者都是「不能報了」。標題自己說截止的、
+# 跟內文寫的截止時間已經過去的，結果一樣 —— 再分誰先誰後沒有意義。同分時沿用次要
+# 排序（收錄優先，再依發現時間新到舊）。
+STATUS_ORDER = {"open": 0, "unknown": 1, "closed": 2, "expired": 2}
+
 # 徵求工作人員的帖子（kind == "staff"）用的措辭。草稿是直接貼出去的，
 # 寫「報名開放中」會讓讀者以為是去報名比賽 —— 那場比賽根本不收選手。
 STAFF_STATUS_LABEL = {
@@ -366,8 +376,8 @@ def build_payload(
             }
         )
 
-    # 收錄的排前面，同組內新的排前面。
-    # 三次穩定排序，由次要到主要：決策 → 首次發現時間 → topic id。
+    # 還能報的排最前面，其餘依序是狀態未明、已截止。
+    # 四次穩定排序，由次要到主要：topic id → 首次發現時間 → 決策 → 報名狀態。
     # 最後那個 tiebreaker 是必要的，不是裝飾：同一回合發現的賽事 first_seen_utc
     # 完全相同，少了它，平手的順序就取決於 dict 的迭代順序 —— 而「這回合新建的 dict」
     # 與「從 sort_keys 過的 JSON 載回來的 dict」順序不一樣（後者是 id 遞增），
@@ -379,6 +389,7 @@ def build_payload(
     rows.sort(key=lambda r: int(r["topic_id"]), reverse=True)
     rows.sort(key=lambda r: r["first_seen_utc"], reverse=True)
     rows.sort(key=lambda r: r["decision"] != "include")
+    rows.sort(key=lambda r: STATUS_ORDER.get(r["status"], 9))
 
     counts = {
         "include": sum(1 for r in rows if r["decision"] == "include"),
@@ -1107,6 +1118,22 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   function setEditStatus(msg, bad){
     var n = document.getElementById('e-status');
     if(n){ n.textContent = msg; n.className = 'edit-status' + (bad ? ' bad' : ''); }
+  }
+
+  // 沒被接住的錯誤也要有人看見。
+  //
+  // 這個頁面的失敗模式幾乎都是「靜靜地什麼都沒發生」：一個漏接的例外只會在 Console
+  // 留一行，畫面上完全沒反應，站在看板前面的人根本無從判斷是權杖、網路，還是程式
+  // 自己壞了。所以把它攤到編輯模式一定看得到的地方。
+  //
+  // 找不到 #e-status（面板沒開）就退回編輯模式那一行 —— 兩個都沒有就真的是訪客，
+  // 那時也沒有東西好講，安靜收場。
+  function reportFatal(msg){
+    var n = document.getElementById('e-status');
+    if(n){ n.textContent = msg; n.className = 'edit-status bad'; return; }
+    var box = document.getElementById('edit-hint');
+    var hint = document.getElementById('eh-text');
+    if(hint && box && !box.hidden) hint.textContent = '⚠️ ' + msg;
   }
 
   var STATUS = {open:'報名開放中', closed:'報名已截止', unknown:'報名狀態未標明', expired:'表定已截止'};
@@ -1843,6 +1870,17 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   document.getElementById('eh-token').addEventListener('click', openTokenDialog);
   document.getElementById('eh-exit').addEventListener('click', exitEdit);
+
+  // 見上面 reportFatal。error 抓同步例外，unhandledrejection 抓沒接到的 Promise ——
+  // 存檔那條路是非同步的，漏接的拒絕不會走 error。
+  window.addEventListener('error', function(e){
+    reportFatal('程式錯誤：' + (e.message || '未知') + '（'
+                + String(e.filename || '').split('/').pop() + ':' + e.lineno + '）');
+  });
+  window.addEventListener('unhandledrejection', function(e){
+    var r = e.reason;
+    reportFatal('未處理的錯誤：' + ((r && r.message) || String(r)));
+  });
   // 「＋ 新增賽事」。整行（含這顆按鈕）平常是 hidden 的，所以訪客看不到它 ——
   // 它跟編輯模式的其他入口一樣，只是門面，真正擋住寫入的是那把權杖。
   //

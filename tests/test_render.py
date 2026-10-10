@@ -577,6 +577,92 @@ def test_a_malformed_hand_added_entry_does_not_take_the_board_down():
 
 
 # --------------------------------------------------------------------------
+# 看板排序：還能報的排最前面
+#
+# 讀者是來找「現在還能報名」的比賽的。三種狀態混在一起時，每一列都得先讀狀態才知道
+# 要不要停下來；集中起來掃視就有效率。
+# --------------------------------------------------------------------------
+
+
+def _unknown(topic_id, seen, decision="include"):
+    """一筆「狀態未明」的記錄。
+
+    deadline_iso 一定要拿掉：SMST83 帶的是 2026-09-25，早就過了，留著的話
+    effective_status 會把它校正成 expired，就驗不到 unknown 這一組了。
+    """
+    rec = dict(
+        SMST83,
+        topic_id=topic_id,
+        status="unknown",
+        decision=decision,
+        first_seen_utc=seen,
+        last_seen_utc=seen,
+    )
+    del rec["deadline_iso"]
+    return rec
+
+
+def test_the_board_puts_what_you_can_still_enter_first():
+    """開放中 → 未標明 → 已截止。
+
+    id 故意跟「能不能報」相反（愈晚發現的愈不能報）—— 這樣排出來的順序才證明得了
+    排序真的照狀態走，而不是碰巧照著 id 排下來。
+    """
+    future = "2026-11-01T23:59:00+00:00"
+    rows = render.build_payload(
+        {
+            "9001": dict(SMST83, topic_id=9001, status="closed", deadline_iso=future),
+            "9002": dict(SMST83, topic_id=9002, status="open", deadline_iso=future),
+            "9003": _unknown(9003, SMST83["first_seen_utc"]),
+        },
+        META,
+        NOW,
+    )["tournaments"]
+    assert [r["status"] for r in rows] == ["open", "unknown", "closed"]
+
+
+def test_the_usual_order_still_holds_inside_a_status_group():
+    """同一個狀態之內排序不變：收錄優先，再依發現時間新到舊。
+
+    少了這一條，「照狀態分組」很容易被實作成「只照狀態排」—— 於是每一組內部的
+    順序就變成 dict 迭代順序，看板每次換環境都整片跳位。
+    """
+    rows = render.build_payload(
+        {
+            "9001": _unknown(9001, "2026-10-01T00:00:00+00:00"),
+            "9002": _unknown(9002, "2026-10-08T00:00:00+00:00"),
+            "9003": _unknown(9003, "2026-10-09T00:00:00+00:00", decision="review"),
+        },
+        META,
+        NOW,
+    )["tournaments"]
+    assert [r["topic_id"] for r in rows] == [9002, 9001, 9003]
+
+
+def test_closed_and_expired_are_the_same_kind_of_dead():
+    """標題自己說截止的、跟內文寫的截止時間已經過去的，對讀者來說結果一樣 ——
+    刻意同分，才不會冒出「哪一種該排前面」這種沒有答案的爭論。"""
+    assert render.STATUS_ORDER["closed"] == render.STATUS_ORDER["expired"]
+    assert (
+        render.STATUS_ORDER["open"]
+        < render.STATUS_ORDER["unknown"]
+        < render.STATUS_ORDER["closed"]
+    )
+
+
+def test_a_hand_added_tournament_sorts_with_the_rest():
+    """手動新增的沒有特權，它就是看板上的一列，照同一個規則排。
+
+    SMST 83 在 NOW 這天已經是 expired；社群自辦盃是「未標明」，所以排在它前面。
+    """
+    rows = render.build_payload(
+        {"2246109": SMST83}, META, NOW, None, {"-1": HAND_ADDED}
+    )["tournaments"]
+    assert [r["status"] for r in rows] == ["unknown", "expired"], "前提"
+    assert [r["topic_id"] for r in rows] == [-1, 2246109]
+
+
+# --------------------------------------------------------------------------
 # 草稿標題
 # --------------------------------------------------------------------------
 
