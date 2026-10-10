@@ -25,4 +25,4 @@
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Lazer std tournaments](2251780.md) — osu!standard｜報名狀態未標明
 - [SMST 84](2250525.md) — osu!standard｜表定已截止
-- [SMST 83](2246109.md) — osu!standard｜表定已截止
+- [SMST 83](2246109.md) — osu!standard｜報名已截止
