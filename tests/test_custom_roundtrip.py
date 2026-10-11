@@ -31,6 +31,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# tests/ 自己也要在路徑上：`python tests/x.py` 跑的時候，
+# sys.path[0] 是 tests/（直譯器放的），但 pytest 底下不是。
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import _runner  # noqa: E402
 
 from osu_tourney import scrape, store  # noqa: E402
 
@@ -141,6 +146,60 @@ def test_the_link_is_carried_onto_the_board():
         assert "https://example.com/signup" in _board(root)
 
 
+def test_a_deleted_draft_is_not_resurrected():
+    """貼完文刪掉草稿 → 下一回合不准再種回來。
+
+    README 教你「貼完就刪掉那個檔案」，而能刪的只有站長（爬蟲從來不刪草稿）。
+    少了這條守門，drafts/ 會變成一堆清不掉的檔案：每個回合把它們全部重新長出來，
+    而畫面上完全看不出為什麼刪不掉。
+    """
+    with _sandbox() as root:
+        _write_custom(root, CUSTOM)
+        assert _run() == 0
+        assert (root / "drafts" / "-1.md").exists()
+
+        (root / "drafts" / "-1.md").unlink()
+        _write_custom(root, {"-1": dict(CUSTOM["-1"], url="https://example.com/changed")})
+        assert _run() == 0
+
+        assert not (root / "drafts" / "-1.md").exists(), (
+            "刪掉的草稿又自己長回來了 —— _write_drafts 沒把「檔案不見了」當成已發佈"
+        )
+        # 看板不受影響，照樣跟著改。
+        assert "https://example.com/changed" in _board(root)
+
+
+def test_a_hand_written_draft_without_a_hash_is_backed_up_not_just_overwritten():
+    """沒有雜湊記錄時要先備份。
+
+    這個狀態（檔案在、帳上卻沒寫過）分不出是「舊資料還沒補」還是「站長自己寫的」。
+    直接覆蓋等於在猜，而猜錯的那一次使用者手寫的內容就沒了 ——
+    所以寫之前先留一份 .bak。
+    """
+    import hashlib as _h
+
+    with _sandbox() as root:
+        # 先把記錄補上正常的雜湊，再把「帳」擦掉，模擬修補前的舊資料。
+        _write_custom(root, CUSTOM)
+        assert _run() == 0
+        draft = root / "drafts" / "-1.md"
+        draft.write_text("我自己寫的內容\n", encoding="utf-8")
+
+        data = _data(root)
+        data["custom_draft_sha"] = {}
+        (root / "data" / "tournaments.json").write_text(
+            json.dumps(data, ensure_ascii=False), encoding="utf-8"
+        )
+        _write_custom(root, {"-1": dict(CUSTOM["-1"], url="https://example.com/changed")})
+        assert _run() == 0
+
+        assert (root / "drafts" / "-1.md.bak").read_text(encoding="utf-8") == "我自己寫的內容\n", (
+            "沒有雜湊記錄時直接覆蓋掉了 —— 手寫內容要先備份成 .bak"
+        )
+        assert "https://example.com/changed" in draft.read_text(encoding="utf-8")
+        assert _h.sha256(draft.read_bytes()).hexdigest() == _data(root)["custom_draft_sha"]["-1"]
+
+
 def test_the_draft_hash_is_recorded_and_the_next_run_writes_nothing():
     """這條是「不製造假提交」的核心：第二回合必須完全不寫檔。
 
@@ -225,19 +284,7 @@ def test_a_single_malformed_entry_is_skipped_without_taking_the_board_down():
 # --------------------------------------------------------------------------
 
 def main() -> int:
-    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
-    failed = 0
-    for fn in tests:
-        try:
-            fn()
-        except AssertionError as exc:
-            failed += 1
-            print(f"FAIL  {fn.__name__}\n      {exc}")
-        else:
-            print(f"ok    {fn.__name__}")
-
-    print(f"\n{len(tests) - failed}/{len(tests)} passed")
-    return 1 if failed else 0
+    return _runner.run(globals())
 
 
 if __name__ == "__main__":

@@ -57,6 +57,42 @@ RANGE = re.compile(
     rf"(?i)#?\s*({_NUM})\s*(?:-|–|—|~|to)\s*#?\s*({_NUM}|inf(?:inity)?|inf\.?)\s*\+?"
 )
 
+# 只有下界、沒有上界的寫法：「100K+」「#5000+」「10,000 and up」「5000 rank +」。
+#
+# 真實語料（forum 55 的 50 篇標題）裡目前一筆都沒有 —— 全部都是 `X-Y` 或
+# `X-infinity`。但這是很自然的寫法，一旦有人用，整筆名次會**安靜地變成空的**
+# （RANGE 找不到 `-` 就回 None），而卡片上那一行只是消失，沒有任何錯誤訊息。
+_RANK_OPEN = re.compile(
+    rf"(?i)#?\s*({_NUM})\s*(?:(?:rank|bws)\s*)?"
+    r"(?:\+|and\s+(?:up|above|over)|or\s+(?:higher|above|more))"
+)
+
+# 名次字眼。`4K+` 可以是 mania 鍵數、`TS3+` 可以是隊員數，靠這些字（或 `#`）分辨。
+_RANK_CONTEXT = re.compile(r"(?i)\brank\w*\b|\bbws\b")
+
+# 沒有名次字眼時，多大的數字才「大到不可能是鍵數或隊員數」。
+# 9000 這個門檻同時把年份擋在外面（`2026+` 是賽季，不是名次）——
+# 年份落在 1900–2100，比 9000 小，所以自然被濾掉。
+_OPEN_RANK_MIN = 9000
+
+
+def _open_rank(title: str) -> Optional[int]:
+    """單邊名次寫法的下界；判斷不出是名次時回 None。"""
+    m = _RANK_OPEN.search(title)
+    if not m:
+        return None
+    lo = _norm_rank(m.group(1))
+    if lo is None:
+        return None
+    # 判斷範圍刻意取前後各 12 個字：`5000 rank +` 的「rank」在命中字串**裡面**，
+    # 只看前後綴會漏掉它。
+    window = title[max(0, m.start() - 12) : m.end() + 12]
+    if "#" in window or _RANK_CONTEXT.search(window):
+        return lo
+    if lo >= _OPEN_RANK_MIN:
+        return lo
+    return None
+
 RANK_MIN_YEAR = 1900
 RANK_MAX_YEAR = 2100
 
@@ -73,19 +109,27 @@ def _norm_rank(tok: str) -> Optional[int]:
 
 
 def extract_rank_range(title: str) -> Optional[tuple[Optional[int], Optional[int]]]:
-    """解析名次區間，例如 50K-100K / #10,000-#99,999 / #2500-infinity。
+    """解析名次區間，例如 50K-100K / #10,000-#99,999 / #2500-infinity / 100K+。
 
     infinity 表達成 None。兩端都落在年份範圍時視為年份（例如 "2026-2027 season"）而丟棄。
+
+    單邊的 `100K+` 也回 `(100000, None)` —— 上界是 None（無上限），不是「沒有名次」。
+    少了這一條，那種寫法的名次會安靜地變成空白。
     """
     m = RANGE.search(title)
-    if not m:
-        return None
-    lo, hi = _norm_rank(m.group(1)), _norm_rank(m.group(2))
-    if lo is None:
-        return None
-    if hi is not None and RANK_MIN_YEAR <= lo <= RANK_MAX_YEAR and RANK_MIN_YEAR <= hi <= RANK_MAX_YEAR:
-        return None  # 這是年份區間，不是名次
-    return (lo, hi)
+    if m:
+        lo, hi = _norm_rank(m.group(1)), _norm_rank(m.group(2))
+        if lo is None:
+            return None
+        if hi is not None and RANK_MIN_YEAR <= lo <= RANK_MAX_YEAR and RANK_MIN_YEAR <= hi <= RANK_MAX_YEAR:
+            return None  # 這是年份區間，不是名次
+        return (lo, hi)
+
+    # 沒有 `X-Y` 的形狀，再試單邊的 `X+`。
+    lo = _open_rank(title)
+    if lo is not None:
+        return (lo, None)
+    return None
 
 
 def format_rank_compact(rng: Optional[tuple[Optional[int], Optional[int]]]) -> str:

@@ -23,6 +23,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# tests/ 自己也要在路徑上：`python tests/x.py` 跑的時候，
+# sys.path[0] 是 tests/（直譯器放的），但 pytest 底下不是。
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import _runner  # noqa: E402
 
 from osu_tourney import render  # noqa: E402
 
@@ -174,19 +179,7 @@ def test_the_inline_script_parses():
 
 
 def main() -> int:
-    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
-    failed = 0
-    for fn in tests:
-        try:
-            fn()
-        except AssertionError as exc:
-            failed += 1
-            print(f"FAIL  {fn.__name__}\n      {exc}")
-        else:
-            print(f"ok    {fn.__name__}")
-
-    print(f"\n{len(tests) - failed}/{len(tests)} passed")
-    return 1 if failed else 0
+    return _runner.run(globals())
 
 
 if __name__ == "__main__":

@@ -11,10 +11,16 @@
 from __future__ import annotations
 
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# tests/ 自己也要在路徑上：`python tests/x.py` 跑的時候，
+# sys.path[0] 是 tests/（直譯器放的），但 pytest 底下不是。
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import _runner  # noqa: E402
 
 from osu_tourney import render, store  # noqa: E402
 
@@ -211,6 +217,51 @@ def test_a_hand_written_entry_of_the_wrong_shape_is_ignored():
     """這個檔案是給人改的，很容易把整筆寫成字串而不是物件。不該讓整頁炸掉。"""
     row = render.build_payload({"2246109": SMST83}, META, NOW, {"2246109": "一段字"})["tournaments"][0]
     assert row["summary"] == ""
+
+
+def test_a_hand_added_tournaments_summary_is_not_dropped():
+    """手動新增的賽事，說明寫在 custom.json 裡，不在 overrides.json。
+
+    這兩欄有兩個住處，取決於賽事是哪裡來的：爬蟲抓來的寫進 overrides.json，
+    手動新增的寫進 custom.json（那筆記錄本身就在那裡）。
+    只看 own 的話，看板編輯器把說明存進 custom.json 了，build_payload 這一行
+    又把它蓋回空字串 —— 存得進去、看不到，而且畫面上完全沒有線索。
+    """
+    added = {
+        "-7": {
+            "topic_id": -7,
+            "name": "社群自辦盃",
+            "mode": "std",
+            "status": "open",
+            "decision": "include",
+            "first_seen_utc": "2025-01-01T00:00:00+00:00",
+            "summary": "社群自己辦的，報名在 Discord 開表單。",
+            "note": "主辦說 10 月初才會公布賽程。",
+        }
+    }
+    row = render.build_payload({}, META, NOW, {}, added)["tournaments"][0]
+    assert row["summary"] == "社群自己辦的，報名在 Discord 開表單。"
+    assert row["note"] == "主辦說 10 月初才會公布賽程。"
+
+
+def test_custom_and_scraped_summaries_still_go_to_the_right_record():
+    """兩邊都有值時不能互相汙染 —— 每一筆只讀自己那一個來源。"""
+    added = {
+        "-7": {
+            "topic_id": -7,
+            "name": "社群自辦盃",
+            "status": "open",
+            "decision": "include",
+            "first_seen_utc": "2025-01-01T00:00:00+00:00",
+            "summary": "手動新增的說明",
+        }
+    }
+    payload = render.build_payload(
+        {"2246109": SMST83}, META, NOW, {"2246109": {"summary": "爬蟲那筆的說明"}}, added
+    )
+    by_id = {r["topic_id"]: r for r in payload["tournaments"]}
+    assert by_id[2246109]["summary"] == "爬蟲那筆的說明"
+    assert by_id[-7]["summary"] == "手動新增的說明"
 
 
 def test_an_override_changes_the_dashboard_bytes():
@@ -466,6 +517,42 @@ def test_the_staff_tab_is_flagged_in_the_draft_index():
     assert "工作人員招募中" in index
 
 
+def test_the_index_lists_what_has_already_been_published():
+    """草稿被刪掉（＝發過了）的賽事，索引要另外列一區。
+
+    被刪掉的草稿不再重新產生 —— 那是刻意的。所以 drafts/ 裡只剩下**還沒發**的那幾份，
+    而「這筆發過了沒」就只剩記憶能回答。這一區就是把那個狀態補回文件上。
+
+    沒有 drafts_dir 時行為不變（舊呼叫端不受影響）；有給才多這一區。
+    """
+    stale = dict(SMST83, decision="review", reason="low-signal")
+    payload = render.build_payload(
+        {"2246109": stale, "2246110": dict(SMST83, topic_id=2246110)}, META, NOW
+    )
+
+    # 沒給 drafts_dir：只有待發清單，不出現「已發佈」那一區。
+    assert "已發佈" not in render.render_index_markdown(payload)
+
+    # 2246109 的草稿檔案不在 → 它算已發佈；2246110 還在 → 只留在待發清單。
+    with tempfile.TemporaryDirectory() as tmp:
+        drafts = Path(tmp)
+        (drafts / "2246110.md").write_text("", encoding="utf-8")
+        index = render.render_index_markdown(payload, drafts_dir=drafts)
+        assert "## 已發佈" in index
+        published = index.split("## 已發佈", 1)[1]
+        assert "2246109" in published
+        assert "2246110" not in published, "檔案還在的賽事不該被列進已發佈"
+
+
+def test_the_published_section_does_not_link_to_a_missing_file():
+    """那一區刻意不做連結 —— 檔案已經不在了，連過去只會是 404。"""
+    payload = render.build_payload({"2246109": SMST83}, META, NOW)
+    with tempfile.TemporaryDirectory() as tmp:
+        index = render.render_index_markdown(payload, drafts_dir=Path(tmp))
+    published = index.split("## 已發佈", 1)[1]
+    assert "](2246109.md)" not in published
+
+
 # --------------------------------------------------------------------------
 # 手動新增的賽事（data/custom.json）
 #
@@ -683,19 +770,7 @@ def test_draft_title_without_now_keeps_the_title_status():
 
 
 def main() -> int:
-    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
-    failed = 0
-    for fn in tests:
-        try:
-            fn()
-        except AssertionError as exc:
-            failed += 1
-            print(f"FAIL  {fn.__name__}\n      {exc}")
-        else:
-            print(f"ok    {fn.__name__}")
-
-    print(f"\n{len(tests) - failed}/{len(tests)} passed")
-    return 1 if failed else 0
+    return _runner.run(globals())
 
 
 if __name__ == "__main__":

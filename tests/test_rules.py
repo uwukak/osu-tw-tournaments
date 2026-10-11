@@ -15,6 +15,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
+# tests/ 自己也要在路徑上：`python tests/x.py` 跑的時候，
+# sys.path[0] 是 tests/（直譯器放的），但 pytest 底下不是。
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+import _runner  # noqa: E402
 
 from bs4 import BeautifulSoup  # noqa: E402
 
@@ -142,6 +147,50 @@ def test_rank_range_formats():
 def test_year_range_is_not_a_rank_range():
     """'2026-2027 season' 不是名次區間。"""
     assert extract_rank_range("osu! Cup 2026-2027 season") is None
+
+
+def test_a_one_sided_rank_is_not_silently_dropped():
+    """`100K+` 這種「只有下界」的寫法要讀成 100,000 以上，不是「沒有名次」。
+
+    真實語料裡目前一筆都沒有（全部是 `X-Y` 或 `X-infinity`），所以這是防未來。
+    漏掉的下場不會有任何錯誤訊息：卡片上那一行名次只是安靜地消失，
+    而名次正是這份看板對讀者最有用的一欄。
+
+    上界用 None 表示「無上限」，跟 `#2500-infinity` 走同一條路。
+    """
+    cases = {
+        "[STD] Cup 100K+": (100000, None),
+        "[STD] Cup 100K and up": (100000, None),
+        "[STD] Cup 10,000 or higher": (10000, None),
+        "[STD] Cup #5000+": (5000, None),
+        "[STD] Cup 5000 rank +": (5000, None),
+        "[STD] Cup 50k+ BWS": (50000, None),
+    }
+    for title, want in cases.items():
+        assert extract_rank_range(title) == want, f"{title!r} 應為 {want}"
+
+
+def test_a_plus_is_not_a_rank_when_it_is_a_key_count_or_a_year():
+    """`4K+` 是 mania 鍵數、`TS3+` 是隊員數、`2026+` 是賽季 —— 都不是名次。
+
+    這正是單邊名次難判的地方：它跟鍵數／隊員數的樣式一模一樣，
+    所以要有名次字眼（或 `#`），或者數字本身大到不可能是鍵數。
+    """
+    for title in (
+        "[o!m 4K] Cup 2026",       # 4K 是鍵數 → 可惜沒有 '+'
+        "[o!m 4K] Cup 4K+",       # 鍵數 + 號
+        "[o!m 7K+] Cup",          # 鍵數 + 號（7 < 門檻）
+        "[STD] [TS3+] 2v2 Cup",   # 隊員數
+        "[STD] Cup 2026+ season",  # 年份（落在 1900–2100）
+        "[STD] Cup 2027+",
+    ):
+        assert extract_rank_range(title) is None, f"{title!r} 不該被讀成名次"
+
+
+def test_a_two_sided_range_still_wins_over_the_one_sided_pattern():
+    """兩種寫法同時可能命中時，`X-Y` 優先 —— 它是比較明確的那一種。"""
+    assert extract_rank_range("[STD] Cup 50K-100K and up") == (50000, 100000)
+    assert extract_rank_range("[STD] Cup 10,000-99,999") == (10000, 99999)
 
 
 # --------------------------------------------------------------------------
@@ -494,6 +543,28 @@ EXPECTED_DECISIONS = {INCLUDE: 18, EXCLUDE: 26, REVIEW: 6}
 # 看板會安靜地把一堆選手賽事丟到工作人員分頁，而測試全綠。
 EXPECTED_KINDS = {KIND_PLAYER: 40, KIND_STAFF: 2, KIND_BOTH: 8}
 
+# 判定理由的完整分布 —— 上面那兩個直方圖的細化版，也是唯一抓得到「兩筆互換」的那一個。
+#
+# `EXPECTED_DECISIONS` 只看得到 {include: 18, exclude: 26}。今天把一場台灣能報的
+# 判成 named-region 排除掉、同時把一場日本限定的判成 no-region 收進來，18 還是 18、
+# 26 還是 26，CI 亮綠燈 —— 但看板上已經有一場錯的、少一場對的。
+#
+# 而「台灣玩家可以報名」正是整頁唯一的立論。地區與語言判定漂掉，看板就從
+# 「幫你篩好了」變成「給你一份不準的名單」，而且沒有任何跡象。
+#
+# 改了規則就一起改這裡。對不上時，`python tests/test_rules.py` 的開頭會逐筆
+# 印出每一場的判定，直接看出是哪幾筆移動了。
+EXPECTED_REASONS = {
+    (EXCLUDE, "code-deny"): 10,
+    (EXCLUDE, "language-gate"): 2,
+    (EXCLUDE, "named-region"): 14,
+    (INCLUDE, "explicit-allow"): 4,
+    (INCLUDE, "no-region"): 14,
+    (REVIEW, "invitational"): 1,
+    (REVIEW, "lan"): 3,
+    (REVIEW, "low-signal"): 2,
+}
+
 
 def check_distribution(verbose: bool = True) -> Counter:
     titles = forum_titles()
@@ -521,6 +592,22 @@ def test_distribution():
     )
 
 
+def test_reason_distribution():
+    """判定理由的分布 —— 比 `EXPECTED_DECISIONS` 敏感，抓得到「兩筆互換」。
+
+    這個測試的價值不在數字本身，而在它會紅。上面那個只看 decision 的版本，
+    在「一筆該收的被排除、一筆不該收的被收進來」時完全不會動 —— 而那正是
+    這個專案唯一不能出的錯。
+    """
+    by_reason = Counter((v.decision, v.reason) for v in map(analyze, forum_titles()))
+    assert dict(by_reason) == EXPECTED_REASONS, (
+        f"判定理由的分布改變了：\n  {dict(sorted(by_reason.items()))}\n"
+        f"!= {dict(sorted(EXPECTED_REASONS.items()))}\n"
+        "若是刻意調整規則，請更新 EXPECTED_REASONS；否則表示有回歸 ——\n"
+        "跑 `python tests/test_rules.py`，開頭會逐筆列出每一場的判定。"
+    )
+
+
 def test_kind_distribution():
     counts = Counter(analyze(t).kind for t in forum_titles())
     assert dict(counts) == EXPECTED_KINDS, (
@@ -536,22 +623,16 @@ def test_fixture_has_50_topics():
 # --------------------------------------------------------------------------
 
 def main() -> int:
-    tests = [v for k, v in sorted(globals().items()) if k.startswith("test_") and callable(v)]
-    failed = 0
-    for fn in tests:
-        try:
-            fn()
-        except AssertionError as exc:
-            failed += 1
-            print(f"FAIL  {fn.__name__}\n      {exc}")
-        else:
-            print(f"ok    {fn.__name__}")
+    """直接跑這個檔案時，額外印出逐筆的判定分布。
 
-    print("\n--- 分類分布 ---")
+    那張表是這個檔案存在的主要理由 —— 測試紅了要看的就是它：哪幾筆移動了、
+    移到哪裡去。所以放在 `main()` 而不是某個 `test_` 裡，runner 不會去跑它；
+    pytest 底下由 `test_distribution` 印出來。
+    """
+    print("--- 分類分布 ---")
     check_distribution()
-
-    print(f"\n{len(tests) - failed}/{len(tests)} passed")
-    return 1 if failed else 0
+    print()
+    return _runner.run(globals())
 
 
 if __name__ == "__main__":

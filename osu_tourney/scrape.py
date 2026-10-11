@@ -77,6 +77,64 @@ def _is_stale(record: dict[str, Any], now: datetime, days: int) -> bool:
     return now - fetched > timedelta(days=days)
 
 
+# 「標題沒標狀態」的帖子幾天重抓一次，以 `--refresh-days` 為單位。
+# 這批多半是待確認或已排除的，不值得跟「報名中」一樣每 3 天燒一次下載額度。
+UNKNOWN_REFRESH_MULTIPLIER = 3
+
+
+def _needs_details(
+    existing: Optional[dict[str, Any]],
+    *,
+    missing_details: bool,
+    now: datetime,
+    refresh_days: int,
+    refetch_all: bool = False,
+    listing_status: Optional[str] = None,
+) -> bool:
+    """這筆的明細（內文節錄、截止時間、Discord、報名表單）這回合要不要重抓。
+
+    明細只在下載主題頁的那一刻算得出來，所以「什麼時候重抓」等於「資料能有多新」。
+
+    前三種一定要抓：全新的、從沒抓成功過的（不重試就永遠缺欄位）、以及
+    `--refetch-details`（改過解析器之後的一次性重跑）。
+
+    剩下的才看新鮮度，而這裡分兩種間隔：
+
+    * 標題說「報名中」→ 主辦最可能在這個階段改內文（延期、換表單、補 Discord），
+      照 `refresh_days` 的節奏走。
+    * 標題沒標狀態 → **以前是永遠不重抓**（條件寫死 `status == open`）。下場是
+      主辦延期、換了報名表單、改了 Discord，看板都停在第一次抓到的版本，
+      而且畫面上看起來一切正常。現在也抓，但把間隔拉長。
+
+    已截止的仍然不重抓：那種帖子重開的機會太低，真要重算就下 `--refetch-details`。
+    唯一的例外是 `listing_status` —— 這一回合從**列表標題**剛算出來的新鮮狀態。
+
+    為什麼非看它不可：下面判新鮮度用的是 `existing["status"]`，那是**上一次**寫進
+    資料檔的舊值。主辦把標題從 `[REGS CLOSED]` 改回 `[REGS OPEN]` 時，看板會立刻跟著
+    顯示「報名開放中」（`effective_status` 讀的是標題），明細卻永遠不會重抓 ——
+    因為舊值還是 `closed`，在這裡就 return False 了。下場是重新開放報名的比賽，
+    卡片上掛著舊的截止時間、舊的報名表單、舊的 Discord，而且從畫面上完全看不出來。
+
+    所以標題說「現在是 open」而舊記錄不是 open 時，一律當成狀態變了、重抓一次。
+    刻意只認 open 這一邊：closed → open 是唯一會讓人照著錯誤資訊去動作的方向，
+    而 open → closed 的內文早就定稿了，硬抓只是多花一次下載額度。
+    """
+    if refetch_all or missing_details or existing is None:
+        return True
+
+    status = existing.get("status")
+    if listing_status == rules.STATUS_OPEN and status != rules.STATUS_OPEN:
+        # 標題剛剛從「沒說」或「已截止」變成「報名中」→ 明細一定要換新。
+        return True
+    if status == rules.STATUS_OPEN:
+        days = refresh_days
+    elif status == rules.STATUS_UNKNOWN:
+        days = refresh_days * UNKNOWN_REFRESH_MULTIPLIER
+    else:
+        return False
+    return _is_stale(existing, now, days)
+
+
 def _fields_from_row(row: parse.TopicRow, verdict: rules.Verdict) -> dict[str, Any]:
     return {
         "topic_id": row.topic_id,
@@ -114,7 +172,16 @@ def _write_drafts(
 ) -> tuple[list[str], dict[str, str]]:
     """為 baseline 之後的收錄／待確認賽事產生草稿。
 
-    若使用者手改過草稿（檔案雜湊與我們上次寫入的不同），就**不要覆蓋**他的修改。
+    這個函式唯一的責任是「不要蓋掉人寫的東西」。三條規矩：
+
+    * 檔案還在，雜湊跟我們上次寫的不同 → 有人改過，**保留不覆蓋**。
+    * 檔案不在了，但這筆記著我們寫過（`last` 有值）→ 那是有人**刪掉**的。
+      README 教你「貼完就刪掉那個檔案」，能刪的只有站長；爬蟲從來不刪草稿。
+      所以檔案消失一律當成「這份發過了」，不要種回來。
+    * 檔案在、卻沒有任何雜湊記錄 → 分不出是舊資料還是人寫的，**先備份再寫**。
+
+    缺了第二條，貼完文刪掉草稿、下一回合它又自己長回來；缺了第一條，
+    草稿裡手寫的補充會在最長 3 天後被自動生成的版本蓋掉。
 
     `overrides` 是站長在看板上手改的內容。草稿要照手改的走 —— 名次判錯、Discord
     抓錯正是他動手改的原因，草稿卻寫著舊的，貼出去就是發錯文，而且比看板標錯更難查
@@ -160,9 +227,36 @@ def _write_drafts(
             if existing == content:
                 # 內容一樣，不重寫，但把雜湊補上 —— 少了這一步，之後有人手改這個
                 # 檔案時我們認不出來（last 還是空的），下一回合就把他改的蓋掉了。
+                #
+                # 爬蟲那批也要補（寫回 record），不然「檔案存在、last 一直是空的」
+                # 這個狀態會永遠持續：使用者今天動了那個檔案，下一回合就被蓋掉。
                 if is_custom:
                     custom_draft_sha.setdefault(key, digest)
+                else:
+                    record.setdefault("draft_sha", digest)
                 continue
+            if not last:
+                # 檔案在、帳上卻沒有任何雜湊記錄。兩種可能，而正確處置相反：
+                #   (a) 一筆從來沒產生過草稿的舊資料（2026-10 之前有 26 筆是這樣）
+                #   (b) 站長自己動手寫了一份草稿放在那裡
+                # 從檔案本身分不出來。先備份再寫 —— 寫下去是 (a) 的修復，備份是
+                # (b) 的保險：猜錯的那一次，內容還在 `drafts/{id}.md.bak`。
+                log.warning(
+                    "草稿 %s 沒有任何雜湊記錄（舊資料或手寫的）。先備份成 %s.bak 再產生。",
+                    path.name, path.name,
+                )
+                try:
+                    path.replace(path.with_name(path.name + ".bak"))
+                except OSError as exc:  # 備份失敗就不要覆蓋，寧可少一份草稿
+                    log.error("備份 %s 失敗，跳過不覆蓋：%s", path.name, exc)
+                    continue
+        elif last:
+            # 檔案被刪掉了（貼完文就刪是 README 教的流程），但帳還記著我們寫過它。
+            # 不再種回來 —— 那是使用者清不掉的垃圾，而且他刪的時候就是這個意思。
+            log.info("草稿 %s 已被刪除（視為已發佈），不再重新產生。", path.name)
+            continue
+        # 走到這裡只有兩種情況：真的該寫（全新、內容變了、或已備份過），
+        # 或檔案不存在且從來沒有記錄（全新賽事）。
 
         with path.open("w", encoding="utf-8", newline="\n") as fh:
             fh.write(content)
@@ -235,24 +329,17 @@ def run(args: argparse.Namespace) -> int:
         existing = store.get(tournaments, row.topic_id)
         is_new = existing is None
         # 明細從沒抓成功過（上次抓主題頁失敗、或離線模式沒有該筆的快照）→ 一定要重試。
-        # 少了這一條，非「報名中」的賽事永遠不會落到下面的 stale 規則，discord 與
+        # 少了這一條，已截止的賽事永遠不會落到下面的 stale 規則，discord 與
         # 截止時間就永久缺漏。
         missing_details = not (existing or {}).get("details_fetched_at")
-        # --refetch-details 是「解析器改版」專用的一次性開關。
-        #
-        # 為什麼需要它：明細裡的欄位（excerpt、deadline_raw、discord…）都只在下載主題頁
-        # 那一刻算出來。解析器修好之後，畫面上看起來「資料都在」，其實每一筆留著的都是
-        # 舊解析器的產物 —— 而平常的重抓規則綁在「標題說報名中」上，標題寫 unknown 或
-        # 已截止的賽事就永遠不會被重算，錯誤的欄位會一直留在那裡。
-        needs_details = (
-            args.refetch_details
-            or is_new
-            or missing_details
-            or (
-                existing is not None
-                and existing.get("status") == rules.STATUS_OPEN
-                and _is_stale(existing, now, args.refresh_days)
-            )
+        needs_details = _needs_details(
+            existing,
+            missing_details=missing_details,
+            now=now,
+            refresh_days=args.refresh_days,
+            refetch_all=args.refetch_details,
+            # 當回合剛從標題算出來的新鮮狀態（不是 existing 裡的舊值）。
+            listing_status=verdict.status,
         )
 
         if is_new:
@@ -400,7 +487,7 @@ def run(args: argparse.Namespace) -> int:
         if written:
             log.info("產生 %d 份草稿：%s", len(written), ", ".join(written))
         with (DRAFTS_DIR / "README.md").open("w", encoding="utf-8", newline="\n") as fh:
-            fh.write(render.render_index_markdown(payload))
+            fh.write(render.render_index_markdown(payload, drafts_dir=DRAFTS_DIR))
 
     # 草稿雜湊寫回資料檔
     new_data["tournaments"] = tournaments

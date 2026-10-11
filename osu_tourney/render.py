@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 from typing import Any, Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
@@ -353,8 +354,15 @@ def build_payload(
                 "excerpt": rec.get("excerpt") or "",
                 # 站長寫的。summary 有值時就取代 excerpt 顯示；excerpt 仍然照傳，
                 # 因為編輯面板要用它當預設內容、也要拿它比對「有沒有真的改過」。
-                "summary": own.get("summary") or "",
-                "note": own.get("note") or "",
+                #
+                # 兩個來源都要讀，順序是「看板上的手改」優先於「檔案裡原有的值」：
+                #   * own —— 爬蟲抓來的賽事，說明寫在 data/overrides.json
+                #   * rec —— 手動新增的賽事，整筆就在 data/custom.json 裡
+                #     （apply_override 刻意跳過這兩個 key，所以 rec 帶得出它）。
+                # 只讀 own 的話，手動新增的賽事存得進去、卻永遠顯示不出來 ——
+                # 編輯器寫進 custom.json，這一行又把它蓋回空字串。
+                "summary": own.get("summary") or rec.get("summary") or "",
+                "note": own.get("note") or rec.get("note") or "",
                 "decision": rec.get("decision"),
                 "reason": rec.get("reason", ""),
                 # 分頁：player / staff / both。舊資料沒有這個欄位，一律當成 player ——
@@ -503,10 +511,26 @@ def render_draft(
     return "\n".join(lines)
 
 
-def render_index_markdown(payload: dict[str, Any]) -> str:
-    """drafts/README.md —— 一眼看出有哪些待發草稿。"""
+def render_index_markdown(
+    payload: dict[str, Any], drafts_dir: Optional[Path] = None
+) -> str:
+    """drafts/README.md —— 一眼看出有哪些待發草稿。
+
+    `drafts_dir` 有給的話，會多列一區「已發佈或已刪除」：那些有記錄、檔案卻不在
+    `drafts/` 裡的賽事。
+
+    為什麼要列出來：被刪掉的草稿不再重新產生（那是刻意的，見 `_write_drafts`），
+    所以資料夾裡只剩下待發的那幾份。但沒有這一區的話，「這筆發過了沒」就只能靠
+    記憶 —— 而這份檔案的存在意義正是回答那個問題。它不改變任何行為，
+    純粹是讓狀態看得見。
+    """
     rows = payload["tournaments"]
-    lines = ["# 待發送的貼文草稿", "", f"共 {len(rows)} 筆（收錄 {payload['counts']['include']}／待確認 {payload['counts']['review']}）", ""]
+    lines = [
+        "# 待發送的貼文草稿",
+        "",
+        f"共 {len(rows)} 筆（收錄 {payload['counts']['include']}／待確認 {payload['counts']['review']}）",
+        "",
+    ]
     for r in rows:
         flags = "⚠️ " if r["decision"] == "review" else ""
         staff = r.get("kind") == rules.KIND_STAFF
@@ -516,6 +540,29 @@ def render_index_markdown(payload: dict[str, Any]) -> str:
             flags += "🙋 "
         label = (STAFF_STATUS_LABEL if staff else STATUS_LABEL).get(r["status"], "")
         lines.append(f"- {flags}[{r['name']}]({r['topic_id']}.md) — {r['mode_label']}｜{label}")
+
+    # 已發佈（＝草稿被刪掉）的那批。只列，不連結 —— 檔案不在，連過去是 404。
+    if drafts_dir is not None:
+        gone = [
+            r
+            for r in rows
+            if not (drafts_dir / f"{r['topic_id']}.md").exists()
+        ]
+        if gone:
+            lines += [
+                "",
+                "---",
+                "",
+                "## 已發佈（草稿已刪除，不會再產生）",
+                "",
+                f"共 {len(gone)} 筆。草稿刪掉就當成發過了 —— 想重發請刪掉 `overrides.json`",
+                "裡對應的說明，或直接跑 `--refetch-details` 讓它重新產生。",
+                "",
+            ]
+            for r in sorted(gone, key=lambda r: int(r["topic_id"]), reverse=True):
+                label = STATUS_LABEL.get(r["status"], "")
+                lines.append(f"- {r['name']} — {r['mode_label']}｜{label}（{r['topic_id']}）")
+
     lines.append("")
     return "\n".join(lines)
 
@@ -1884,6 +1931,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     warn.appendChild(el('b', null, REPO.split('/')[0] + '.github.io'));
     warn.appendChild(document.createTextNode(
       ' 是這個帳號所有 Pages 專案共用的網域，而 localStorage 以網域為界、不分路徑。'
+      + '在別的裝置上打開這個看板，那一台是沒有權杖的（要再貼一次）。'
       + '日後若在別的 repo 開 Pages 又載入了別人的 JS，那個 JS 讀得到這把權杖 ——'
       + '所以那把權杖只給這個 repo 的 Contents 權限就好。'));
   })();

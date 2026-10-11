@@ -101,14 +101,15 @@ python tests/test_parse.py              # 首帖摘要的截斷
 python tests/test_gitio.py              # 提交前的防護（不准推到上層目錄）
 python tests/test_dashboard_js.py       # 看板的 inline script 能不能被 node 解析
 python tests/test_custom_roundtrip.py   # 手動新增的比賽走一遍完整流程（在暫存目錄裡跑）
+python tests/test_scrape.py             # 明細什麼時候該重抓（看板資料會不會過期）
 python -m osu_tourney.scrape --offline  # 用 fixtures/ 跑，完全不碰網路
 python -m osu_tourney.scrape --no-push  # 真的去抓，但只寫本機檔案、不提交
 python -m osu_tourney.scrape --push     # 抓完並提交推送
 ```
 
 **改過 `parse.py`（或 `rules.py` 的 `extract_deadline`）之後**，資料檔裡既有的欄位還是舊解析器的
-產物 —— 平常的重抓規則綁在「標題說報名中」上，標題寫 `unknown` 或已截止的賽事永遠不會被重算。
-改完解析器要主動重抓一次：
+產物 —— 自動重抓只涵蓋「標題說報名中」（每 3 天）與「標題沒標狀態」（每 9 天）這兩種，
+已截止的賽事不在循環裡，永遠不會被重算。改完解析器要主動重抓一次：
 
 ```bash
 python tests/test_parse.py                              # 先確認解析結果是對的
@@ -169,6 +170,8 @@ python -m osu_tourney.scrape --seed-only --no-push
 | `tests/test_gitio.py` | 黃金測試：提交前的防護（不准推到上層目錄） |
 | `tests/test_dashboard_js.py` | 黃金測試：看板的 inline script 要能被 JS 引擎解析 |
 | `tests/test_custom_roundtrip.py` | 黃金測試：手動新增的比賽整條路（`scrape.main()`，在暫存目錄裡跑） |
+| `tests/test_scrape.py` | 黃金測試：明細重抓的時機（看板資料會不會過期） |
+| `tests/_runner.py` | 測試用的 runner（`python -m pytest tests/` 也可以） |
 
 ---
 
@@ -183,11 +186,28 @@ python tests/test_render.py
 python tests/test_parse.py
 python tests/test_gitio.py
 python tests/test_dashboard_js.py
+python tests/test_custom_roundtrip.py
+python tests/test_scrape.py
 ```
 
+有裝 pytest 的話 `python -m pytest tests/` 也可以，跑的是同一批測試（差別是
+`--last-failed`、`-k`、以及完整的回溯）。兩個 runner 都不需要 pytest。
+
+> **自寫 runner 的接法**：每個測試檔尾端的 `main()` 是
+> `return _runner.run(globals())`。它接的是 `Exception`，不是只有 `AssertionError` ——
+> 這點很重要：測試裡任何**其他**例外（打錯字的 `TypeError`、開檔失敗的
+> `FileNotFoundError`）在舊版會一路冒上去、當場結束整支程式，後面幾十條測試
+> 一條都不跑，而畫面只留下 `0/38 passed`。現在每一條都會被列出來、其餘照跑。
+> 也因此**測試函式不能有參數**（runner 直接呼叫 `fn()`），要暫存目錄就自己用
+> `tempfile.TemporaryDirectory()`，不要用 pytest 的 fixture。
+
 測試會斷言真實語料上的分類分布。若你**刻意**改了規則，測試會失敗並印出新的分布 ——
-確認過再更新 `EXPECTED_DECISIONS`（還有分頁用的 `EXPECTED_KINDS`）。若沒改規則卻失敗，
-那就是回歸。
+確認過再更新 `EXPECTED_DECISIONS`、分頁用的 `EXPECTED_KINDS`，以及**判定理由**的
+`EXPECTED_REASONS`。若沒改規則卻失敗，那就是回歸。
+
+`EXPECTED_REASONS` 是三者裡唯一抓得到「兩筆互換」的：只釘 decision 的話，把一場台灣能報的
+判成排除、同時把一場日本限定的判成收錄，總數不變、測試全綠。而「台灣玩家可以報名」正是
+整頁唯一的立論。對不上時，`test_rules.py` 開頭會逐筆印出每一場的判定。
 
 ### 判定結果的三種可能
 
@@ -354,6 +374,15 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
   這個「消失」還會被當成一次正常更新提交出去。修好它，或直接刪掉那個檔案。
 - **把 `decision` 改成「排除」之後，舊的草稿檔不會自己消失。** 看板與 `drafts/README.md`
   會正確地不再列出它，但 `drafts/{topic_id}.md` 還躺在磁碟上，要自己刪。
+- **反過來，你自己刪掉的草稿不會被種回來。** 貼完文把 `drafts/{id}.md` 刪掉，下一回合
+  不會重新產生它 —— 刪除一律當成「這份發過了」。爬蟲從來不刪草稿，所以會消失只有一個
+  原因：你刪的。`drafts/README.md` 會把這些列在「已發佈」那一區，一眼看得出哪些發過了。
+- **手寫的草稿不會被覆蓋。** 動過 `drafts/{id}.md` 之後（哪怕只是補一行字），下一回合會
+  認出雜湊對不上而整份保留，看板照樣更新。想拿回自動產生的版本，把那個檔案刪掉再跑
+  `--refetch-details`。
+- **一筆從來沒產生過草稿的舊資料，第一次會先備份。** 那時分不出「還沒產生」與「你手寫的」，
+  所以會把原檔存成 `drafts/{id}.md.bak` 再寫入新的 —— 猜錯的那一次內容還在。
+  確認過 `.bak` 不需要就可以刪掉。
 - **本機測這個功能**要自己帶 repo：`py -m osu_tourney.scrape --no-push --repo uwukak/osu-tw-tournaments`。
   沒帶的話編輯面板會打開但存不回去（會直接告訴你）。
 
@@ -377,8 +406,7 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
   會發生什麼事），第二次才真的把 key 從 `custom.json` 移除。這裡刻意不用 `confirm()` ——
   那是跟整頁無關的系統彈窗，手機上很容易誤觸。
 - **刪掉之後，`drafts/{id}.md` 會留著。** 那份草稿可能已經貼出去了，刪掉就查不到自己發過
-  什麼。`drafts/README.md` 下次重繪時會自動不再列出它，孤兒 `.md` 要自己刪。
-- **沒有論壇原帖，所以「資訊連結」是你自己填的。** 沒填的話卡片上不會出現那一行 ——
+  什麼。`drafts/README.md` 下次重繪時會自動不再列出它，孤兒 `.md` 要自己刪。- **沒有論壇原帖，所以「資訊連結」是你自己填的。** 沒填的話卡片上不會出現那一行 ——
   寧可沒有連結，也不要一個連過去是 404 的（負 id 拼出來的論壇網址看起來完全正常）。
 - **`custom.json` 壞掉的話排程會變紅、整個停住**（不寫檔、不提交），跟 `overrides.json`
   完全同一個理由：當成空檔繼續跑，手動新增的比賽會整批從看板上消失，而且因為
