@@ -403,7 +403,8 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
 - **它一直留著，只能手動刪除。** 爬蟲抓來的賽事會在掉出論壇列表 45 天後淡出看板，
   手動新增的不受這條限制 —— 它沒有「最後出現在列表上」這種時間，而且你要的是它留著。
 - **刪除要按兩次。** 第一次只是「上膛」（按鈕會變成「確定刪除（無法復原）」並在旁邊寫清楚
-  會發生什麼事），第二次才真的把 key 從 `custom.json` 移除。這裡刻意不用 `confirm()` ——
+  會發生什麼事），第二次會把內容換成 `{"topic_id": 編號, "deleted": true}`，保留編號避免重用。
+  這裡刻意不用 `confirm()` ——
   那是跟整頁無關的系統彈窗，手機上很容易誤觸。
 - **刪掉之後，`drafts/{id}.md` 會留著。** 那份草稿可能已經貼出去了，刪掉就查不到自己發過
   什麼。`drafts/README.md` 下次重繪時會自動不再列出它，孤兒 `.md` 要自己刪。- **沒有論壇原帖，所以「資訊連結」是你自己填的。** 沒填的話卡片上不會出現那一行 ——
@@ -477,4 +478,4 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
   其餘欄位照常。想立刻補齊就跑一次 `python -m osu_tourney.scrape --no-push --refetch-details`
   （見下方說明），否則要等該賽事的標題變成「報名中」且過了明細更新週期才會自己補上。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。
-  手動新增的比賽保存在 `data/custom.json`，只有把 key 刪掉才會消失。
+  手動新增的比賽保存在 `data/custom.json`，標記 `deleted: true` 後會消失；請保留該編號標記。

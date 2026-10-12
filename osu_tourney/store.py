@@ -310,6 +310,8 @@ def custom_record(key: str, entry: Any) -> Optional[dict[str, Any]]:
     """
     if not isinstance(entry, dict):
         return None
+    if entry.get("deleted") is True:
+        return None
     rec = dict(entry)
     try:
         rec["topic_id"] = int(rec.get("topic_id", key))
@@ -342,6 +344,8 @@ def merge_custom(
     """
     records = dict(tournaments)
     for key, entry in (custom or {}).items():
+        if isinstance(entry, dict) and entry.get("deleted") is True:
+            continue
         rec = custom_record(key, entry)
         if rec is None:
             log.warning("custom.json 的 %r 形狀不對，略過這一筆。", key)

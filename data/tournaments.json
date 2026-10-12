@@ -1,6 +1,6 @@
 {
   "custom_draft_sha": {},
-  "dashboard_sha": "63b6fb6d9a971c871b3301ec25638881ec4d8674f07a2677855438830aa11959",
+  "dashboard_sha": "c4f16001ec9215da1a6c0a7e62ab6f6c5f2938d3a65574532cbbf454d1db3d5e",
   "draft_baseline_topic_id": null,
   "heartbeat_date": "2026-10-12",
   "last_run_utc": "2026-10-12T09:28:46+00:00",
@@ -129,7 +129,7 @@
     "2246214": {
       "author": "tuuli",
       "created_at": "2026-09-18T10:54:33+00:00",
-      "deadline_iso": "2026-10-11T13:00:00+00:00",
+      "deadline_iso": "2026-10-11T23:59:00+00:00",
       "deadline_raw": "Registration Oct 2 – Oct 11 — Solo Stage Oct 16 – Oct 25 — Group Stage Nov 6 – Nov 8 — Semifinals Nov 14 – Nov 15 — Finals Matches default to Sat–Sun, 13:00–22:00 UTC+8",
       "decision": "exclude",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",
@@ -1476,7 +1476,7 @@
     "2251277": {
       "author": "oct4",
       "created_at": "2026-10-04T14:47:15+00:00",
-      "deadline_iso": "2026-10-18T23:59:00+00:00",
+      "deadline_iso": "2026-10-18T12:59:00+00:00",
       "deadline_raw": "Signup & Qualifiers Signup Period: Sunday 4th October - Sunday 18th October 23:59 AEDT(UTC+11) Qualifier Showcase: Sunday, November 1st Qualifiers: 7th November - 8th",
       "decision": "exclude",
       "details_fetched_at": "2026-10-10T03:44:44+00:00",

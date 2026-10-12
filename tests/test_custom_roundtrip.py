@@ -254,6 +254,18 @@ def test_a_hand_edited_draft_is_not_overwritten():
         assert "https://example.com/changed" in _board(root)
 
 
+def test_deleted_id_marker_is_hidden_and_keeps_the_old_draft():
+    with _sandbox() as root:
+        _write_custom(root, CUSTOM)
+        assert _run() == 0
+        draft = (root / "drafts" / "-1.md").read_bytes()
+        _write_custom(root, {"-1": {"topic_id": -1, "deleted": True}})
+        assert _run() == 0
+        assert "社群自辦盃" not in _board(root)
+        assert _data(root)["custom_draft_sha"] == {}
+        assert (root / "drafts" / "-1.md").read_bytes() == draft
+
+
 def test_a_broken_custom_file_stops_the_run_without_writing():
     with _sandbox() as root:
         _write_custom(root, CUSTOM)

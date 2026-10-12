@@ -175,6 +175,79 @@ def test_the_inline_script_parses():
     assert done.returncode == 0, f"看板的 inline script 有語法錯誤：\n{done.stderr}"
 
 
+def test_numeric_mania_keys_are_strings_in_raw_fields():
+    assert render.raw_fields(dict(RECORD, mania_keys=4))["mania_keys"] == "4"
+
+
+def test_editor_preserves_data_and_deleted_ids():
+    script = inline_script(dashboard_html())
+    functions = []
+    for name in ("fetchJson", "saveEntry", "allocateId", "deleteCustom", "applyEditsToRow", "taipeiStamp", "editorFor"):
+        start = script.index("  function " + name + "(")
+        end = script.index("\n  }", start) + 4
+        functions.append(script[start:end])
+    managed = re.search(r"var MANAGED\s*=\s*\[[\s\S]*?\];", script).group(0)
+    fields = script[script.index("  var FIELDS ="):script.index("  function el(")]
+    program = "\n".join(functions) + "\n" + managed + "\n" + fields + r'''
+const assert = require('node:assert/strict');
+var BRANCH='main', CUSTOM_PATH='custom', OVERRIDES_PATH='overrides';
+var MODE_LABEL={std:'osu!standard'};
+var document, REPO='owner/repo';
+var b64Decode=s=>Buffer.from(s,'base64').toString('utf8');
+var explainStatus=s=>String(s);
+var remote={'-1':{topic_id:-1,name:'Cup',mode:'std',discord:'https://discord.gg/old'}};
+var writes=0;
+var api=()=>Promise.resolve({status:200,ok:true,json:{sha:'sha',content:
+  Buffer.from(typeof remote==='string' ? remote : JSON.stringify(remote)).toString('base64')}});
+var putJson=(path,data)=>{writes++;remote=data;return Promise.resolve({ok:true,status:200});};
+(async()=>{
+  var r={custom:true,topic_id:-1,name:'Cup'};
+  await saveEntry(r,{name:'Cup',mode:'std',discord:'https://discord.gg/old',note:'New note'});
+  assert.equal(remote['-1'].name,'Cup');
+  assert.equal(remote['-1'].discord,'https://discord.gg/old');
+  await deleteCustom(r);
+  assert.equal(allocateId(remote),-2);
+  assert.equal(remote['-1'].deleted,true);
+  for(var bad of ['{bad json','[]','null']){
+    remote=bad;
+    var before=writes;
+    await assert.rejects(saveEntry({custom:false,topic_id:1,name:'Cup'},{note:'New'}));
+    assert.equal(writes,before);
+  }
+  var raw={name:'Cup',mode:'std',mania_keys:'',rank_compact:'50K',rank_full:'50,000',
+    teams:'1v1',region:'Global',decision:'include',kind:'player',status:'open',
+    deadline_iso:'',deadline_raw:'',discord:'https://discord.gg/old',signup_form:'',stream:''};
+  var row={raw:raw,own:{rank_compact:'100K'},rank:'100K',name:'Cup'};
+  applyEditsToRow(row,{note:'New'});
+  assert.equal(row.rank,'50K');
+  assert.equal(row.discord,'https://discord.gg/old');
+  assert.deepEqual(row.teams,['1v1']);
+  var elements=[];
+  document={createElement:()=>{
+    var node={children:[],dataset:{},value:'',appendChild(child){this.children.push(child);},
+      addEventListener(event,fn){this[event]=fn;}};
+    elements.push(node);return node;
+  }};
+  el=(tag,cls,text)=>{var node=document.createElement(tag);node.className=cls;node.textContent=text;return node;};
+  setEditStatus=()=>{}; openDetail=()=>{}; render=()=>{};
+  dispatchRun=()=>Promise.resolve(false);
+  var actualSave=saveEntry, submitted;
+  saveEntry=(r,entry)=>{submitted=entry;return Promise.resolve({wrote:false});};
+  editorFor({custom:true,topic_id:-1,name:'Cup',raw:raw,own:{},status:'open'},false);
+  elements.find(e=>e.id==='e-note').value='Only note changed';
+  elements.find(e=>e.className==='ed-save').click();
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(submitted.name,'Cup');
+  assert.equal(submitted.discord,'https://discord.gg/old');
+  remote={'-1':{topic_id:-1,name:'Cup',discord:'https://discord.gg/old'}};
+  await actualSave({custom:true,topic_id:-1,name:'Cup'},submitted);
+  assert.equal(remote['-1'].name,'Cup');
+})();
+'''
+    done = subprocess.run(("node", "-e", program), capture_output=True, text=True, encoding="utf-8")
+    assert done.returncode == 0, done.stderr
+
+
 # --------------------------------------------------------------------------
 
 

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 # --------------------------------------------------------------------------
@@ -228,12 +228,12 @@ def detect_kind(title: str) -> str:
 # --------------------------------------------------------------------------
 
 CLOSED = re.compile(
-    r"(?i)regs?\s*closed|registrations?\s*closed|sign[ -]?ups?\s*closed|\[\s*closed\s*\]"
+    r"(?i)\b(?:regs?|registrations?|sign[ -]?ups?)\s*(?:(?:are|is)\s+)?closed\b|\[\s*closed\s*\]"
 )
 
 # (?!\s*rank) 是必要的：否則每個 "Open Rank" 都會被讀成「報名開放」。
 OPEN = re.compile(
-    r"(?i)regs?\s*open|registrations?\s*open|sign[ -]?ups?\s*open|\[\s*open\s*\]"
+    r"(?i)\b(?:regs?|registrations?|sign[ -]?ups?)\s*(?:(?:are|is)\s+)?open\b|\[\s*open\s*\]"
     r"|\bopen\b(?!\s*rank)"
 )
 
@@ -249,6 +249,8 @@ def extract_status(title: str) -> str:
     """
     if CLOSED.search(title):
         return STATUS_CLOSED
+    if re.search(r"(?i)\bnot\s+(?:yet\s+)?open\b", title):
+        return STATUS_UNKNOWN
     if OPEN.search(title):
         return STATUS_OPEN
     return STATUS_UNKNOWN
@@ -615,13 +617,9 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
             year = int(created_at[:4])
         except ValueError:
             year = None
-    if year is None:
-        return None
-
-    hm = TIME_IN_TEXT.search(raw)
-    hour, minute = (int(hm.group(1)), int(hm.group(2))) if hm else (23, 59)
-
     cands = _deadline_date_candidates(raw)
+    if not cands:
+        return None
 
     # 區間寫法（「Registrations: 28 September - 11 October」）的截止是**後面**那個
     # 日期；單日寫法（「Registrations Close: October 25th」）就是那一個。
@@ -638,6 +636,26 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
         if joined:
             start = 1
 
+    # 後續賽程的時間不屬於報名截止；只讀截止日期到下一個日期之前。
+    cutoff = cands[start + 1][2] if len(cands) > start + 1 else len(raw)
+    context = raw[:cutoff]
+    explicit_year = re.match(r"\s*,?\s*((?:19|20)\d{2})\b", raw[cands[start][3]:])
+    if explicit_year:
+        year = int(explicit_year.group(1))
+    if year is None:
+        return None
+    offset = re.search(r"(?i)\b(?:UTC|GMT)\s*([+-])\s*(\d{1,2})(?::(\d{2}))?", context)
+    tz = timezone.utc
+    if offset:
+        hours, minutes = int(offset.group(2)), int(offset.group(3) or 0)
+        if hours > 23 or minutes > 59:
+            return None
+        tz = timezone(timedelta(minutes=(hours * 60 + minutes) * (1 if offset.group(1) == '+' else -1)))
+    time_context = re.sub(r"(?i)\b(?:UTC|GMT)\s*[+-]\s*\d{1,2}(?::\d{2})?",
+                          lambda m: ' ' * len(m.group(0)), context)
+    hm = TIME_IN_TEXT.search(time_context[cands[start][3]:]) or TIME_IN_TEXT.search(time_context[:cands[0][2]])
+    hour, minute = (int(hm.group(1)), int(hm.group(2))) if hm else (23, 59)
+
     # 候選一律用 datetime() 驗過才採用：不合法就換下一個，而不是整句放棄。
     # 這是第二層防線 —— 第一層是 DATE_IN_TEXT 的 lookbehind。
     dt = None
@@ -645,7 +663,7 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
         if not 1 <= day <= 31:
             continue
         try:
-            dt = datetime(year, month, day, hour, minute, tzinfo=timezone.utc)
+            dt = datetime(year, month, day, hour, minute, tzinfo=tz)
         except ValueError:
             continue
         break
@@ -653,7 +671,7 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
         return None
 
     # 年份通常沒寫，取發文年份；若因此變成過去，代表跨年了。
-    if created_at:
+    if created_at and not explicit_year:
         try:
             created = datetime.fromisoformat(created_at)
             if created.tzinfo is None:
@@ -663,7 +681,7 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
         except ValueError:
             pass
 
-    return dt.isoformat()
+    return dt.astimezone(timezone.utc).isoformat()
 
 
 def extract_deadline(

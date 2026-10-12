@@ -622,6 +622,25 @@ def test_fixture_has_50_topics():
 
 # --------------------------------------------------------------------------
 
+def test_registration_status_with_auxiliary_and_negation():
+    assert extract_status("Cup [Registrations are closed]") == "closed"
+    assert extract_status("Cup [Registration is open]") == "open"
+    assert extract_status("Cup [Registrations not yet open]") == "unknown"
+
+
+def test_deadline_honours_explicit_offset_and_year():
+    from osu_tourney.rules import parse_deadline_iso
+    assert parse_deadline_iso("Registrations close October 18th 23:59 AEDT(UTC+11)",
+                              "2026-10-01T00:00:00+00:00") == "2026-10-18T12:59:00+00:00"
+    assert parse_deadline_iso("Registrations close January 5th 2028 18:30 UTC+5:30",
+                              "2026-12-01T00:00:00+00:00") == "2028-01-05T13:00:00+00:00"
+    assert parse_deadline_iso("Registration Oct 2 – Oct 11 — Solo Stage Oct 16 – Oct 25 — Finals 13:00 UTC+8",
+                              "2026-09-01T00:00:00+00:00") == "2026-10-11T23:59:00+00:00"
+    assert parse_deadline_iso("Registrations: October 1 12:00 - October 20 18:00 UTC-3",
+                              "2026-09-01T00:00:00+00:00") == "2026-10-20T21:00:00+00:00"
+    assert parse_deadline_iso("Registrations close January 5th 2028 18:30 UTC", None) == "2028-01-05T18:30:00+00:00"
+
+
 def main() -> int:
     """直接跑這個檔案時，額外印出逐筆的判定分布。
 

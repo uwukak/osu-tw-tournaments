@@ -251,7 +251,7 @@ def raw_fields(record: dict[str, Any]) -> dict[str, str]:
     return {
         "name": record.get("name") or record.get("title", ""),
         "mode": record.get("mode") or "std",
-        "mania_keys": record.get("mania_keys") or "",
+        "mania_keys": str(record.get("mania_keys") or ""),
         "rank_compact": record.get("rank_compact") or "",
         "rank_full": record.get("rank_full") or "",
         "teams": " / ".join(record.get("teams") or []),
@@ -1074,14 +1074,13 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         if(res.status === 404) return { sha:null, data:{} };  // 還沒建檔，正常
         if(!res.ok) throw new Error(explainStatus(res.status));
         var text = b64Decode((res.json && res.json.content) || '');
-        var data = {};
-        try{
-          var parsed = JSON.parse(text);
-          // 陣列也是 object，但這種檔案的最外層一定要是「id → 內容」的對照表。
-          // 收下一個陣列的話，下面每個 Object.keys 都會拿到 0、1、2… 這種假 id。
-          if(parsed && typeof parsed === 'object' && !Array.isArray(parsed)) data = parsed;
-        }catch(e){ data = {}; }
-        return { sha:(res.json && res.json.sha) || null, data:data };
+        var parsed;
+        try{ parsed = JSON.parse(text); }
+        catch(e){ throw new Error(path + ' 的 JSON 格式錯誤，已停止儲存，請先修復檔案。'); }
+        if(!parsed || typeof parsed !== 'object' || Array.isArray(parsed)){
+          throw new Error(path + ' 必須是賽事資料物件，已停止儲存。');
+        }
+        return { sha:(res.json && res.json.sha) || null, data:parsed };
       });
   }
 
@@ -1167,8 +1166,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 手動新增的賽事要一個 id。一律取「現有負數裡最小的再減一」→ -1、-2、-3…
   //
   // 為什麼一定要負數：爬蟲的 topic id 永遠是正整數，兩邊就永遠不可能相撞。
-  // 為什麼不重用刪掉的號碼：草稿檔名是 drafts/{id}.md，重用等於新賽事會蓋掉
-  // 舊賽事留下的那份草稿（而刪除時草稿刻意不刪，見 README）。
+  // 刪除標記保留 key，避免重用號碼而覆蓋 drafts/{id}.md。
   function allocateId(data){
     var ids = Object.keys(data).map(Number).filter(function(n){ return isFinite(n) && n < 0; });
     return Math.min.apply(null, [0].concat(ids)) - 1;
@@ -1195,7 +1193,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     return attempt(1);
   }
 
-  // 刪除手動新增的賽事：把 key 從 custom.json 拿掉再寫回去。
+  // 刪除手動新增的賽事：保留編號標記，內容從看板移除。
   // **不碰 drafts/** —— 那份草稿可能已經貼出去了，刪掉就查不到自己發過什麼。
   //
   // 跟存檔走同一條重試路：中間只要有人先寫了一次，帶舊 sha 的寫回就會被 GitHub 拒絕。
@@ -1207,7 +1205,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       return fetchJson(CUSTOM_PATH).then(function(cur){
         var data = Object.assign({}, cur.data);
         if(!Object.prototype.hasOwnProperty.call(data, key)) return { wrote:false };
-        delete data[key];
+        data[key] = {topic_id:r.topic_id, deleted:true};
         return putJson(CUSTOM_PATH, data, cur.sha,
                        '看板編輯：刪除手動新增的賽事（' + r.name + '）')
           .then(function(res){
@@ -1504,9 +1502,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   function applyEditsToRow(r, entry){
     function has(k){ return Object.prototype.hasOwnProperty.call(entry, k); }
-    // 有這個 key 就用它（null＝清空），沒有就維持原值。
+    // 覆寫被移除時退回原始資料，不能沿用上次的覆寫或清成空白。
     function text(k, fallback){
-      if(!has(k)) return fallback;
+      if(!has(k)) return r.raw && r.raw[k] != null ? r.raw[k] : fallback;
       return entry[k] === null ? '' : entry[k];
     }
     r.name = text('name', r.name);
@@ -1524,18 +1522,15 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     // 只有手動新增的賽事才有自己的資訊連結；爬蟲那批的網址是從 topic id 算出來的，
     // 表單裡也沒有那一格。
     if(r.custom) r.url = text('url', r.url || '');
-    if(has('mode')){
-      r.mode = entry.mode;
-      r.mode_label = MODE_LABEL[entry.mode] || r.mode_label;
-    }
-    if(has('teams')){
-      r.teams = entry.teams === null ? [] : entry.teams.split('/')
-        .map(function(s){ return s.trim(); }).filter(Boolean);
-    }
-    if(has('deadline_iso')){
-      r.deadline_iso = entry.deadline_iso === null ? '' : entry.deadline_iso;
-      var d = r.deadline_iso ? new Date(r.deadline_iso) : null;
-      r.deadline = (d && !isNaN(d.getTime())) ? taipeiStamp(d) : '';
+    r.mode = text('mode', r.mode);
+    r.mode_label = MODE_LABEL[r.mode] || r.mode_label;
+    r.teams = text('teams', '').split('/').map(function(s){ return s.trim(); }).filter(Boolean);
+    r.deadline_iso = text('deadline_iso', '');
+    var d = r.deadline_iso ? new Date(r.deadline_iso) : null;
+    r.deadline = (d && !isNaN(d.getTime())) ? taipeiStamp(d) : '';
+    if(!has('status') && r.status !== 'closed' && d && d.getTime() < Date.now()) r.status = 'expired';
+    if(r.custom){
+      Object.keys(r.raw).forEach(function(k){ r.raw[k] = text(k, ''); });
     }
     r.own = entry;
   }
@@ -1577,7 +1572,8 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 沒有的話就是程式自動判定的），因為需求是「把不對的改掉」——
   // 從空白開始等於要你重打一次。
   //
-  // 存檔時逐欄跟 r.raw（程式自動判定的原值）比對，一字不差的欄位**不**寫進
+  // 爬蟲賽事存檔時逐欄跟 r.raw 比對；手動賽事沒有自動來源，必須提交完整欄位。
+  // 一字不差的爬蟲欄位**不**寫進
   // overrides.json。少了這道比對，打開來看一下、順手按了儲存，就會把當下自動
   // 判定的結果整批凍結成手改值 —— 之後規則修好也改不動，而且從畫面上看不出原因。
   //
@@ -1739,7 +1735,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         del.dataset.armed = '1';
         del.textContent = '確定刪除（無法復原）';
         setEditStatus('再按一次就會從 data/custom.json 刪掉這筆。'
-                    + 'drafts/ 裡的草稿檔會留著，要自己刪。');
+                    + '會保留編號避免重用，drafts/ 裡的草稿檔會留著，要自己刪。');
       });
     }
 
@@ -1753,7 +1749,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       FIELDS.forEach(function(f){
         if(!inputs[f.k]) return;                     // url 那格對爬蟲的賽事不存在
         var v = inputs[f.k].value.trim();
-        if(v === (r.raw[f.k] || '').trim()) return;   // 跟自動判定一字不差 → 不留覆寫
+        if(!r.custom && v === (r.raw[f.k] || '').trim()) return; // 手動賽事提交完整資料
         if(v === ''){ if(CLEARABLE[f.k]) entry[f.k] = null; return; }
         entry[f.k] = v;
       });
@@ -1767,7 +1763,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
       // 名稱是這筆唯一的標題來源。空的存進去只會變成一張沒有名字的卡片，
       // 而且 custom_record 會直接把它濾掉 —— 等於存了一個看不到的東西。
-      if(isNew && !entry.name){
+      if(r.custom && !entry.name){
         setEditStatus('請至少填「賽事名稱」。', true);
         return;
       }
