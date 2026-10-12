@@ -20,7 +20,7 @@
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
 - 🙋 [Bai Yu Cup 2026](2251606.md) — osu!mania 4K｜工作人員招募狀態未標明
-- [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜表定已截止
+- [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名已截止
 - 🙋 [Hidden Cup: Chapter Golden Lily](2248268.md) — osu!standard｜報名已截止
 - 🙋 [Sonus Scope 2](2247819.md) — osu!standard｜表定已截止
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
