@@ -769,6 +769,20 @@ def test_draft_title_without_now_keeps_the_title_status():
 # --------------------------------------------------------------------------
 
 
+def test_full_post_document_is_isolated_and_preserves_source_styles():
+    from osu_tourney.render import render_post_document
+    from bs4 import BeautifulSoup
+    doc = render_post_document('<span style="color:red;font-size:150%">Text</span><script>alert(1)</script>',
+                               'https://osu.ppy.sh/assets/css/app.462baf63.css')
+    soup = BeautifulSoup(doc, 'html.parser')
+    assert not soup.script
+    assert soup.select_one('link[rel=stylesheet]')['href'].startswith('https://osu.ppy.sh/assets/css/')
+    assert "script-src 'none'" in soup.select_one('meta[http-equiv]')['content']
+    assert 'color:red' in doc and 'font-size:150%' in doc
+    bad = render_post_document('<p>Text</p>', 'https://evil.test/style.css')
+    assert 'evil.test' not in bad
+
+
 def main() -> int:
     return _runner.run(globals())
 

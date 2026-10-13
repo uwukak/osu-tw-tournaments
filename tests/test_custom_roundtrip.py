@@ -266,6 +266,28 @@ def test_deleted_id_marker_is_hidden_and_keeps_the_old_draft():
         assert (root / "drafts" / "-1.md").read_bytes() == draft
 
 
+def test_missing_first_post_does_not_erase_previous_details():
+    from unittest.mock import patch
+    with _sandbox() as root:
+        assert _run() == 0
+        before = _data(root)['tournaments']['2252361']
+        with patch.object(scrape.OfflineSource, 'topic', return_value='<html>Login required</html>'):
+            assert scrape.main(['--offline', '--no-push', '--refetch-details']) == 0
+        after = _data(root)['tournaments']['2252361']
+        for key in ('body_html', 'body_css', 'discord', 'deadline_iso', 'details_fetched_at'):
+            assert after[key] == before[key], key
+
+
+def test_old_records_get_full_content_even_when_details_are_fresh():
+    with _sandbox() as root:
+        assert _run() == 0
+        data = _data(root)
+        del data['tournaments']['2252361']['body_html']
+        store.save(root / 'data' / 'tournaments.json', data)
+        assert _run() == 0
+        assert 'font-size:150%' in _data(root)['tournaments']['2252361']['body_html']
+
+
 def test_a_broken_custom_file_stops_the_run_without_writing():
     with _sandbox() as root:
         _write_custom(root, CUSTOM)

@@ -116,6 +116,46 @@ def test_excerpt_never_invents_text():
     assert text.startswith(body)
 
 
+def test_full_post_keeps_formatting_images_and_all_text():
+    d = first_post()
+    assert 'font-size:150%' in d.body_html
+    assert 'bbcode__align-centre' in d.body_html
+    assert '<strong>' in d.body_html
+    assert 'https://i.ppy.sh/' in d.body_html
+    assert 'LuluPlaysOzu_YT' in d.body_html
+    assert d.body_css.startswith('https://osu.ppy.sh/assets/css/app.')
+
+
+def test_post_content_removes_active_html_but_keeps_readable_format():
+    from bs4 import BeautifulSoup
+    html = '''<div class="bbcode"><span style="color:#ff55aa;font-size:150%;position:fixed;background:url(https://bad.test)">Hello</span>
+    <script>alert(1)</script><style>body{display:none}</style><iframe src="https://bad.test"></iframe>
+    <img src="/images/banner.png" onerror="alert(1)"><a href="javascript:alert(1)">Bad</a>
+    <a href="/community/forums/topics/1" onclick="alert(1)">Original</a></div>'''
+    cleaned = parse.sanitize_post_html(html)
+    soup = BeautifulSoup(cleaned, 'html.parser')
+    assert not soup.select('script,style,iframe')
+    assert 'onerror' not in cleaned and 'onclick' not in cleaned and 'javascript:' not in cleaned
+    assert 'color:#ff55aa' in cleaned and 'font-size:150%' in cleaned
+    assert 'position:' not in cleaned and 'url(' not in cleaned
+    assert soup.img['src'] == 'https://osu.ppy.sh/images/banner.png'
+    assert soup.select('a')[-1]['target'] == '_blank'
+
+
+def test_spoiler_boxes_can_expand_without_forum_javascript():
+    from bs4 import BeautifulSoup
+    html = '<div class="bbcode-spoilerbox"><button class="bbcode-spoilerbox__link">Rules</button><div class="bbcode-spoilerbox__body">Full rules</div></div>'
+    soup = BeautifulSoup(parse.sanitize_post_html(html), 'html.parser')
+    assert soup.details.summary.get_text() == 'Rules'
+    assert 'Full rules' in soup.details.get_text()
+
+
+def test_image_only_post_is_valid_but_empty_body_is_not():
+    template = '<div class="js-forum-post" data-post-position="1"><div class="forum-post__content--main">{}</div></div>'
+    assert '<img' in parse.parse_topic(template.format('<img src="https://i.ppy.sh/poster.png">')).body_html
+    assert not parse.parse_topic(template.format('')).body_html
+
+
 # --------------------------------------------------------------------------
 
 

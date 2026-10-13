@@ -17,8 +17,9 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from typing import Optional
+from urllib.parse import urljoin, urlsplit
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, Comment, Tag
 
 POSTED_AT = re.compile(r"posted\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2})")
 
@@ -32,6 +33,60 @@ STREAM_URL = re.compile(r"https?://(?:www\.)?(?:twitch\.tv|youtube\.com|youtu\.b
 # 首帖摘要的字數上限。帖子開頭常常是「歡迎來到 X！」加一串賽制與規則，
 # 整段塞進卡片沒有意義，所以只取開頭、並盡量切在句尾。
 EXCERPT_CHARS = 180
+
+POST_CSS = re.compile(r"https://osu\.ppy\.sh/assets/css/app\.[A-Za-z0-9]+\.css")
+
+
+def sanitize_post_html(html: str) -> str:
+    """保留首帖的閱讀格式；移除可執行內容與非閱讀用屬性。"""
+    soup = BeautifulSoup(html, "html.parser")
+    for node in soup.select('script,style,iframe,object,embed,svg,math,form,input,textarea,select,meta,link,base'):
+        node.decompose()
+    for comment in soup.find_all(string=lambda text: isinstance(text, Comment)):
+        comment.extract()
+    # 論壇原本靠 JavaScript 開合；改用原生 details 保留鍵盤與觸控操作。
+    for box in soup.select('.bbcode-spoilerbox'):
+        heading = box.select_one('.bbcode-spoilerbox__link')
+        if heading:
+            box.name = 'details'
+            heading.name = 'summary'
+    allowed = set('div span p br strong b em i u s strike del ins sub sup ul ol li blockquote pre code h1 h2 h3 h4 h5 h6 hr table thead tbody tfoot tr th td img a details summary'.split())
+    styles = set('color background-color font-size font-family font-weight font-style text-align text-decoration line-height width max-width height aspect-ratio vertical-align'.split())
+    for node in list(soup.find_all(True)):
+        if node.name not in allowed:
+            node.unwrap()
+            continue
+        old = dict(node.attrs)
+        node.attrs = {}
+        if old.get('class'):
+            node['class'] = old['class']
+        for attr in ('title', 'alt'):
+            if attr in old:
+                node[attr] = old[attr]
+        clean_style = []
+        for declaration in old.get('style', '').split(';'):
+            key, _, value = declaration.partition(':')
+            key, value = key.strip().lower(), value.strip()
+            if key in styles and re.fullmatch(r"[\w\s#.,%()/+'\"-]+", value) and not re.search(r'(?i)url|expression|var\(', value):
+                clean_style.append(f'{key}:{value}')
+        if clean_style:
+            node['style'] = ';'.join(clean_style)
+        if node.name in ('a', 'img'):
+            attr = 'href' if node.name == 'a' else 'src'
+            raw = old.get(attr, '') if attr == 'href' else old.get('data-src') or old.get('src', '')
+            url = urljoin('https://osu.ppy.sh/', raw)
+            if raw and urlsplit(url).scheme in ('https', 'http'):
+                node[attr] = url
+            if node.name == 'a':
+                node['target'] = '_blank'
+                node['rel'] = 'noopener noreferrer nofollow'
+            else:
+                node['loading'] = 'lazy'
+                node['referrerpolicy'] = 'no-referrer'
+        for attr in ('colspan', 'rowspan'):
+            if node.name in ('td', 'th') and str(old.get(attr, '')).isdigit():
+                node[attr] = old[attr]
+    return str(soup)
 
 
 @dataclass
@@ -54,6 +109,8 @@ class TopicDetail:
     created_at: Optional[str] = None
     author: Optional[str] = None
     body_text: str = ""
+    body_html: str = ""
+    body_css: str = ""
     links: list[str] = field(default_factory=list)
 
     @property
@@ -192,6 +249,14 @@ def parse_topic(html: str) -> TopicDetail:
     )
     if body is not None:
         detail.body_text = " ".join(body.get_text(" ", strip=True).split())
+        content = body.select_one('.bbcode') or body
+        if content.get_text(strip=True) or content.find('img'):
+            detail.body_html = sanitize_post_html(str(content))
+        for stylesheet in soup.select('link[rel=stylesheet][href]'):
+            url = urljoin('https://osu.ppy.sh/', stylesheet['href'])
+            if POST_CSS.fullmatch(url):
+                detail.body_css = url
+                break
 
     # 連結必須從 href 抽 —— get_text() 會把 href 整個丟掉，
     # 上一版就是這樣在 SMST 84 的帖子裡找不到任何 Discord 連結的。

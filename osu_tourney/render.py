@@ -8,12 +8,13 @@
 from __future__ import annotations
 
 import json
+from html import escape
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from . import rules, store
+from . import parse, rules, store
 
 try:
     TAIPEI = ZoneInfo("Asia/Taipei")
@@ -352,6 +353,7 @@ def build_payload(
                 "rank_full": rec.get("rank_full") or "",
                 "author": rec.get("author") or "",
                 "excerpt": rec.get("excerpt") or "",
+                "post_document": render_post_document(rec.get("body_html") or "", rec.get("body_css") or ""),
                 # 站長寫的。summary 有值時就取代 excerpt 顯示；excerpt 仍然照傳，
                 # 因為編輯面板要用它當預設內容、也要拿它比對「有沒有真的改過」。
                 #
@@ -406,6 +408,26 @@ def build_payload(
     }
 
     return {"meta": meta, "counts": counts, "tournaments": rows}
+
+
+def render_post_document(body_html: str, stylesheet: str) -> str:
+    """在無腳本的 iframe 裡沿用論壇 CSS，避免污染看板或接觸站長權杖。"""
+    if not body_html:
+        return ""
+    css = f'<link rel="stylesheet" href="{escape(stylesheet, quote=True)}">' if parse.POST_CSS.fullmatch(stylesheet) else ''
+    return '''<!doctype html><html><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'none'; style-src 'unsafe-inline' https://osu.ppy.sh; img-src https: http:; font-src https:; base-uri 'none'; form-action 'none'">
+''' + css + '''<style>
+body{margin:0;padding:18px;display:block;min-width:0;background:hsl(var(--hsl-b4,255,10%,20%));color:#eee;font:14px/1.5 Arial,sans-serif}
+.bbcode{overflow-wrap:anywhere}.bbcode img{max-width:100%;height:auto}
+.bbcode__align-centre{text-align:center}.bbcode__align-right{text-align:right}
+details.bbcode-spoilerbox>summary{cursor:pointer;display:list-item}
+details.bbcode-spoilerbox .bbcode-spoilerbox__link-icon{display:none}
+details.bbcode-spoilerbox[open]>.bbcode-spoilerbox__body{display:block}
+.spoiler:focus,.spoiler:hover{color:inherit!important}
+</style></head><body class="t-section osu-layout osu-layout--body" style="--base-hue-default:333;--base-hue-override:333">
+<div class="forum-post-content">''' + parse.sanitize_post_html(body_html) + '</div></body></html>'
 
 
 def render_dashboard(payload: dict[str, Any]) -> str:
@@ -724,7 +746,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 /* 點卡片彈出的詳細說明。用原生 <dialog>：Esc 關閉、focus trap、backdrop 都是免費的。 */
 .detail{
   border:1px solid var(--border); border-radius:16px; padding:0; background:var(--surface); color:var(--text);
-  width:min(560px, calc(100% - 32px)); max-height:min(85vh, 720px); overflow:auto;
+  width:min(1000px, calc(100% - 32px)); max-height:90vh; overflow:auto;
   box-shadow:0 24px 64px -28px rgba(30,23,32,.6);
 }
 .detail::backdrop{background:rgba(20,15,22,.55)}
@@ -744,6 +766,9 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   font-size:13px; line-height:1.7; color:var(--text); white-space:pre-wrap; overflow-wrap:anywhere;
 }
 .quote .src{display:block; margin-top:6px; font-size:11px; color:var(--muted)}
+.post-frame{display:block;width:100%;height:65vh;min-height:320px;border:0;border-radius:8px;background:#2e2b33}
+.post-source{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:12px}
+@media(max-width:600px){.detail{width:calc(100% - 12px)}.detail-inner{padding:12px}}
 .detail-foot{display:flex; flex-wrap:wrap; gap:16px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-size:13px}
 .detail-foot a{color:var(--accent); text-decoration:none; font-weight:600}
 .detail-foot a:hover{text-decoration:underline}
@@ -1864,7 +1889,20 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       // 摘要＝原帖首段原文，只截不改。加註出處，避免被當成我們的轉述。
       // 站長自己寫的說明用同一種排版但換來源字樣與直條顏色 —— 那種情況下
       // 它**不是**節錄，標成節錄就是把我們的話記在原帖作者頭上。
-      var own = !!r.summary, text = r.summary || r.excerpt;
+      if(r.post_document){
+        var source = el('div','post-source','原帖完整內容');
+        var original = infoLink(r);
+        if(original) source.appendChild(original);
+        body.appendChild(source);
+        var frame = document.createElement('iframe');
+        frame.className = 'post-frame';
+        frame.title = r.name + ' — 原帖完整內容';
+        frame.setAttribute('sandbox', 'allow-popups allow-popups-to-escape-sandbox');
+        frame.referrerPolicy = 'no-referrer';
+        frame.srcdoc = r.post_document;
+        body.appendChild(frame);
+      }
+      var own = !!r.summary, text = r.summary || (r.post_document ? '' : r.excerpt);
       if(text){
         var q = el('div','quote' + (own ? ' own' : ''));
         q.appendChild(document.createTextNode(text));
@@ -1901,6 +1939,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
     tickCountdowns();
     if(!dlg.open) dlg.showModal();
+    dlg.scrollTop = 0;
   }
 
   document.getElementById('d-close').addEventListener('click', function(){ dlg.close(); });

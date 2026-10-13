@@ -331,7 +331,7 @@ def run(args: argparse.Namespace) -> int:
         # 明細從沒抓成功過（上次抓主題頁失敗、或離線模式沒有該筆的快照）→ 一定要重試。
         # 少了這一條，已截止的賽事永遠不會落到下面的 stale 規則，discord 與
         # 截止時間就永久缺漏。
-        missing_details = not (existing or {}).get("details_fetched_at")
+        missing_details = not (existing or {}).get("details_fetched_at") or not (existing or {}).get("body_html")
         needs_details = _needs_details(
             existing,
             missing_details=missing_details,
@@ -355,6 +355,12 @@ def run(args: argparse.Namespace) -> int:
 
             if topic_html:
                 detail = parse.parse_topic(topic_html)
+                if not detail.body_html:
+                    log.warning("主題 %s 找不到首帖內文，保留既有明細並於下次重試。", row.topic_id)
+                    store.upsert(tournaments, fields, now_iso)
+                    continue
+                fields["body_html"] = detail.body_html
+                fields["body_css"] = detail.body_css
                 fields["created_at"] = detail.created_at
                 fields["discord"] = detail.discord
                 fields["signup_form"] = detail.signup_form
