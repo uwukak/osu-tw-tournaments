@@ -175,6 +175,33 @@ def test_the_inline_script_parses():
     assert done.returncode == 0, f"看板的 inline script 有語法錯誤：\n{done.stderr}"
 
 
+def test_the_discovery_sort_is_newest_first():
+    """切換排序後，最新發現的賽事排在前面；同日再用 topic id 穩定排序。"""
+    script = inline_script(dashboard_html())
+    start = script.index("  function sortByDiscovery(")
+    end = script.index("\n  }", start) + 4
+    function = script[start:end]
+    program = function + r'''
+const assert = require('node:assert/strict');
+const rows = [
+  {topic_id: 1, first_seen_utc: '2026-10-01T00:00:00+00:00'},
+  {topic_id: 3, first_seen_utc: '2026-10-03T00:00:00+00:00'},
+  {topic_id: 2, first_seen_utc: '2026-10-03T00:00:00+00:00'},
+  {topic_id: 4, first_seen_utc: ''}
+];
+assert.deepEqual(sortByDiscovery(rows).map(r => r.topic_id), [3, 2, 1, 4]);
+assert.deepEqual(rows.map(r => r.topic_id), [1, 3, 2, 4]);
+'''
+    done = subprocess.run(("node", "-e", program), capture_output=True, text=True, encoding="utf-8")
+    assert done.returncode == 0, done.stderr
+
+
+def test_the_dashboard_exposes_the_sort_control():
+    html = dashboard_html()
+    assert 'id="f-sort"' in html
+    assert "發現日期（新到舊）" in html
+
+
 def test_numeric_mania_keys_are_strings_in_raw_fields():
     assert render.raw_fields(dict(RECORD, mania_keys=4))["mania_keys"] == "4"
 

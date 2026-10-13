@@ -291,6 +291,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   <div class="controls">
     <div class="group" id="f-mode" role="group" aria-label="依模式篩選"></div>
     <div class="group" id="f-status" role="group" aria-label="依報名狀態篩選"></div>
+    <div class="group" id="f-sort" role="group" aria-label="依排序方式"></div>
     <label class="toggle"><input type="checkbox" id="f-review" autocomplete="off" checked> 顯示待確認</label>
     <!-- 站長的入口。畫面上沒有任何按鈕 —— 訪客看不到編輯功能的痕跡。
          要進來有兩條路，都不留東西在頁面上：
@@ -377,7 +378,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   // 跑完之後才還原。若用 JS 變數另外記一份，兩者就會分岔 —— 勾勾看起來是取消的，
   // 卡片卻還在（變數仍是 true）；再點一下反而變成「已勾選」，畫面毫無反應，
   // 整個開關就像壞掉。讓真相只剩一個地方，就不會分岔。
-  var state = { kind: 'player', mode: 'all', status: 'all' };
+  var state = { kind: 'player', mode: 'all', status: 'all', sort: 'default' };
   var reviewToggle = document.getElementById('f-review');
 
   // ------------------------------------------------------------------
@@ -685,6 +686,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   var MODE_LABEL = {std:'osu!standard', taiko:'osu!taiko', catch:'osu!catch', mania:'osu!mania'};
   var MODES = [['all','全部'],['std','Standard'],['taiko','Taiko'],['catch','Catch'],['mania','Mania']];
   var STATUSES = [['all','全部狀態'],['open','報名中'],['closed','已截止'],['unknown','未標明']];
+  var SORTS = [['default','預設排序'],['discovered','發現日期（新到舊）']];
   // 分頁。跟 MODES 那種「篩選器」是不同的東西：分頁切換的是整份清單，
   // 而且一筆賽事只屬於一頁（`both` 例外，兩頁都列）。
   var KINDS = [['player','選手報名'],['staff','工作人員報名']];
@@ -846,6 +848,15 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
       if(state.mode!=='all' && r.mode!==state.mode) return false;
       if(state.status!=='all' && statusBucket(r.status)!==state.status) return false;
       return true;
+    });
+  }
+
+  function sortByDiscovery(list){
+    return list.slice().sort(function(a,b){
+      var aSeen = a.first_seen_utc || '';
+      var bSeen = b.first_seen_utc || '';
+      if(aSeen !== bSeen) return aSeen < bSeen ? 1 : -1;
+      return Number(b.topic_id) - Number(a.topic_id);
     });
   }
 
@@ -1496,6 +1507,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     var grid = document.getElementById('grid');
     grid.textContent='';
     var list = visible();
+    if(state.sort === 'discovered') list = sortByDiscovery(list);
     // 這一頁「本來有幾筆」（不吃模式／狀態篩選，但要吃分頁）—— 拿來分辨
     // 「這頁本來就沒東西」和「是你的篩選把它濾光了」。這兩件事的空畫面
     // 講同一句話是錯的：工作人員頁空的，不代表今天沒有比賽。
@@ -1534,6 +1546,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 
   buildGroup(document.getElementById('f-mode'), MODES, 'mode');
   buildGroup(document.getElementById('f-status'), STATUSES, 'status');
+  buildGroup(document.getElementById('f-sort'), SORTS, 'sort');
   buildTabs();
   // 不再用 JS 把 checked 設回 true：那會跟瀏覽器還原的狀態打架，而且誰贏要看時機。
   // 交給 HTML 的 checked 屬性決定預設值就好。
