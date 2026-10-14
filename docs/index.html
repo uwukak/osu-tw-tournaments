@@ -9,51 +9,30 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
 :root{
-  --bg:#FBF7F9; --surface:#FFFFFF; --text:#1E1720; --muted:#6E6170;
-  --border:#EADFE5; --accent:#D62E77; --accent-soft:#FCE7F0; --on-accent:#FFFFFF;
-  --open:#1F7A4D; --open-bg:#E3F4EA;
-  --closed:#8A7F8D; --closed-bg:#EFEBF1;
-  --unknown:#8A6212; --unknown-bg:#FBF0D9;
-  --review:#8A5A12; --review-bg:#FDF0DC;
-  --shadow:0 1px 2px rgba(30,23,32,.05), 0 8px 24px -18px rgba(30,23,32,.35);
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#15111A; --surface:#1E1824; --text:#F2ECF4; --muted:#A498A9;
-    --border:#2E2735; --accent:#FF66AA; --accent-soft:#3A1F2E; --on-accent:#2A0E1C;
-    --open:#5FD79B; --open-bg:#12301F;
-    --closed:#8E8393; --closed-bg:#241E2A;
-    --unknown:#E0B45C; --unknown-bg:#33280F;
-    --review:#E0B45C; --review-bg:#33280F;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.9);
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#15111A; --surface:#1E1824; --text:#F2ECF4; --muted:#A498A9;
-  --border:#2E2735; --accent:#FF66AA; --accent-soft:#3A1F2E; --on-accent:#2A0E1C;
-  --open:#5FD79B; --open-bg:#12301F;
-  --closed:#8E8393; --closed-bg:#241E2A;
-  --unknown:#E0B45C; --unknown-bg:#33280F;
-  --review:#E0B45C; --review-bg:#33280F;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -18px rgba(0,0,0,.9);
-  color-scheme: dark;
+  --bg:#10121C; --surface:#1A1E2D; --text:#F4F5FA; --muted:#A8AEC3;
+  --border:#30364B; --accent:#FF80B5; --accent-soft:#382338; --on-accent:#241021;
+  --open:#80E3B5; --open-bg:#193A32;
+  --closed:#A5ACC1; --closed-bg:#272C3C;
+  --unknown:#F2CD83; --unknown-bg:#3B3224;
+  --review:#F2CD83; --review-bg:#3B3224;
+  --shadow:0 8px 24px -12px rgba(0,0,0,.5);
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
 body{
-  margin:0; background:var(--bg); color:var(--text);
+  margin:0; background:radial-gradient(ellipse at 85% 0%,#302039 0,transparent 580px),var(--bg); color:var(--text);
   font-family:"Noto Sans TC","Saira",system-ui,-apple-system,"Segoe UI",sans-serif;
   padding:0 16px env(safe-area-inset-bottom,0px);
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1120px; margin:0 auto; padding-block:32px 64px}
-header.top{display:flex; flex-wrap:wrap; gap:20px; align-items:flex-end; justify-content:space-between; padding-bottom:20px; border-bottom:1px solid var(--border)}
-h1{font-family:"Saira","Noto Sans TC",sans-serif; font-size:clamp(22px,4vw,32px); font-weight:700; margin:0; letter-spacing:-.01em}
+.wrap{max-width:1200px; margin:0 auto; padding-block:40px 64px}
+header.top{position:relative; display:flex; flex-wrap:wrap; gap:32px; align-items:center; justify-content:space-between; padding:36px; border:1px solid var(--border); border-radius:24px; background:linear-gradient(120deg,#202538,#241D31); overflow:hidden}
+header.top::before{content:""; position:absolute; top:0; left:36px; width:72px; height:3px; background:var(--accent)}
+.eyebrow{font-family:"Saira",sans-serif; font-size:12px; font-weight:600; letter-spacing:.18em; color:var(--accent); margin-bottom:12px}
+h1{font-family:"Saira","Noto Sans TC",sans-serif; font-size:clamp(26px,4vw,38px); font-weight:700; margin:0; letter-spacing:-.01em}
 h1 .accent{color:var(--accent)}
-.sub{color:var(--muted); font-size:13px; margin-top:6px}
-/* 粉專的入口，放在標題旁邊。圖示只用 currentColor 畫，兩套配色（淺／深）自己會跟著走 ——
-   不另外寫死顏色，就不會出現「深色主題下一顆淺灰圖示糊在背景裡」這種事。 */
+.sub{color:var(--muted); font-size:13px; line-height:1.8; margin-top:12px; max-width:560px}
+/* 粉專的入口，放在標題旁邊。圖示沿用 currentColor。 */
 .brand{display:flex; align-items:center; gap:12px}
 .fb{
   display:inline-flex; align-items:center; justify-content:center; flex:none;
@@ -64,9 +43,11 @@ h1 .accent{color:var(--accent)}
 .fb:hover{color:var(--accent); border-color:var(--accent); background:var(--accent-soft)}
 .fb:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .fb svg{display:block; fill:currentColor}
-.stats{display:flex; gap:24px}
-.stat{text-align:right}
-.stat b{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:26px; font-weight:700; display:block; line-height:1.1}
+.stats{display:flex; gap:0; padding:20px 0; border:1px solid var(--border); border-radius:16px; background:#14172480}
+.stat{text-align:center; min-width:96px; padding:0 20px}
+.stat+.stat{border-left:1px solid var(--border)}
+.stat:first-child b{color:var(--accent)}
+.stat b{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums; font-size:34px; font-weight:700; display:block; line-height:1.2}
 .stat span{font-size:12px; color:var(--muted)}
 /* 分頁：選手報名／工作人員報名。刻意長得**不像**下面的篩選器 —— 篩選器是一顆顆
    有框的按鈕，分頁是底線式的頁籤。兩者緊鄰，共用同一種外觀會被讀成「兩排篩選器」，
@@ -86,7 +67,7 @@ h1 .accent{color:var(--accent)}
   min-width:22px; padding:2px 7px; border-radius:999px; text-align:center;
   background:var(--accent-soft); color:var(--accent);
 }
-.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:16px 0 20px}
+.controls{display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin:20px 0 28px; padding:18px; border:1px solid var(--border); border-radius:16px; background:#171B29}
 .group{display:flex; gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; background:var(--surface)}
 .group button{
   font:inherit; font-size:13px; padding:8px 13px; border:0; background:transparent; color:var(--muted);
@@ -97,15 +78,17 @@ h1 .accent{color:var(--accent)}
 .group button:focus-visible{outline:2px solid var(--accent); outline-offset:-2px}
 .toggle{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted); cursor:pointer}
 .toggle input{accent-color:var(--accent); width:16px; height:16px}
-.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:20px}
 @media (max-width:420px){ .grid{grid-template-columns:1fr} .wrap{padding-inline:0} }
 .card{
   background:var(--surface); border:1px solid var(--border); border-radius:14px;
-  padding:18px; display:flex; flex-direction:column; gap:14px; box-shadow:var(--shadow);
+  padding:22px; display:flex; flex-direction:column; gap:18px; box-shadow:var(--shadow); min-width:0;
   cursor:pointer;
 }
 .card:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 .card.review{border-style:dashed}
+.card:hover{border-color:#9B648A}
+.card h2{overflow-wrap:anywhere}
 .card-top{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
 .chip{
   font-family:"Saira",sans-serif; font-size:11px; font-weight:600; letter-spacing:.04em;
@@ -124,20 +107,21 @@ h1 .accent{color:var(--accent)}
    margin-left 要歸零：`.pill` 本身帶著 margin-left:auto（把狀態膠囊推到右邊），
    兩顆都 auto 的話會把剩餘空間從中間平分掉，晶片和膠囊之間就開了一個大洞。 */
 .pill.staff{background:var(--accent-soft); color:var(--accent); margin-left:0}
-.card h2{font-size:19px; font-weight:700; margin:0; line-height:1.35; text-wrap:balance}
+.card h2{font-size:21px; font-weight:700; margin:0; line-height:1.45; text-wrap:balance}
 .meta{display:flex; flex-direction:column; gap:7px; font-size:13px; color:var(--muted); margin:0}
 .meta div{display:flex; gap:10px}
-.meta dt{min-width:56px; color:var(--muted); opacity:.8}
+.meta dt{min-width:56px; color:var(--muted)}
+.meta dd{overflow-wrap:anywhere; min-width:0}
 .meta dd{margin:0; color:var(--text)}
 .meta dd.num{font-family:"Saira",sans-serif; font-variant-numeric:tabular-nums}
 .review-note,.stale-note{font-size:12px; border-radius:8px; padding:8px 10px; line-height:1.5}
 .review-note{color:var(--review); background:var(--review-bg)}
 .stale-note{color:var(--closed); background:var(--closed-bg)}
-.card-foot{display:flex; gap:14px; align-items:center; margin-top:auto; padding-top:4px; font-size:12px; color:var(--muted)}
+.card-foot{display:flex; gap:14px; align-items:center; margin-top:auto; padding-top:16px; border-top:1px solid var(--border); font-size:12px; color:var(--muted)}
 .card-foot a{color:var(--accent); text-decoration:none; font-weight:600}
 .card-foot a:hover{text-decoration:underline}
 .card-foot a:focus-visible{outline:2px solid var(--accent); outline-offset:2px; border-radius:4px}
-.more{margin-left:auto; white-space:nowrap; opacity:.75}
+.more{margin-left:auto; white-space:nowrap; color:var(--text)}
 /* 剩餘時間。分開一個 span 是為了讓 JS 每分鐘只改這幾個字，
    不必整頁重繪（重繪會把正在讀的卡片捲動位置跳掉）。 */
 .countdown{font-variant-numeric:tabular-nums; opacity:.75; white-space:nowrap}
@@ -146,7 +130,20 @@ h1 .accent{color:var(--accent)}
 .countdown:empty::before{content:""}
 .empty{text-align:center; color:var(--muted); padding:64px 16px; border:1px dashed var(--border); border-radius:14px}
 footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); color:var(--muted); font-size:12px; line-height:1.7}
-@media (prefers-reduced-motion:no-preference){ .card{transition:box-shadow .15s ease} .card:hover{box-shadow:0 2px 4px rgba(30,23,32,.06),0 14px 32px -20px rgba(30,23,32,.5)} }
+@media (prefers-reduced-motion:no-preference){ .card{transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease} .card:hover{transform:translateY(-3px); box-shadow:0 14px 32px -16px #000} }
+@media(max-width:600px){
+  .wrap{padding-top:16px}
+  header.top{padding:24px 20px; gap:24px; border-radius:18px}
+  .brand{gap:8px}
+  .fb{width:32px;height:32px}
+  .stats{width:100%; padding:16px 0}
+  .stat{flex:1; min-width:0; padding:0 10px}
+  .controls{padding:12px; gap:12px}
+  .group{max-width:100%; flex-wrap:wrap}
+  .group button{padding:10px 11px}
+  .tabs button{font-size:14px; padding-inline:12px}
+  .card{padding:20px}
+}
 
 /* 點卡片彈出的詳細說明。用原生 <dialog>：Esc 關閉、focus trap、backdrop 都是免費的。 */
 .detail{
@@ -154,7 +151,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   width:min(1000px, calc(100% - 32px)); max-height:90vh; overflow:auto;
   box-shadow:0 24px 64px -28px rgba(30,23,32,.6);
 }
-.detail::backdrop{background:rgba(20,15,22,.55)}
+.detail::backdrop{background:rgba(8,10,18,.8); backdrop-filter:blur(6px)}
 .detail-inner{padding:20px}
 .detail-top{display:flex; align-items:center; gap:8px}
 .detail .pill{margin-left:0}
@@ -267,6 +264,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 <div class="wrap">
   <header class="top">
     <div>
+      <div class="eyebrow">TAIWAN osu! / TOURNAMENTS</div>
       <div class="brand">
         <h1>台灣 osu! <span class="accent">賽事看板</span></h1>
         <!-- 粉專。這是訪客唯一一個「對外」的出口 —— 看板本身是靜態頁，沒有留言、
