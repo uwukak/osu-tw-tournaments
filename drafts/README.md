@@ -22,5 +22,5 @@
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜表定已截止
 - [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名已截止
 - 🙋 [Hidden Cup: Chapter Golden Lily](2248268.md) — osu!standard｜報名已截止
-- 🙋 [Sonus Scope 2](2247819.md) — osu!standard｜表定已截止
+- [Sonus Scope 2](2247819.md) — osu!standard｜報名已截止
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
