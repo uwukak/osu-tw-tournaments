@@ -287,7 +287,7 @@ def test_theme_toggle_restores_and_saves_preference():
     harness = r'''
 const assert = require('assert');
 const vm = require('vm');
-function boot(saved, blocked = false) {
+function boot(saved, blocked = false, transitions = false, reducedMotion = false) {
   const button = {addEventListener: (_, fn) => button.click = fn};
   const root = {dataset: {}};
   const storage = {value: saved,
@@ -295,11 +295,14 @@ function boot(saved, blocked = false) {
     setItem: (key, value) => {assert.equal(key, 'osu-tw-tournaments-theme');
       if (blocked) throw Error('blocked'); storage.value = value;}
   };
+  const document = {documentElement: root, getElementById: () => button, transitionCount: 0};
+  if (transitions) document.startViewTransition = fn => {document.transitionCount++; fn();};
   vm.runInNewContext(SOURCE, {
-    document: {documentElement: root, getElementById: () => button},
+    document,
+    matchMedia: () => ({matches: reducedMotion}),
     localStorage: storage
   });
-  return {button, root, storage};
+  return {button, root, storage, document};
 }
 let app = boot(null);
 assert.equal(app.root.dataset.theme, 'dark');
@@ -316,6 +319,15 @@ assert.equal(app.storage.value, 'dark');
 assert.equal(boot('invalid').root.dataset.theme, 'dark');
 app = boot(null, true);
 app.button.click();
+assert.equal(app.root.dataset.theme, 'light');
+app = boot('light', false, true);
+assert.equal(app.document.transitionCount, 0);
+app.button.click();
+assert.equal(app.document.transitionCount, 1);
+assert.equal(app.root.dataset.theme, 'dark');
+app = boot('dark', false, true, true);
+app.button.click();
+assert.equal(app.document.transitionCount, 0);
 assert.equal(app.root.dataset.theme, 'light');
 '''
     result = subprocess.run([node, '-e', 'const SOURCE = ' + json.dumps(theme_script) + ';' + harness],

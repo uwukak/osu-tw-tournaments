@@ -35,6 +35,10 @@
 .theme-toggle{font:inherit; font-size:13px; padding:9px 14px; border:1px solid var(--border); border-radius:999px; background:var(--surface); color:var(--text); cursor:pointer}
 .theme-toggle:hover{border-color:var(--accent); color:var(--accent)}
 .theme-toggle:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.3s; animation-timing-function:ease-in-out}
+@media(prefers-reduced-motion:reduce){
+  ::view-transition-old(root),::view-transition-new(root){animation:none}
+}
 *{box-sizing:border-box}
 body{
   margin:0; background:radial-gradient(ellipse at 85% 0%,#302039 0,transparent 580px),var(--bg); color:var(--text);
@@ -398,7 +402,11 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
   applyTheme(savedTheme === 'light' ? 'light' : 'dark');
   themeButton.addEventListener('click', function(){
     var theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    applyTheme(theme);
+    if(document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      document.startViewTransition(function(){ applyTheme(theme); });
+    }else{
+      applyTheme(theme);
+    }
     try{ localStorage.setItem(themeKey, theme); }catch(e){}
   });
   var payload = JSON.parse(document.getElementById('data').textContent);
