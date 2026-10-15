@@ -613,6 +613,23 @@ _TEMPLATE = r"""<!doctype html>
   --shadow:0 8px 24px -12px rgba(0,0,0,.5);
   color-scheme:dark;
 }
+:root[data-theme="light"]{
+  --bg:#F7F5F8; --surface:#FFFFFF; --text:#252132; --muted:#655D73;
+  --border:#DED8E5; --accent:#B82568; --accent-soft:#FCE6F0; --on-accent:#FFFFFF;
+  --open:#176743; --open-bg:#E2F4E9;
+  --closed:#655D73; --closed-bg:#EEEBF2;
+  --unknown:#795510; --unknown-bg:#FFF0D3;
+  --review:#795510; --review-bg:#FFF0D3;
+  --shadow:0 8px 24px -12px rgba(40,30,55,.18);
+  color-scheme:light;
+}
+:root[data-theme="light"] body{background:var(--bg)}
+:root[data-theme="light"] header.top{background:linear-gradient(120deg,#FFFFFF,#F9EAF2)}
+:root[data-theme="light"] .stats,:root[data-theme="light"] .controls{background:var(--surface)}
+.page-tools{display:flex; justify-content:flex-end; margin-bottom:12px}
+.theme-toggle{font:inherit; font-size:13px; padding:9px 14px; border:1px solid var(--border); border-radius:999px; background:var(--surface); color:var(--text); cursor:pointer}
+.theme-toggle:hover{border-color:var(--accent); color:var(--accent)}
+.theme-toggle:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
 *{box-sizing:border-box}
 body{
   margin:0; background:radial-gradient(ellipse at 85% 0%,#302039 0,transparent 580px),var(--bg); color:var(--text);
@@ -857,6 +874,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 </head>
 <body>
 <div class="wrap">
+  <div class="page-tools"><button type="button" class="theme-toggle" id="theme-toggle">切換淺色</button></div>
   <header class="top">
     <div>
       <div class="eyebrow">TAIWAN osu! / TOURNAMENTS</div>
@@ -964,6 +982,20 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 <script type="application/json" id="data">/*__DATA__*/null</script>
 <script>
 (function(){
+  var themeKey = 'osu-tw-tournaments-theme';
+  var themeButton = document.getElementById('theme-toggle');
+  function applyTheme(theme){
+    document.documentElement.dataset.theme = theme;
+    themeButton.textContent = theme === 'light' ? '切換深色' : '切換淺色';
+  }
+  var savedTheme = 'dark';
+  try{ savedTheme = localStorage.getItem(themeKey); }catch(e){}
+  applyTheme(savedTheme === 'light' ? 'light' : 'dark');
+  themeButton.addEventListener('click', function(){
+    var theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    applyTheme(theme);
+    try{ localStorage.setItem(themeKey, theme); }catch(e){}
+  });
   var payload = JSON.parse(document.getElementById('data').textContent);
   var rows = payload.tournaments || [];
   // 「顯示待確認」這一格刻意**不放進 state**，一律直接讀 DOM 的 checkbox。

@@ -278,6 +278,51 @@ var putJson=(path,data)=>{writes++;remote=data;return Promise.resolve({ok:true,s
 # --------------------------------------------------------------------------
 
 
+def test_theme_toggle_restores_and_saves_preference():
+    node = shutil.which('node')
+    if not node:
+        return
+    script = inline_script(dashboard_html())
+    theme_script = script.split('(function(){', 1)[1].split('  var payload =', 1)[0]
+    harness = r'''
+const assert = require('assert');
+const vm = require('vm');
+function boot(saved, blocked = false) {
+  const button = {addEventListener: (_, fn) => button.click = fn};
+  const root = {dataset: {}};
+  const storage = {value: saved,
+    getItem: () => {if (blocked) throw Error('blocked'); return storage.value;},
+    setItem: (key, value) => {assert.equal(key, 'osu-tw-tournaments-theme');
+      if (blocked) throw Error('blocked'); storage.value = value;}
+  };
+  vm.runInNewContext(SOURCE, {
+    document: {documentElement: root, getElementById: () => button},
+    localStorage: storage
+  });
+  return {button, root, storage};
+}
+let app = boot(null);
+assert.equal(app.root.dataset.theme, 'dark');
+assert.equal(app.button.textContent, '切換淺色');
+app.button.click();
+assert.equal(app.root.dataset.theme, 'light');
+assert.equal(app.storage.value, 'light');
+app = boot(app.storage.value);
+assert.equal(app.root.dataset.theme, 'light');
+assert.equal(app.button.textContent, '切換深色');
+app.button.click();
+assert.equal(app.root.dataset.theme, 'dark');
+assert.equal(app.storage.value, 'dark');
+assert.equal(boot('invalid').root.dataset.theme, 'dark');
+app = boot(null, true);
+app.button.click();
+assert.equal(app.root.dataset.theme, 'light');
+'''
+    result = subprocess.run([node, '-e', 'const SOURCE = ' + json.dumps(theme_script) + ';' + harness],
+                            capture_output=True, text=True, encoding='utf-8')
+    assert result.returncode == 0, result.stderr
+
+
 def main() -> int:
     return _runner.run(globals())
 
