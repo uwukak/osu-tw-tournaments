@@ -106,6 +106,7 @@ class TopicDetail:
     """主題頁的內容。"""
 
     topic_id: Optional[int] = None
+    title: str = ""
     created_at: Optional[str] = None
     author: Optional[str] = None
     body_text: str = ""
@@ -211,6 +212,9 @@ def parse_topic(html: str) -> TopicDetail:
     soup = BeautifulSoup(html, "html.parser")
     detail = TopicDetail()
 
+    heading = soup.select_one('h1.forum-topic-title__title--display')
+    if heading:
+        detail.title = heading.get_text(' ', strip=True)
     # 發文時間藏在 .forum-topic-title 的字串裡。
     title_el = soup.select_one(".forum-topic-title")
     if title_el:

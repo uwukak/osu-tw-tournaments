@@ -317,6 +317,46 @@ def test_a_single_malformed_entry_is_skipped_without_taking_the_board_down():
 
 # --------------------------------------------------------------------------
 
+def test_off_listing_active_topic_refreshes_without_faking_listing_presence():
+    from unittest.mock import patch
+    from osu_tourney import parse
+    with _sandbox() as root:
+        old = _data(root)
+        old['tournaments']['2252361'] = {
+            'topic_id': 2252361, 'title': '[STD] SMST 84 [Open]', 'status': 'open',
+            'decision': 'include', 'details_fetched_at': '2020-01-01T00:00:00+00:00',
+            'body_html': '<p>old</p>', 'last_seen_utc': '2020-01-01T00:00:00+00:00',
+            'first_seen_utc': '2020-01-01T00:00:00+00:00',
+            'off_listing_since': '2020-01-02T00:00:00+00:00',
+        }
+        scrape.DATA_PATH.write_text(json.dumps(old), encoding='utf-8')
+        html = (scrape.FIXTURES / 'topic.html').read_text(encoding='utf-8').replace('[Open]', '[REGS CLOSED]')
+        listing = [parse.TopicRow(999, '[STD] Dummy [Closed]')]
+        with patch.object(scrape.parse, 'parse_listing', return_value=listing), \
+             patch.object(scrape.OfflineSource, 'topic', return_value=None):
+            assert _run() == 0
+        failed = _data(root)['tournaments']['2252361']
+        assert failed['body_html'] == '<p>old</p>'
+        assert failed['details_fetched_at'] == '2020-01-01T00:00:00+00:00'
+        with patch.object(scrape.parse, 'parse_listing', return_value=[parse.TopicRow(999, '[STD] Dummy [Closed]')]), \
+             patch.object(scrape.OfflineSource, 'topic', return_value=None) as fetch:
+            assert scrape.main(['--offline', '--no-push', '--limit', '1']) == 0
+            assert fetch.call_count == 1
+            assert fetch.call_args.args == (999,)
+        with patch.object(scrape.parse, 'parse_listing', return_value=[parse.TopicRow(999, '[STD] Dummy [Closed]')]), \
+             patch.object(scrape.OfflineSource, 'topic', side_effect=lambda tid: html if tid == 2252361 else None):
+            assert _run() == 0
+        record = _data(root)['tournaments']['2252361']
+        assert record['status'] == 'closed'
+        assert record['body_html'] != '<p>old</p>'
+        assert record['last_seen_utc'] == '2020-01-01T00:00:00+00:00'
+        assert record['off_listing_since'] == '2020-01-02T00:00:00+00:00'
+        with patch.object(scrape.parse, 'parse_listing', return_value=[parse.TopicRow(999, '[STD] Dummy [Closed]')]), \
+             patch.object(scrape.OfflineSource, 'topic', return_value=None) as fetch:
+            assert _run() == 0
+            assert 2252361 not in [call.args[0] for call in fetch.call_args_list]
+
+
 def main() -> int:
     return _runner.run(globals())
 

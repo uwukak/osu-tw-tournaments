@@ -313,13 +313,17 @@ def classify_region(title: str) -> tuple[str, str]:
     """回傳 (include/exclude/review, 原因)。"""
     if REGION_LANG_GATE.search(title):
         return EXCLUDE, "language-gate"
+    codes = [c.lower() for g in REGION_CODE.findall(title) for c in g if c]
+    regions = {CODE2REGION.get(c) for c in codes}
+    allowed = REGION_ALLOW.search(title) or regions & ALLOWED_REGIONS
+    denied = REGION_DENY_COUNTRY.search(title) or regions - ALLOWED_REGIONS - {None}
+    if allowed and (denied or (codes and None in regions)):
+        return REVIEW, 'region-conflict'
     if REGION_ALLOW.search(title):
         return INCLUDE, "explicit-allow"
     if REGION_DENY_COUNTRY.search(title):
         return EXCLUDE, "named-region"
 
-    codes = [c.lower() for g in REGION_CODE.findall(title) for c in g if c]
-    regions = {CODE2REGION.get(c) for c in codes}
     if regions - {None}:
         if regions & ALLOWED_REGIONS:
             return INCLUDE, "code-allow"
@@ -558,7 +562,7 @@ def find_deadline_sentence(body_text: str) -> Optional[str]:
         hit = m.group(0).strip()
         if first is None:
             first = hit
-        if DATE_IN_TEXT.search(hit):
+        if re.search(_DATEISH, hit, re.I):
             return hit
     return first
 
@@ -599,7 +603,17 @@ def _deadline_date_candidates(raw: str) -> list[tuple[int, int, int, int]]:
             out.append(
                 (int(m.group(4)), _MONTHS[m.group(3).lower()[:3]], m.start(), m.end())
             )
-    return out
+    numeric = re.compile(r'(?<![\d.,])(?:((?:19|20)\d{2})-(\d{1,2})-(\d{1,2})|(\d{1,2})/(\d{1,2})(?:/((?:19|20)\d{2}))?)(?![\d,])')
+    for m in numeric.finditer(raw):
+        if m.group(1):
+            month, day = int(m.group(2)), int(m.group(3))
+        else:
+            a, b = int(m.group(4)), int(m.group(5))
+            if a <= 12 and b <= 12 and a != b:
+                return []  # 無法分辨 DD/MM 與 MM/DD，不猜。
+            day, month = (a, b) if a > 12 else (b, a)
+        out.append((day, month, m.start(), m.end()))
+    return sorted(out, key=lambda candidate: candidate[2])
 
 
 def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optional[str]:
@@ -640,12 +654,16 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
     cutoff = cands[start + 1][2] if len(cands) > start + 1 else len(raw)
     context = raw[:cutoff]
     explicit_year = re.match(r"\s*,?\s*((?:19|20)\d{2})\b", raw[cands[start][3]:])
+    numeric_year = re.search(r'\b((?:19|20)\d{2})\b', raw[cands[start][2]:cands[start][3]])
+    explicit_year = numeric_year or explicit_year
     if explicit_year:
         year = int(explicit_year.group(1))
     if year is None:
         return None
     offset = re.search(r"(?i)\b(?:UTC|GMT)\s*([+-])\s*(\d{1,2})(?::(\d{2}))?", context)
     tz = timezone.utc
+    if not offset and re.search(r'(?i)\b(?:EST|EDT|CST|CDT|MST|MDT|PST|PDT|AST|ADT|HST|BST|IST|JST|KST|CET|CEST|EET|EEST|MSK|AEST|AEDT|ACST|ACDT|AWST|NZST|NZDT)\b|local\s+time', context):
+        return None  # CST 等縮寫有歧義，沒有 UTC 偏移時保留原文。
     if offset:
         hours, minutes = int(offset.group(2)), int(offset.group(3) or 0)
         if hours > 23 or minutes > 59:
@@ -656,27 +674,20 @@ def parse_deadline_iso(raw: Optional[str], created_at: Optional[str]) -> Optiona
     hm = TIME_IN_TEXT.search(time_context[cands[start][3]:]) or TIME_IN_TEXT.search(time_context[:cands[0][2]])
     hour, minute = (int(hm.group(1)), int(hm.group(2))) if hm else (23, 59)
 
-    # 候選一律用 datetime() 驗過才採用：不合法就換下一個，而不是整句放棄。
-    # 這是第二層防線 —— 第一層是 DATE_IN_TEXT 的 lookbehind。
-    dt = None
-    for day, month, _start, _end in cands[start:]:
-        if not 1 <= day <= 31:
-            continue
-        try:
-            dt = datetime(year, month, day, hour, minute, tzinfo=tz)
-        except ValueError:
-            continue
-        break
-    if dt is None:
+    # 截止日期無效時，不可以拿後面的資格賽或決賽日期頂替。
+    day, month, _start, _end = cands[start]
+    try:
+        dt = datetime(year, month, day, hour, minute, tzinfo=tz)
+    except ValueError:
         return None
 
-    # 年份通常沒寫，取發文年份；若因此變成過去，代表跨年了。
+    # 年份通常沒寫，取發文年份；只有年末發文、截止在年初時才推測為跨年。
     if created_at and not explicit_year:
         try:
             created = datetime.fromisoformat(created_at)
             if created.tzinfo is None:
                 created = created.replace(tzinfo=timezone.utc)
-            if dt < created.replace(hour=0, minute=0):
+            if dt < created.replace(hour=0, minute=0) and created.month >= 10 and month <= 3:
                 dt = dt.replace(year=year + 1)
         except ValueError:
             pass

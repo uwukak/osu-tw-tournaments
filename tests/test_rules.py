@@ -641,6 +641,27 @@ def test_deadline_honours_explicit_offset_and_year():
     assert parse_deadline_iso("Registrations close January 5th 2028 18:30 UTC", None) == "2028-01-05T18:30:00+00:00"
 
 
+def test_conflicting_region_signals_require_review():
+    from osu_tourney.rules import classify_region
+    for title in ('International Cup [BR Only]', 'World Cup Japan Only', 'Asia Cup [VN Only]'):
+        assert classify_region(title) == (REVIEW, 'region-conflict')
+    assert classify_region('Cup [TW] [JP]') == (REVIEW, 'region-conflict')
+
+
+def test_numeric_deadlines_are_only_parsed_when_unambiguous():
+    from osu_tourney.rules import parse_deadline_iso
+    created = '2026-10-01T00:00:00+00:00'
+    for raw in ('Registrations close 18/10/2026 18:00 UTC',
+                'Registrations close 10/18/2026 18:00 UTC',
+                'Registrations close 2026-10-18 18:00 UTC'):
+        assert parse_deadline_iso(raw, created) == '2026-10-18T18:00:00+00:00'
+    assert parse_deadline_iso('Registrations close 10/11/2026 UTC', created) is None
+    assert parse_deadline_iso('Registrations close October 18 18:00 CST', created) is None
+    assert parse_deadline_iso('Registrations close October 18 18:00 GMT', created) == '2026-10-18T18:00:00+00:00'
+    assert parse_deadline_iso('Registrations close October 1 UTC', '2026-10-10T00:00:00+00:00') == '2026-10-01T23:59:00+00:00'
+    assert parse_deadline_iso('Registrations close February 30; Finals March 10 UTC', created) is None
+
+
 def main() -> int:
     """直接跑這個檔案時，額外印出逐筆的判定分布。
 

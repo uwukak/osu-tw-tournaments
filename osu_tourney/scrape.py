@@ -319,6 +319,15 @@ def run(args: argparse.Namespace) -> int:
     detail_budget = args.limit if args.limit else 10_000
     new_count = 0
 
+    listed_ids = {row.topic_id for row in rows}
+    for record in tournaments.values():
+        if record['topic_id'] not in listed_ids and (
+            args.refetch_details or record.get('status') in (rules.STATUS_OPEN, rules.STATUS_UNKNOWN)
+        ):
+            rows.append(parse.TopicRow(**{key: record.get(key) for key in (
+                'topic_id', 'title', 'author', 'posts', 'views', 'last_reply_at'
+            )}))
+
     for row in rows:
         if args.since_topic_id and row.topic_id <= args.since_topic_id:
             continue
@@ -359,6 +368,10 @@ def run(args: argparse.Namespace) -> int:
                     log.warning("主題 %s 找不到首帖內文，保留既有明細並於下次重試。", row.topic_id)
                     store.upsert(tournaments, fields, now_iso)
                     continue
+                if detail.title:
+                    row.title = detail.title
+                    verdict = rules.analyze(row.title)
+                    fields.update(_fields_from_row(row, verdict))
                 fields["body_html"] = detail.body_html
                 fields["body_css"] = detail.body_css
                 fields["created_at"] = detail.created_at
@@ -398,7 +411,13 @@ def run(args: argparse.Namespace) -> int:
 
         store.upsert(tournaments, fields, now_iso)
 
-    store.mark_off_listing(tournaments, {r.topic_id for r in rows}, now_iso)
+    # 抓到主題內文不代表重新出現在論壇第一頁；保留真正的列表觀測時間。
+    for tid, previous in old['tournaments'].items():
+        if int(tid) not in listed_ids:
+            for key in ('last_seen_utc', 'off_listing_since'):
+                if key in previous:
+                    tournaments[tid][key] = previous[key]
+    store.mark_off_listing(tournaments, listed_ids, now_iso)
     log.info("本回合新增 %d 筆。", new_count)
 
     # 4) 組出新的資料檔

@@ -113,7 +113,7 @@ python -m osu_tourney.scrape --push     # 抓完並提交推送
 
 ```bash
 python tests/test_parse.py                              # 先確認解析結果是對的
-python -m osu_tourney.scrape --push --refetch-details   # 再重抓本次列表上每個主題的明細
+python -m osu_tourney.scrape --push --refetch-details   # 再重抓列表與已儲存主題的明細
 ```
 
 > **Windows 注意**：新開的 cmd 可能找不到 `python`（PATH 問題），用 `py` 即可。
@@ -129,7 +129,7 @@ python -m osu_tourney.scrape --push --refetch-details   # 再重抓本次列表�
 | `--limit N` | 本回合最多抓 N 個主題頁（想省請求時用） |
 | `--since-topic-id N` | 只處理 id 大於 N 的主題 |
 | `--refresh-days N` | 報名中的賽事幾天後重抓明細（預設 3） |
-| `--refetch-details` | 忽略新鮮度與報名狀態，重抓列表上**每個**主題的明細 |
+| `--refetch-details` | 忽略新鮮度與報名狀態，重抓列表與已儲存主題的明細（仍受 `--limit` 限制） |
 | `--repo owner/repo` | 看板編輯功能的目標 repo（Actions 會自動帶 `GITHUB_REPOSITORY`） |
 | `--branch main` | 看板編輯要提交到哪個分支（預設 `main`） |
 
@@ -468,6 +468,13 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
 - **區域判定靠標題**。區域限制詳細寫在首帖內文時，規則看不到 —— 這類會被判成「無區域限制」而收錄。
 - **截止時間只能低信心猜測**。句子抓得到，但裡面的日期常常夾帶賽程日期、又沒寫年份。
   猜不出來時草稿會顯示原句，不會編一個時間給你。
+  數字日期支援 `YYYY-MM-DD` 及可唯一判定的 `DD/MM[/YYYY]`、`MM/DD[/YYYY]`；
+  `10/11/2026` 這類月日有歧義的日期不換算。只有時區縮寫（例如 CST）而無 UTC/GMT 偏移時，
+  也保留原文並標示待確認。完全沒寫時區時仍沿用 UTC 假設，沒寫時間則以 23:59 推估。
+- **區域訊號衝突時改為待確認**，例如 International 與 BR Only 同時出現，不再直接判為可參加。
+- **掉出第一頁的舊帖也會更新**：標題仍為報名中者預設每 3 天重抓，狀態未標明者每 9 天重抓；
+  已截止者不自動重抓。更新使用主題頁的新標題，且不改動最後出現在列表的時間。
+  舊帖與列表共用 `--limit` 下載額度，先處理列表；失敗保留原明細，下次到期繼續重試。
 - **報名狀態以標題為準，但會用內文的截止時間校正**。主辦忘了把 `[Open]` 改掉時
   （真實案例：SMST 83，標題寫開放、內文 9/25 就截止，過了兩週還顯示「報名開放中」），
   看板與草稿會改標成 **「表定已截止」**。反過來，若內文的截止時間猜錯，也可能誤標 ——
@@ -477,7 +484,7 @@ https://uwukak.github.io/osu-tw-tournaments/#edit
   字樣**同時**出現才算 `both`。所以「比賽順便徵人」依預設算選手賽事 —— 不同意就在編輯模式
   改「分頁」那一格。
 - **缺少完整首帖的舊資料會自動補抓**，不受已截止或明細尚新鮮的限制；範圍仍是本回合論壇列表。
-  `python -m osu_tourney.scrape --no-push --refetch-details` 可強制重抓列表上的首帖。
+  `python -m osu_tourney.scrape --no-push --refetch-details` 可強制重抓列表與已儲存主題的首帖。
   抓不到首帖時保留既有明細，下次再試。
 - 看板只顯示收錄與待確認的賽事；被排除的仍保存在 `data/tournaments.json` 裡，不會刪除。
   手動新增的比賽保存在 `data/custom.json`，標記 `deleted: true` 後會消失；請保留該編號標記。

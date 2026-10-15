@@ -62,6 +62,7 @@ STAFF_STATUS_LABEL = {
 
 # 收錄／排除的原因，翻成台灣讀者看得懂的話。
 REASON_LABEL = {
+    "region-conflict": "區域條件互相矛盾（需人工確認）",
     "no-region": "無區域限制（全球開放）",
     "explicit-allow": "明確包含台灣／亞洲區域",
     "code-allow": "明確包含台灣／中文圈",
@@ -1427,7 +1428,7 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
         frag.appendChild(s);
       }
     } else {
-      frag.appendChild(document.createTextNode(r.deadline_raw));
+      frag.appendChild(document.createTextNode('待確認：' + r.deadline_raw));
     }
     return frag;
   }
