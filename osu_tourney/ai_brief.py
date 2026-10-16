@@ -124,15 +124,25 @@ def generate(source: str, config: Config) -> tuple[dict, dict]:
         raise BriefError(f'AI HTTP {response.status_code}；本輪停止呼叫。')
     try:
         payload = response.json()
+    except ValueError:
+        raise BriefError('中轉回傳 HTTP 200，但內容不是 JSON（可能是網頁或防護頁）；未取得模型結果。') from None
+    try:
         choice = payload['choices'][0]
-        if choice.get('finish_reason') != 'stop':
-            raise BriefError('AI 輸出未完整結束，結果未採用。')
-        sections = validate_sections(json.loads(choice['message']['content']), source)
+        finish = choice['finish_reason']
+        content = choice['message']['content']
         usage = payload.get('usage') or {}
         usage = {key: usage[key] for key in ('prompt_tokens', 'completion_tokens', 'total_tokens')
                  if type(usage.get(key)) is int and usage[key] >= 0}
-    except (ValueError, KeyError, IndexError, TypeError, AttributeError):
-        raise BriefError('AI 回覆或原文依據驗證失敗，保留上次成功結果。') from None
+    except (KeyError, IndexError, TypeError, AttributeError):
+        raise BriefError('中轉 JSON 不符合 Chat Completions 回覆結構；請確認端點與模型支援。') from None
+    log.info('AI 回覆 token 用量 %s', usage)
+    if finish != 'stop':
+        raise BriefError('AI 輸出達到長度上限或未正常結束，結果未採用。')
+    try:
+        value = json.loads(content)
+    except (ValueError, TypeError):
+        raise BriefError('模型文字不是要求的純 JSON；結果未採用。') from None
+    sections = validate_sections(value, source)
     return sections, usage
 
 
