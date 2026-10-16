@@ -21,7 +21,7 @@ AI 會整理「賽事介紹、參賽／應徵條件、報名／申請方式、�
 1. 在 GitHub 專案 → Settings → Secrets and variables → Actions → Secrets 新增 `AI_API_KEY`。
    不要將金鑰貼進程式、資料檔或工作流程。若曾公開貼出金鑰，請先撤銷並重新產生。
 2. 在同一頁的 Variables 可設定：
-   - `AI_BASE_URL`：預設 `https://agentrouter.org/v1`。只填網域時會補 `/v1`；
+   - `AI_BASE_URL`：預設 `https://agentrouter.org`，不會自動補上 `/v1`；
      若中轉有自己的路徑，填完整 API 基底路徑，不要包含 `/chat/completions`。
    - `AI_MODEL`：預設 `deepseek-v4-flash`。
 3. 到 Actions → 更新賽事資料 → Run workflow，選擇 `ai_limit: 3`，先試跑最多 3 篇。

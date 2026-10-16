@@ -118,9 +118,15 @@ def test_bad_responses_and_timeouts_do_not_leak_reply_or_key():
             raise AssertionError('timeout accepted')
 
 
-def test_config_normalizes_root_and_rejects_unsafe_urls():
+def test_config_preserves_base_path_and_rejects_unsafe_urls():
     with patch.dict(os.environ, {'AI_API_KEY': 'test-key', 'AI_BASE_URL': 'https://agentrouter.org/'}, clear=True):
-        assert ai.Config.from_env().base_url == 'https://agentrouter.org/v1'
+        config = ai.Config.from_env()
+        assert config.base_url == 'https://agentrouter.org'
+        with patch.object(ai.requests, 'post', return_value=response()) as post:
+            ai.generate(ai.source_text(RECORD), config)
+        assert post.call_args.args == ('https://agentrouter.org/chat/completions',)
+        os.environ['AI_BASE_URL'] = 'https://relay.example/custom/v1/'
+        assert ai.Config.from_env().base_url == 'https://relay.example/custom/v1'
         for bad in ('http://example.com/v1', 'https://key@example.com/v1', 'https://example.com?key=x'):
             os.environ['AI_BASE_URL'] = bad
             try:
@@ -129,6 +135,8 @@ def test_config_normalizes_root_and_rejects_unsafe_urls():
                 pass
             else:
                 raise AssertionError('unsafe URL accepted')
+    with patch.dict(os.environ, {'AI_API_KEY': 'test-key'}, clear=True):
+        assert ai.Config.from_env().base_url == 'https://agentrouter.org'
     with patch.dict(os.environ, {}, clear=True):
         try:
             ai.Config.from_env()

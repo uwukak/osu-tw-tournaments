@@ -49,7 +49,7 @@ jobs:
       - name: 抓取並更新
         env:
           AI_API_KEY: ${{ secrets.AI_API_KEY }}
-          AI_BASE_URL: ${{ vars.AI_BASE_URL || 'https://agentrouter.org/v1' }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL || 'https://agentrouter.org' }}
           AI_MODEL: ${{ vars.AI_MODEL || 'deepseek-v4-flash' }}
           AI_LIMIT: ${{ inputs.ai_limit || '0' }}
         run: python -m osu_tourney.scrape --push --ai-limit "$AI_LIMIT"
