@@ -14,7 +14,7 @@ from pathlib import Path
 from typing import Any, Optional
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from . import parse, rules, store
+from . import ai_brief, parse, rules, store
 
 try:
     TAIPEI = ZoneInfo("Asia/Taipei")
@@ -354,6 +354,7 @@ def build_payload(
                 "rank_full": rec.get("rank_full") or "",
                 "author": rec.get("author") or "",
                 "excerpt": rec.get("excerpt") or "",
+                "ai_brief": ai_brief.display_brief(record),
                 "post_document": render_post_document(rec.get("body_html") or "", rec.get("body_css") or ""),
                 # 站長寫的。summary 有值時就取代 excerpt 顯示；excerpt 仍然照傳，
                 # 因為編輯面板要用它當預設內容、也要拿它比對「有沒有真的改過」。
@@ -786,6 +787,14 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
 }
 .quote .src{display:block; margin-top:6px; font-size:11px; color:var(--muted)}
 .post-frame{display:block;width:100%;height:65vh;min-height:320px;border:0;border-radius:8px;background:#2e2b33}
+.ai-brief{padding:18px; border:1px solid var(--border); border-radius:12px; line-height:1.8}
+.ai-brief h3{margin:0 0 8px; font-size:17px; color:var(--accent)}
+.ai-brief h4{margin:18px 0 6px; font-size:14px}
+.ai-brief p{margin:6px 0; font-size:14px; white-space:pre-wrap; overflow-wrap:anywhere}
+.ai-brief .ai-caption{font-size:12px; color:var(--muted)}
+.ai-evidence{margin-top:16px; font-size:12px; color:var(--muted); overflow-wrap:anywhere}
+.ai-evidence summary{cursor:pointer; color:var(--accent)}
+.ai-evidence blockquote{margin:8px 0 16px; padding-left:12px; border-left:2px solid var(--border); white-space:pre-wrap}
 .post-source{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:12px}
 @media(max-width:600px){.detail{width:calc(100% - 12px)}.detail-inner{padding:12px}}
 .detail-foot{display:flex; flex-wrap:wrap; gap:16px; margin-top:20px; padding-top:16px; border-top:1px solid var(--border); font-size:13px}
@@ -1936,6 +1945,31 @@ footer{margin-top:40px; padding-top:20px; border-top:1px solid var(--border); co
     if(editOn){
       body.appendChild(editorFor(r, currentIsNew));
     } else {
+      if(r.ai_brief){
+        if(r.ai_brief.stale){
+          body.appendChild(el('div','review-note','原帖已變更，繁中整理待更新，請先閱讀下方原帖。'));
+        }else{
+          var brief = el('section','ai-brief');
+          brief.appendChild(el('h3',null,'賽事簡介 · AI 繁中整理'));
+          brief.appendChild(el('p','ai-caption','依首帖文字整理，未讀取圖片文字與外部文件。報名前請核對主辦公告。'));
+          brief.appendChild(el('p','ai-caption','分析時間：' + new Date(r.ai_brief.generated_at).toLocaleString('zh-TW', {timeZone:'Asia/Taipei',hour12:false}) + '（台北時間）'));
+          var evidence = el('details','ai-evidence');
+          evidence.appendChild(el('summary',null,'查看原文依據與待確認事項'));
+          [['intro','這是什麼比賽'],['requirements','參賽／應徵條件'],['signup','報名／申請方式'],['schedule','賽制與賽程'],['notes','報名前注意']].forEach(function(section){
+            brief.appendChild(el('h4',null,section[1]));
+            r.ai_brief.sections[section[0]].forEach(function(item){
+              var label = item.status === 'supported' ? '' : '待確認：';
+              brief.appendChild(el('p',null,label + item.text));
+              evidence.appendChild(el('p',null,item.text));
+              evidence.appendChild(el('blockquote',null,item.evidence || '原帖未說明；請向主辦者確認。'));
+            });
+          });
+          var evidenceLink = infoLink(r);
+          if(evidenceLink) evidence.appendChild(evidenceLink);
+          brief.appendChild(evidence);
+          body.appendChild(brief);
+        }
+      }
       // 摘要＝原帖首段原文，只截不改。加註出處，避免被當成我們的轉述。
       // 站長自己寫的說明用同一種排版但換來源字樣與直條顏色 —— 那種情況下
       // 它**不是**節錄，標成節錄就是把我們的話記在原帖作者頭上。

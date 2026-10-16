@@ -17,7 +17,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Optional
 
-from . import parse, render, rules, store
+from . import ai_brief, parse, render, rules, store
 from .fetch import Fetcher, FetchError
 from .gitio import publish
 from .render import to_taipei
@@ -296,6 +296,7 @@ def run(args: argparse.Namespace) -> int:
     }
 
     source = OfflineSource(FIXTURES) if args.offline else Fetcher()
+    ai_config = ai_brief.Config.from_env() if args.ai_limit else None
 
     # 1) 抓列表。失敗就整個中止 —— 絕不用空資料覆蓋既有歷史。
     try:
@@ -420,6 +421,11 @@ def run(args: argparse.Namespace) -> int:
     store.mark_off_listing(tournaments, listed_ids, now_iso)
     log.info("本回合新增 %d 筆。", new_count)
 
+    if ai_config:
+        visible = render.build_payload(tournaments, page_meta, now_iso, overrides, custom)
+        ai_brief.update_briefs(tournaments, [r['topic_id'] for r in visible['tournaments']],
+                               ai_config, args.ai_limit, now_iso)
+
     # 4) 組出新的資料檔
     baseline = old.get("draft_baseline_topic_id")
     if args.seed_only:
@@ -541,6 +547,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     parser.set_defaults(push=False)
     parser.add_argument("--seed-only", action="store_true", help="首次回填：不產生草稿")
     parser.add_argument("--offline", action="store_true", help="用 fixtures/ 跑，不碰網路")
+    parser.add_argument('--ai-limit', type=int, choices=range(0, 6), default=0,
+                        help='本輪最多分析幾篇繁中簡介（0 關閉，最高 5；需 AI_API_KEY）')
     parser.add_argument("--limit", type=int, default=0, help="本回合最多抓幾個主題頁（測試用）")
     parser.add_argument("--since-topic-id", type=int, default=0, help="只處理 id 大於此值的主題")
     parser.add_argument("--refresh-days", type=int, default=3, help="報名中的賽事幾天後重抓明細")
@@ -563,6 +571,8 @@ def main(argv: Optional[list[str]] = None) -> int:
     )
     parser.add_argument("-v", "--verbose", action="store_true")
     args = parser.parse_args(argv)
+    if args.offline and args.ai_limit:
+        parser.error('--offline 不可搭配 --ai-limit，避免離線測試呼叫付費 API。')
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -572,6 +582,9 @@ def main(argv: Optional[list[str]] = None) -> int:
 
     try:
         return run(args)
+    except ai_brief.BriefError as exc:
+        log.error('AI 設定錯誤，已中止：%s', exc)
+        return 1
     except FetchError as exc:
         log.error("抓取失敗，已中止：%s", exc)
         return 1

@@ -4,7 +4,13 @@ on:
   schedule:
     # 每 30 分鐘。GitHub 在尖峰時段可能延遲數分鐘，對賽事公告來說無妨。
     - cron: "*/30 * * * *"
-  workflow_dispatch: # 也可以在 Actions 頁面手動觸發
+  workflow_dispatch: # 預設不呼叫 AI；先手動小批次驗證品質與用量
+    inputs:
+      ai_limit:
+        description: '本輪 AI 分析篇數上限（0 關閉）'
+        type: choice
+        default: '0'
+        options: ['0', '1', '3', '5']
 
 permissions:
   contents: write # 需要寫入權限才能把資料提交回 repo
@@ -38,8 +44,14 @@ jobs:
           python tests/test_dashboard_js.py
           python tests/test_custom_roundtrip.py
           python tests/test_scrape.py
+          python tests/test_ai_brief.py
 
       - name: 抓取並更新
-        run: python -m osu_tourney.scrape --push
+        env:
+          AI_API_KEY: ${{ secrets.AI_API_KEY }}
+          AI_BASE_URL: ${{ vars.AI_BASE_URL || 'https://agentrouter.org/v1' }}
+          AI_MODEL: ${{ vars.AI_MODEL || 'deepseek-v4-flash' }}
+          AI_LIMIT: ${{ inputs.ai_limit || '0' }}
+        run: python -m osu_tourney.scrape --push --ai-limit "$AI_LIMIT"
 
       # 用預設的 GITHUB_TOKEN 推送**不會**再觸發 workflow，所以沒有遞迴風險。
