@@ -49,7 +49,7 @@ class Config:
 
     @classmethod
     def from_env(cls):
-        base = os.environ.get('AI_BASE_URL', 'https://agentrouter.org').strip().rstrip('/')
+        base = os.environ.get('AI_BASE_URL', 'https://agentrouter.org/v1').strip().rstrip('/')
         url = urlsplit(base)
         if url.scheme != 'https' or not url.hostname or url.username or url.password or url.query or url.fragment:
             raise BriefError('AI_BASE_URL 必須是 HTTPS 基底網址，不可含帳密、查詢或 fragment。')

@@ -136,7 +136,11 @@ def test_config_preserves_base_path_and_rejects_unsafe_urls():
             else:
                 raise AssertionError('unsafe URL accepted')
     with patch.dict(os.environ, {'AI_API_KEY': 'test-key'}, clear=True):
-        assert ai.Config.from_env().base_url == 'https://agentrouter.org'
+        config = ai.Config.from_env()
+        assert config.base_url == 'https://agentrouter.org/v1'
+        with patch.object(ai.requests, 'post', return_value=response()) as post:
+            ai.generate(ai.source_text(RECORD), config)
+        assert post.call_args.args == ('https://agentrouter.org/v1/chat/completions',)
     with patch.dict(os.environ, {}, clear=True):
         try:
             ai.Config.from_env()
