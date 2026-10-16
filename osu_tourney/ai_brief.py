@@ -106,9 +106,11 @@ def validate_sections(value, source: str) -> dict:
 
 
 def generate(source: str, config: Config) -> tuple[dict, dict]:
+    endpoint = config.base_url + '/chat/completions'
+    log.info('AI 請求端點 %s；模型 %s', endpoint, config.model)
     try:
         response = requests.post(
-            config.base_url + '/chat/completions',
+            endpoint,
             headers={'Authorization': 'Bearer ' + config.key},
             json={'model': config.model, 'messages': [
                 {'role': 'system', 'content': PROMPT}, {'role': 'user', 'content': source}],
@@ -118,12 +120,15 @@ def generate(source: str, config: Config) -> tuple[dict, dict]:
     except requests.RequestException:
         raise BriefError('AI 連線失敗或逾時；本輪不自動重試。') from None
     if response.status_code != 200:
-        # 不印回應本文、請求標頭或 URL，避免中轉站的錯誤訊息回顯金鑰。
+        # 不印回應本文、請求標頭或伺服器回傳的 URL，避免錯誤訊息回顯金鑰。
         raise BriefError(f'AI HTTP {response.status_code}；本輪停止呼叫。')
     try:
         payload = response.json()
     except ValueError:
-        raise BriefError('中轉回傳 HTTP 200，但內容不是 JSON（可能是網頁或防護頁）；未取得模型結果。') from None
+        media_type = response.headers.get('Content-Type', '').split(';', 1)[0].strip().lower()
+        if media_type not in ('text/html', 'application/json', 'text/plain'):
+            media_type = '其他或未提供'
+        raise BriefError(f'中轉回傳 HTTP 200，但內容不是 JSON（Content-Type：{media_type}）；未取得模型結果。') from None
     try:
         choice = payload['choices'][0]
         finish = choice['finish_reason']

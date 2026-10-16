@@ -101,7 +101,7 @@ def test_long_and_image_only_sources_do_not_spend_tokens():
 def test_bad_responses_and_timeouts_do_not_leak_reply_or_key():
     for reply in (response(status=401), response(status=302), response(finish='length'),
                   Mock(status_code=200, json=Mock(return_value={'choices': [None]})),
-                  Mock(status_code=200, json=Mock(side_effect=ValueError('test-key')))):
+                  Mock(status_code=200, headers={}, json=Mock(side_effect=ValueError('test-key')))):
         with patch.object(ai.requests, 'post', return_value=reply):
             try:
                 ai.generate(ai.source_text(RECORD), CONFIG)
@@ -116,6 +116,23 @@ def test_bad_responses_and_timeouts_do_not_leak_reply_or_key():
             assert 'test-key' not in str(exc)
         else:
             raise AssertionError('timeout accepted')
+
+
+def test_non_json_diagnostics_show_endpoint_without_reply_or_key():
+    reply = Mock(status_code=200, headers={'Content-Type': 'text/html; charset=utf-8'},
+                 text='<html>test-key private reply</html>', json=Mock(side_effect=ValueError('test-key')))
+    with patch.object(ai.requests, 'post', return_value=reply), patch.object(ai.log, 'info') as info:
+        try:
+            ai.generate(ai.source_text(RECORD), CONFIG)
+        except ai.BriefError as exc:
+            assert 'text/html' in str(exc)
+            assert 'test-key' not in str(exc)
+            assert 'private reply' not in str(exc)
+        else:
+            raise AssertionError('HTML response accepted')
+    info.assert_any_call('AI 請求端點 %s；模型 %s',
+                         'https://relay.example/v1/chat/completions', 'test-model')
+    assert 'test-key' not in str(info.call_args_list)
 
 
 def test_config_preserves_base_path_and_rejects_unsafe_urls():
