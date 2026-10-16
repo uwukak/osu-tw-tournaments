@@ -130,9 +130,30 @@ def test_non_json_diagnostics_show_endpoint_without_reply_or_key():
             assert 'private reply' not in str(exc)
         else:
             raise AssertionError('HTML response accepted')
-    info.assert_any_call('AI 請求端點 %s；模型 %s',
-                         'https://relay.example/v1/chat/completions', 'test-model')
+    info.assert_any_call('AI 請求端點 %s', 'https://relay.example/v1/chat/completions')
+    info.assert_any_call('AI 模型 %s', 'test-model')
     assert 'test-key' not in str(info.call_args_list)
+
+
+def test_html_diagnostics_classify_pages_without_exposing_content():
+    for html, label in (
+        ('<title>Agent Router</title>', 'AgentRouter 前端頁面'),
+        ('<title>Just a moment...</title><script src="/cdn-cgi/challenge-platform/x"></script>', '疑似防護驗證頁'),
+        ('<title>Sign in</title>', '疑似登入頁'),
+        ('<title>登入</title>', '疑似登入頁'),
+        ('<title>test-key private reply</title>', '未辨識 HTML'),
+    ):
+        reply = Mock(status_code=200, headers={'Content-Type': 'text/html'},
+                     text=html + '<p>test-key private reply</p>', json=Mock(side_effect=ValueError))
+        with patch.object(ai.requests, 'post', return_value=reply):
+            try:
+                ai.generate(ai.source_text(RECORD), CONFIG)
+            except ai.BriefError as exc:
+                assert label in str(exc)
+                assert 'test-key' not in str(exc)
+                assert 'private reply' not in str(exc)
+            else:
+                raise AssertionError('HTML response accepted')
 
 
 def test_config_preserves_base_path_and_rejects_unsafe_urls():

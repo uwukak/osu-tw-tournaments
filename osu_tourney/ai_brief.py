@@ -107,7 +107,8 @@ def validate_sections(value, source: str) -> dict:
 
 def generate(source: str, config: Config) -> tuple[dict, dict]:
     endpoint = config.base_url + '/chat/completions'
-    log.info('AI 請求端點 %s；模型 %s', endpoint, config.model)
+    log.info('AI 請求端點 %s', endpoint)
+    log.info('AI 模型 %s', config.model)
     try:
         response = requests.post(
             endpoint,
@@ -128,7 +129,21 @@ def generate(source: str, config: Config) -> tuple[dict, dict]:
         media_type = response.headers.get('Content-Type', '').split(';', 1)[0].strip().lower()
         if media_type not in ('text/html', 'application/json', 'text/plain'):
             media_type = '其他或未提供'
-        raise BriefError(f'中轉回傳 HTTP 200，但內容不是 JSON（Content-Type：{media_type}）；未取得模型結果。') from None
+        page_type = ''
+        if media_type == 'text/html':
+            html = response.text[:64000].lower()
+            soup = BeautifulSoup(html, 'html.parser')
+            title = soup.title.get_text(' ', strip=True) if soup.title else ''
+            if '/cdn-cgi/challenge-platform/' in html or 'cf-chl-' in html or title.startswith('just a moment'):
+                page_type = '疑似防護驗證頁'
+            elif any(word in title for word in ('sign in', 'log in', 'login', '登入', '登录')):
+                page_type = '疑似登入頁'
+            elif title in ('agent router', 'agentrouter'):
+                page_type = 'AgentRouter 前端頁面'
+            else:
+                page_type = '未辨識 HTML'
+            page_type = '；頁面分類：' + page_type
+        raise BriefError(f'中轉回傳 HTTP 200，但內容不是 JSON（Content-Type：{media_type}{page_type}）；未取得模型結果。') from None
     try:
         choice = payload['choices'][0]
         finish = choice['finish_reason']
