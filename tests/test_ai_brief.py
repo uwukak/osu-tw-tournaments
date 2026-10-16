@@ -138,6 +138,7 @@ def test_non_json_diagnostics_show_endpoint_without_reply_or_key():
 def test_html_diagnostics_classify_pages_without_exposing_content():
     for html, label in (
         ('<title>Agent Router</title>', 'AgentRouter 前端頁面'),
+        ('<meta name="aliyun_waf_aa" content="challenge"><title></title>', '阿里雲 WAF 驗證頁'),
         ('<title>Just a moment...</title><script src="/cdn-cgi/challenge-platform/x"></script>', '疑似防護驗證頁'),
         ('<title>Sign in</title>', '疑似登入頁'),
         ('<title>登入</title>', '疑似登入頁'),

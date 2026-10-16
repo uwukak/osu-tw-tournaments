@@ -134,7 +134,9 @@ def generate(source: str, config: Config) -> tuple[dict, dict]:
             html = response.text[:64000].lower()
             soup = BeautifulSoup(html, 'html.parser')
             title = soup.title.get_text(' ', strip=True) if soup.title else ''
-            if '/cdn-cgi/challenge-platform/' in html or 'cf-chl-' in html or title.startswith('just a moment'):
+            if 'aliyun_waf_aa' in html or 'aliyun_waf_bb' in html:
+                page_type = '阿里雲 WAF 驗證頁'
+            elif '/cdn-cgi/challenge-platform/' in html or 'cf-chl-' in html or title.startswith('just a moment'):
                 page_type = '疑似防護驗證頁'
             elif any(word in title for word in ('sign in', 'log in', 'login', '登入', '登录')):
                 page_type = '疑似登入頁'
