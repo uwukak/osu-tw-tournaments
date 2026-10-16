@@ -1,0 +1,28 @@
+name: AgentRouter temporary network diagnosis
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect unauthenticated API response
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.request
+          import urllib.error
+          url = 'https://agentrouter.org/v1/chat/completions'
+          body = json.dumps({'model': 'deepseek-v4-flash', 'messages': [{'role': 'user', 'content': 'Hi'}], 'max_tokens': 1, 'stream': False}).encode()
+          for user_agent in ('Python-urllib/3.13', 'python-requests/2.32.5'):
+              request = urllib.request.Request(url, data=body, headers={'Content-Type': 'application/json', 'User-Agent': user_agent})
+              try:
+                  response = urllib.request.urlopen(request, timeout=30)
+              except urllib.error.HTTPError as error:
+                  response = error
+              print('USER_AGENT', user_agent)
+              print('STATUS', response.status)
+              for name in ('Content-Type', 'Server', 'Via', 'X-Cache', 'X-Oneapi-Request-Id'):
+                  print(name, response.headers.get(name))
+              print('UNAUTHENTICATED_BODY', response.read(12000).decode('utf-8', errors='replace'))
+          PY
