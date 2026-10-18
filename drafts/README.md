@@ -20,7 +20,7 @@
 - [Wrath](2254456.md) — osu!standard｜報名狀態未標明
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
 - 🙋 [Bai Yu Cup 2026](2251606.md) — osu!mania 4K｜工作人員招募狀態未標明
-- ⚠️ 🙋 [6 Digit EOC](2255172.md) — osu!standard｜報名狀態未標明
+- ⚠️ 🙋 [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜表定已截止
 - [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名已截止
