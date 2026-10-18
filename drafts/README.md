@@ -9,7 +9,6 @@
 - [Yimasu‘s Hidden Tournament 2](2251619.md) — osu!standard｜報名開放中
 - [Beginner's Taiko Tournament 10](2251298.md) — osu!taiko｜報名開放中
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名開放中
-- [Fast Food Cup](2250321.md) — osu!standard｜報名開放中
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名開放中
 - 🙋 [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名開放中
@@ -20,6 +19,7 @@
 - [Wrath](2254456.md) — osu!standard｜報名狀態未標明
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
 - 🙋 [Bai Yu Cup 2026](2251606.md) — osu!mania 4K｜工作人員招募狀態未標明
+- [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - ⚠️ 🙋 [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜表定已截止
