@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 29 筆（收錄 24／待確認 5）
+共 30 筆（收錄 24／待確認 6）
 
 - [SMST 84](2254678.md) — osu!standard｜報名開放中
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
@@ -10,6 +10,7 @@
 - [Beginner's Taiko Tournament 10](2251298.md) — osu!taiko｜報名開放中
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名開放中
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
+- ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ [YuniCup 2026 - LAN tournament in Austria](2253419.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
