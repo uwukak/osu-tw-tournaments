@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 30 筆（收錄 24／待確認 6）
+共 31 筆（收錄 25／待確認 6）
 
 - [SMST 84](2254678.md) — osu!standard｜報名開放中
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
@@ -23,6 +23,7 @@
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - ⚠️ 🙋 [6DET](2255172.md) — osu!standard｜報名狀態未標明
+- [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜表定已截止
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜表定已截止
 - [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名已截止
