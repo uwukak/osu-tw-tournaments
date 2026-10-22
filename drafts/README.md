@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 31 筆（收錄 25／待確認 6）
+共 32 筆（收錄 26／待確認 6）
 
+- [SMST 84](2256403.md) — osu!standard｜報名開放中
 - [SMST 84](2254678.md) — osu!standard｜報名開放中
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
 - [The Taiko Poop Cup](2252609.md) — osu!taiko｜報名開放中
