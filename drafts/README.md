@@ -33,4 +33,4 @@
 - [Sonus Scope 2](2247819.md) — osu!standard｜報名已截止
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜表定已截止
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
-- ⚠️ [YuniCup 2026 - LAN tournament in Austria](2253419.md) — osu!standard｜表定已截止
+- ⚠️ [YuniCup 2026 - LAN tournament in Austria](2253419.md) — osu!standard｜報名已截止
