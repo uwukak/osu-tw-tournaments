@@ -14,7 +14,7 @@
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
-- [SEC S3：Subahibi Extra Cup](2255540.md) — osu!standard｜報名狀態未標明
+- [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
 - [osu! PSTU CUP 2026](2254527.md) — osu!standard｜報名狀態未標明
 - [Wrath](2254456.md) — osu!standard｜報名狀態未標明
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
