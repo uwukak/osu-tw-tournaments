@@ -3,7 +3,6 @@
 共 32 筆（收錄 26／待確認 6）
 
 - [SMST 84](2256403.md) — osu!standard｜報名開放中
-- [SMST 84](2254678.md) — osu!standard｜報名開放中
 - [Frost Night Cup](2252781.md) — osu!standard｜報名開放中
 - [The Taiko Poop Cup](2252609.md) — osu!taiko｜報名開放中
 - 🙋 [Looking-Glass Mirror: bloom](2251657.md) — osu!standard｜工作人員招募中
@@ -24,6 +23,7 @@
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - ⚠️ 🙋 [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜表定已截止
+- [SMST 84](2254678.md) — osu!standard｜表定已截止
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
 - [The Aphelion 2026](2249574.md) — osu!mania 4K｜表定已截止
 - [Setsukue's Coupling Tournament Duo Draft](2249559.md) — osu!standard｜報名已截止
