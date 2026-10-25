@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 33 筆（收錄 27／待確認 6）
+共 34 筆（收錄 27／待確認 7）
 
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
 - [SMST 84](2256403.md) — osu!standard｜報名開放中
@@ -11,6 +11,7 @@
 - [Beginner's Taiko Tournament 10](2251298.md) — osu!taiko｜報名開放中
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名開放中
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
+- ⚠️ 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
