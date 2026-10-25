@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 34 筆（收錄 27／待確認 7）
+共 34 筆（收錄 28／待確認 6）
 
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
 - [SMST 84](2256403.md) — osu!standard｜報名開放中
@@ -16,6 +16,7 @@
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
+- [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [osu! PSTU CUP 2026](2254527.md) — osu!standard｜報名狀態未標明
 - [Wrath](2254456.md) — osu!standard｜報名狀態未標明
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
@@ -23,7 +24,6 @@
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
-- ⚠️ 🙋 [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜表定已截止
 - [SMST 84](2254678.md) — osu!standard｜報名已截止
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
