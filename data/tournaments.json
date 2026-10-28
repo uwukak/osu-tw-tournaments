@@ -1,9 +1,9 @@
 {
   "custom_draft_sha": {},
-  "dashboard_sha": "77146e2487c219e0cac8e3473009af7f547481aa5c1b3f85076cc3de7a27f43f",
+  "dashboard_sha": "a6f1377dd1b940d73afcb25ffa7f96175ef5142f2d8a0fa832fe38d7a9ebf5b4",
   "draft_baseline_topic_id": null,
   "heartbeat_date": "2026-10-28",
-  "last_run_utc": "2026-10-28T08:48:10+00:00",
+  "last_run_utc": "2026-10-28T15:33:48+00:00",
   "schema_version": 1,
   "tournaments": {
     "2246109": {
@@ -1119,7 +1119,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-07T02:59:00Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1144,7 +1144,7 @@
         "[o!m 4K] The Aphelion 2026 #5,000-40,000 (4K rank) [Staff regs OPEN, ONGOING]"
       ],
       "topic_id": 2249574,
-      "views": 2748
+      "views": 2762
     },
     "2249670": {
       "author": "Sparkle",
@@ -1161,7 +1161,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-07T06:02:14Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1184,7 +1184,7 @@
         "[STD] 6 Digit United States Cup 4 | 100k-999k [Regs Open!]"
       ],
       "topic_id": 2249670,
-      "views": 2380
+      "views": 2382
     },
     "2249879": {
       "author": "Amuro",
@@ -1201,7 +1201,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-09-29T19:51:37Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -1224,7 +1224,7 @@
         "osu!tryouts Team Argentina 2026 [#1 - #10000]"
       ],
       "topic_id": 2249879,
-      "views": 404
+      "views": 406
     },
     "2250173": {
       "author": "Teirin",
@@ -1240,7 +1240,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-12T16:15:33Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1268,7 +1268,7 @@
         "[STD] Teirin's Super Gacha Experience | 4v4 TS9 | #1-9500 No BWS (Max 3 Badges)"
       ],
       "topic_id": 2250173,
-      "views": 2128
+      "views": 2136
     },
     "2250185": {
       "author": "luxembourg",
@@ -1285,7 +1285,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-02T06:14:24Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1307,7 +1307,7 @@
         "[STD/LAN/1v1] Lion's osu! Cup - OPEN RANK [PLAYEY/STAFF REGS OPEN]"
       ],
       "topic_id": 2250185,
-      "views": 921
+      "views": 924
     },
     "2250321": {
       "author": "BurgerKing",
@@ -1323,7 +1323,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-09T02:41:20Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1351,7 +1351,7 @@
         "[STD] Fast Food Cup | #1,000 - #99,999 BWS | CN,HK,TW,MO only | 2v2 TS3 [CANCELED]"
       ],
       "topic_id": 2250321,
-      "views": 1333
+      "views": 1340
     },
     "2250369": {
       "author": "MissingNote",
@@ -1366,7 +1366,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-20T21:16:04Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1389,7 +1389,7 @@
         "[1V1] [STD] RE:Legacy Invitational | 6WC Player Invitational | Staff Registrations Open!"
       ],
       "topic_id": 2250369,
-      "views": 2189
+      "views": 2193
     },
     "2250525": {
       "author": "Sinaeb",
@@ -1407,7 +1407,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T11:17:45Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1432,7 +1432,7 @@
         "[STD]SMST 84 100K-Infinity [Closed]"
       ],
       "topic_id": 2250525,
-      "views": 1177
+      "views": 1180
     },
     "2250628": {
       "author": "AliceMargatroid",
@@ -1450,7 +1450,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-12T09:58:42Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1473,7 +1473,7 @@
         "[STD, SEA only] osu!MayniLAN 2026 | 1v1, LAN | Open Rank | Player and Staff Registrations Open"
       ],
       "topic_id": 2250628,
-      "views": 1637
+      "views": 1651
     },
     "2250673": {
       "author": "Inori-",
@@ -1491,7 +1491,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T04:50:58Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1520,7 +1520,7 @@
         "[STD][POSTPONED] Kaga Sumire Championship [55k-inf][2v2,TS3][中文]"
       ],
       "topic_id": 2250673,
-      "views": 2233
+      "views": 2236
     },
     "2251052": {
       "author": "LLIaBKa",
@@ -1535,7 +1535,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-03T21:00:00Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1569,7 +1569,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-03T21:05:09Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1605,7 +1605,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T21:36:17Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1625,7 +1625,7 @@
         "[o!m 4K] AusNZ!4K Mania Tournament 2026"
       ],
       "topic_id": 2251277,
-      "views": 1125
+      "views": 1128
     },
     "2251298": {
       "author": "TaikoMom",
@@ -1641,7 +1641,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-04T20:27:17Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -1664,7 +1664,7 @@
         "[osu!taiko][1v1] Beginner's Taiko Tournament 10"
       ],
       "topic_id": 2251298,
-      "views": 584
+      "views": 586
     },
     "2251304": {
       "author": "KakirM",
@@ -1679,7 +1679,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T09:49:30Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1704,7 +1704,7 @@
         "[STD] [BR ONLY] [9k-120.000] TB5-Torneio Brasileiro de 5 Dígitos 2026 [REGS CLOSED]"
       ],
       "topic_id": 2251304,
-      "views": 680
+      "views": 681
     },
     "2251396": {
       "author": "DUM4L77",
@@ -1719,7 +1719,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-05T09:51:40Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1747,7 +1747,7 @@
         "[STD][BR Only] CB6.2 - Coliseu Brasileiro de 6 Dígitos - Segunda Edição [100k - 999k][2v2 Ts2]"
       ],
       "topic_id": 2251396,
-      "views": 429
+      "views": 430
     },
     "2251606": {
       "author": "6lp",
@@ -1765,7 +1765,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-10-27T21:43:45Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1785,12 +1785,13 @@
       "teams": [
         "2v2"
       ],
-      "title": "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity]",
+      "title": "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity](4k rank)",
       "title_history": [
-        "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity]"
+        "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity]",
+        "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity](4k rank)"
       ],
       "topic_id": 2251606,
-      "views": 2095
+      "views": 2105
     },
     "2251619": {
       "author": "yimasu",
@@ -1808,7 +1809,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T00:12:24Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1834,7 +1835,7 @@
         "[STD] (Regs Closed) Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)"
       ],
       "topic_id": 2251619,
-      "views": 2623
+      "views": 2638
     },
     "2251657": {
       "author": "Pixelbee",
@@ -1851,7 +1852,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-10-19T13:25:55Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1874,7 +1875,7 @@
         "[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, ETX<6, STD]"
       ],
       "topic_id": 2251657,
-      "views": 937
+      "views": 941
     },
     "2251780": {
       "author": "Katan24",
@@ -1889,7 +1890,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-06T17:30:19Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1908,7 +1909,7 @@
         "Lazer std tournaments"
       ],
       "topic_id": 2251780,
-      "views": 695
+      "views": 701
     },
     "2252361": {
       "author": "Sinaeb",
@@ -1926,7 +1927,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T16:27:10Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1951,7 +1952,7 @@
         "[STD]SMST 84 50K-100K [Closed]"
       ],
       "topic_id": 2252361,
-      "views": 765
+      "views": 768
     },
     "2252576": {
       "author": "tigiexe",
@@ -1968,7 +1969,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T22:13:03Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1995,7 +1996,7 @@
         "[osu!std] Balkan Chibi Cup 2026 [2v2 TS3][#10,000-#99,999]"
       ],
       "topic_id": 2252576,
-      "views": 1536
+      "views": 1543
     },
     "2252588": {
       "author": "jas_",
@@ -2012,7 +2013,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-20T15:29:06Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2033,7 +2034,7 @@
         "[STD] Royal Danish Osu!Cup 2026"
       ],
       "topic_id": 2252588,
-      "views": 749
+      "views": 758
     },
     "2252609": {
       "author": "snowstorm345",
@@ -2050,7 +2051,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T20:57:26Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2073,7 +2074,7 @@
         "(Taiko, 1v1, Open Rank) The Taiko Poop Cup"
       ],
       "topic_id": 2252609,
-      "views": 1007
+      "views": 1009
     },
     "2252781": {
       "author": "TAXOMETP",
@@ -2091,7 +2092,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T06:55:24Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2120,7 +2121,7 @@
         "[STD | Teams/FA Regs Closed] Frost Night Cup [3v3 TS6 | 100k - 999k]"
       ],
       "topic_id": 2252781,
-      "views": 2503
+      "views": 2518
     },
     "2253171": {
       "author": "LLIaBKa",
@@ -2137,7 +2138,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:00:00Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2158,7 +2159,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #54 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2253171,
-      "views": 151
+      "views": 152
     },
     "2253175": {
       "author": "LLIaBKa",
@@ -2175,7 +2176,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:05:09Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2196,7 +2197,7 @@
         "[STD, SPEAK RU ONLY] #76 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2253175,
-      "views": 174
+      "views": 175
     },
     "2253419": {
       "author": "Yasuho",
@@ -2214,7 +2215,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T17:43:18Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2238,7 +2239,7 @@
         "YuniCup 2026 - LAN tournament in Austria [STD][1v1][Open Rank][Regs CLOSED]"
       ],
       "topic_id": 2253419,
-      "views": 778
+      "views": 781
     },
     "2253464": {
       "author": "Krocha",
@@ -2256,7 +2257,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-20T02:00:02Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2280,7 +2281,7 @@
         "[std] European Bounty Hunters ~500€ pricepool [T1 15.000-45.000, T2 45.001 - 90.000 BWS]"
       ],
       "topic_id": 2253464,
-      "views": 1853
+      "views": 1872
     },
     "2254456": {
       "author": "kitfox",
@@ -2298,7 +2299,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T18:33:08Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2322,7 +2323,7 @@
         "(o!std Solo) Wrath [Challenge Clearing Tournament] #7500-#50000"
       ],
       "topic_id": 2254456,
-      "views": 1095
+      "views": 1111
     },
     "2254527": {
       "author": "GamLite",
@@ -2340,7 +2341,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T17:52:54Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2361,7 +2362,7 @@
         "[STD][PSTU] osu! PSTU CUP 2026 | [4vs4] | [>1500pp] |"
       ],
       "topic_id": 2254527,
-      "views": 1074
+      "views": 1091
     },
     "2254618": {
       "author": "Yeury",
@@ -2378,7 +2379,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T08:17:33Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "catch",
       "mode_confidence": "high",
@@ -2399,7 +2400,7 @@
         "[Catch The Beat] Osu! Catch Malaysia Tournament Open 2026 (OCMT2026)"
       ],
       "topic_id": 2254618,
-      "views": 420
+      "views": 421
     },
     "2254678": {
       "author": "Sinaeb",
@@ -2417,7 +2418,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T11:49:27Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2442,7 +2443,7 @@
         "[STD]SMST 84 10K-50K [Closed]"
       ],
       "topic_id": 2254678,
-      "views": 626
+      "views": 628
     },
     "2255100": {
       "author": "Sparxe",
@@ -2460,7 +2461,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-18T19:02:26Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2481,7 +2482,7 @@
         "Sparxe's Two Key Event 2 (STKE2) [REGISTRATIONS OPEN]"
       ],
       "topic_id": 2255100,
-      "views": 821
+      "views": 830
     },
     "2255150": {
       "author": "[Jameson]",
@@ -2498,7 +2499,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-19T22:54:01Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2527,7 +2528,7 @@
         "[STD] [NA ONLY] 5 Digit North American Draft 2 ✧ 4v4 Team Size 8 ✧ 10K - 99K ✧ Draft ✧ REGS OPEN"
       ],
       "topic_id": 2255150,
-      "views": 1362
+      "views": 1374
     },
     "2255172": {
       "author": "duky",
@@ -2545,7 +2546,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T02:40:39Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2571,7 +2572,7 @@
         "[STD] 6DET [#100,000-#999,999] [TEAM & F/A & PLAYER REGS OPENED]"
       ],
       "topic_id": 2255172,
-      "views": 1177
+      "views": 1231
     },
     "2255206": {
       "author": "LLIaBKa",
@@ -2588,7 +2589,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:00:00Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2609,7 +2610,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #55 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2255206,
-      "views": 133
+      "views": 135
     },
     "2255208": {
       "author": "LLIaBKa",
@@ -2626,7 +2627,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:05:09Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2647,7 +2648,7 @@
         "[STD, SPEAK RU ONLY] #77 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2255208,
-      "views": 153
+      "views": 155
     },
     "2255349": {
       "author": "Rikuima",
@@ -2664,7 +2665,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-18T15:01:33Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2689,7 +2690,7 @@
         "[STD] [JP ONLY] Ace & Ascent Cup | Tier-Based Open Rank | 3v3 TS4 BWS [Player & Staff Regs Open]"
       ],
       "topic_id": 2255349,
-      "views": 1359
+      "views": 1388
     },
     "2255540": {
       "author": "Harunari",
@@ -2707,7 +2708,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-26T03:25:01Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2734,7 +2735,7 @@
         "[STD][4v4][Draft][#20K-150K] SEC S3：Subahibi Extra Cup (中文Only) 报名开放"
       ],
       "topic_id": 2255540,
-      "views": 1358
+      "views": 1381
     },
     "2255550": {
       "author": "PapitasTnT",
@@ -2752,7 +2753,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-26T04:01:39Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2773,7 +2774,7 @@
         "Staff wanted Tournament 5 digits"
       ],
       "topic_id": 2255550,
-      "views": 607
+      "views": 610
     },
     "2255940": {
       "author": "Guhh",
@@ -2791,7 +2792,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T06:14:52Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2814,7 +2815,7 @@
         "[STD] Oklahoma LAN Tournament 4 | Open rank | 1v1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2255940,
-      "views": 420
+      "views": 432
     },
     "2256165": {
       "author": "ElMick33",
@@ -2832,7 +2833,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-26T17:40:00Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2855,7 +2856,7 @@
         "[STD] Torneo Rempalago Congolombiano 3 | 1v1 Open Rank [Colombian Only]"
       ],
       "topic_id": 2256165,
-      "views": 642
+      "views": 647
     },
     "2256403": {
       "author": "Sinaeb",
@@ -2873,7 +2874,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:22:20Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2897,7 +2898,7 @@
         "[STD]SMST 84 1-10K [Open]"
       ],
       "topic_id": 2256403,
-      "views": 348
+      "views": 354
     },
     "2256926": {
       "author": "Vela_12367",
@@ -2914,7 +2915,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T06:17:34Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2938,7 +2939,7 @@
         "[STD][MX ONLY] 6 Digits Mexican Blitz Tournament #1 Edición 100k-999k"
       ],
       "topic_id": 2256926,
-      "views": 260
+      "views": 269
     },
     "2257046": {
       "author": "Hataya",
@@ -2956,7 +2957,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T20:51:38Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2984,7 +2985,7 @@
         "[Taiko, TS3-4, 2v2] Kaya's Taiko Tournament #1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2257046,
-      "views": 402
+      "views": 412
     },
     "2257146": {
       "author": "LLIaBKa",
@@ -3066,13 +3067,13 @@
     },
     "2257279": {
       "author": "4blits",
-      "body_css": "https://osu.ppy.sh/assets/css/app.bc7b00ea.css",
-      "body_html": "<div class=\"bbcode\"><div class=\"bbcode__align-centre\"><div class=\"well\"><span style=\"font-size:200%\"><strong><span style=\"color:#ff0000\">The Reaper cup</span></strong></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSdwxcw3ZH8N0ehldAvVZ9pIxmu3sPtYjrkUIaJTeUt4FIGWUQ/viewform\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Team Regs</span></a></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSdN2EV23Mw0GWIrHyco_pDOuNAzeF5r2XupSzuIWuH2MoFGrA/viewform?usp=preview\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Staff Regs</span></a></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://discord.gg/QZcsBN3mt\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Discord</span></a></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Master sheet(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Ko-Fi(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Challonge(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0300\">Twitch(WIP)</span></span></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Information</span></span><br/><ol class=\"unordered\"><li><span style=\"color:#ff0000\">The reaper cup (TRC)</span> Is a <span style=\"color:#ff0000\">Team size 4 2v2 tournament</span> Hosted by me and Soundie.</li><li>This Tournament will <span style=\"color:#ff0000\">not be badged </span></li><li><span style=\"color:#ff0000\">No Rank limits</span></li><li>Scheduling will be in<span style=\"color:#ff0000\"> UTC+0</span></li><li><span style=\"color:#ff0000\">No SV </span></li><li><span style=\"color:#ff0300\">MWC+0 MAPPOOL</span></li></ol></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#f90000\">Scheduling</span></span><br/><br/><span style=\"color:#ffffff\">Player Registrations: 10/25 -&gt; 11/28</span><br/>Staff Regrestrations: 10/25<span style=\"color:#ffffff\"> -&gt; infinite we want staff!!</span><br/><span style=\"color:#ffffff\">Qualifier Showcase: 12/5</span><br/><span style=\"color:#ffffff\">Qualifiers: 12/12 -&gt; 12/13</span><br/><span style=\"color:#ffffff\">Round of 32: 12/19-&gt; 12/20</span><br/><span style=\"color:#ffffff\">Round of 16: 1/2-&gt; 1/3</span><br/><span style=\"color:#ffffff\">QuarterFinals: 1/9 -&gt; 1/10</span><br/><span style=\"color:#ffffff\">SemiFinals: 1/16 -&gt; 1/17</span><br/><span style=\"color:#ffffff\">Finals: August 1/23-&gt; 1/24</span><br/><span style=\"color:#ffffff\">Grand Finals: 1/30 -&gt; 1/31</span></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Rules</span></span><br/><details class=\"js-spoilerbox bbcode-spoilerbox\"><summary class=\"js-spoilerbox__link bbcode-spoilerbox__link\"><span class=\"bbcode-spoilerbox__link-icon\"></span><span class=\"bbcode-spoilerbox__link-text\">click if you wanna see rules</span></summary><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Rules</span></span><br/><br/><span style=\"color:#ffffff\">There are no rank limitations.</span><br/><br/><span style=\"color:#ffffff\">Follow osu! rules (eg. do not multiacc, spam, say offensive things,...). We do not take responsibility in case your account is banned mid-tournament, and you will be </span><strong><span style=\"color:#f20000\">immediately disqualified.</span></strong><span style=\"color:#f20000\"> </span><span style=\"color:#ffffff\">This means that if your osu! account is banned, you are not allowed to register unless your appeal is successful and you get your account back.</span><br/><br/><span style=\"color:#ffffff\">We will announce upcoming matches in an exclusive Discord channel, and a referee will invite both players </span><strong><span style=\"color:#ffffff\">15 minutes before the intended match schedule</span></strong><span style=\"color:#ffffff\">.</span><br/><br/><span style=\"color:#ffffff\">For Qualifiers:</span><br/><span style=\"color:#ffffff\">- If a Team is absent for their Qualifiers lobby, they will be moved to a Special Lobby or another available lobby, and other players shall proceed with their procedures.</span><br/><span style=\"color:#ffffff\">- If that Team still cannot make it to any lobbies, either intentionally (as a form of official resignation) or d</span><strong><span style=\"color:#ff0000\">ue to negligence, they will all be eliminated from the tournament.</span></strong><br/><br/><span style=\"color:#ffffff\">For Bracket Rounds:</span><br/><span style=\"color:#ffffff\">- If the team of the players are unavailable on the intended match schedule, the referee will set </span><span style=\"color:#fd0000\">a </span><strong><span style=\"color:#fd0000\">10 minute timer</span></strong><span style=\"color:#ffffff\"> until the other Team arrives. When the timer ends and if there isn't any announcement from that Team, the present Team will </span><strong><span style=\"color:#ffffff\">win by default</span></strong><span style=\"color:#ffffff\">. Otherwise, players and the referee of the match can reach mutual agreement on schedule time by their own.</span><br/><span style=\"color:#ffffff\">+ In case one of the players/Team is considered to be uncooperative in the match schedule agreement, the winner will be decided by the referee</span><br/><span style=\"color:#ffffff\">- If both players don't show up on the intended match schedule, the referee will also set a </span><strong><span style=\"color:#ffffff\">10 minute timer</span></strong><span style=\"color:#ffffff\"> until one player or both players arrives.</span><br/><span style=\"color:#ffffff\">+ In case only one player has arrived, the timer won't be stopped and the aforementioned rules apply.</span><br/><span style=\"color:#ffffff\">+ In case the timer ran out but no player shows up, the default winner will be </span><strong><span style=\"color:#ffffff\">the player with the better Qualifiers result</span></strong><span style=\"color:#ffffff\">.</span><br/><br/><span style=\"color:#ffffff\"> You are allowed to reschedule your match, provided that you and your opponent have agreed upon a certain time.</span><br/><br/><span style=\"color:#ffffff\">Post a screenshot of your DMs regarding the matter on the respective rescheduling Discord channel.</span><br/><br/><span style=\"color:#ffffff\"> Reschedules are </span><strong><span style=\"color:#ffffff\">closed after 11:59PM Friday UTC+0 before the default schedules</span></strong><span style=\"color:#ffffff\">. However, emergency schedules after that time are accepted if you provide satisfactory reasoning to warrant one.</span><br/><br/><span style=\"color:#ffffff\">If the referee is late for the match, and there are no replacing referees available, it will be delayed.</span><br/><br/><span style=\"color:#ffffff\"> Pre-match warmups are only allowed in Bracket rounds. Each player is allowed to have </span><strong><span style=\"color:#ffffff\">one warmup match</span></strong><span style=\"color:#ffffff\"> with a length of </span><strong><span style=\"color:#ffffff\">3:15 (3 minutes and 15 seconds) or below</span></strong><span style=\"color:#ffffff\">. It is recommended to send your warmup map to your referee 15 minutes prior to avoid wasting time.</span><br/><br/><span style=\"color:#ffffff\">Note: You are allowed to skip your own warmup.</span><br/><br/><span style=\"color:#ffffff\"> In case a player disconnects within </span><strong><span style=\"color:#ffffff\">the first 30 seconds of the map</span></strong><span style=\"color:#ffffff\">, the referee can restart the match. You are allowed to quit the multi lobby if your device lags and the incident can make you lose unreasonably.</span><br/><span style=\"color:#ffffff\">- If the disconnect happens after that time frame, the player who disconnected is deemed the loser of the current map, and has to take responsibility for their poor device/connection.</span><br/><span style=\"color:#ffffff\">- If that player still hasn't reconnected 10 minutes after the incident, the referee will start a timer likewise said in </span><span style=\"color:#a4a0a7\">Section B</span><span style=\"color:#ffffff\">, </span><strong><span style=\"color:#ffffff\">SCHEDULING RULES</span></strong><span style=\"color:#ffffff\">, </span><strong><span style=\"color:#ffffff\">I</span></strong><span style=\"color:#ffffff\">, 2.</span><br/><br/><span style=\"color:#ffffff\">Each round will have one unique mappool, with progressive difficulty as the tournament goes on. Players can only protect, ban and pick maps </span><strong><span style=\"color:#ffffff\">in the respective mappool</span></strong><span style=\"color:#ffffff\"> of the round they're playing.</span><br/><br/><span style=\"color:#ffffff\">Mods:</span><br/><span style=\"color:#bfffbf\">Allowed mods:</span><br/><span style=\"color:#ffffff\">- Vision mods: HD, FI, FL, MR</span><br/><span style=\"color:#ffffff\">- NF, SD, PF</span><br/><span style=\"color:#ff0000\">Warning: If you use SD or PF and fails because of it, you lose the match. We absolutely do not recommend using these mods, so if you do decide to use them, you take full responsibilities for the worse outcomes.</span><br/><span style=\"color:#ffbfbf\">Disallowed mods:</span><br/><span style=\"color:#ffffff\">- RD</span><br/><span style=\"color:#ffffff\">- Mods that affect map stats: Keymode changing mods (1K, 2K, 3K, 4K,..), HT, DT, NC, HR, EZ, CO</span><br/><br/><span style=\"color:#ffffff\">After both players and the referee are present, the referee will ask the players to roll using the \"!roll\" command.</span><br/><br/><span style=\"color:#ffffff\">The player with the higher roll outcome will be allowed to choose whether to ban or protect first. If they ban first, they have to protect and pick second. The procedures order is as follow: Protect --&gt; Ban --&gt; Pick.</span><br/><br/><strong><span style=\"color:#ffffff\">* Notes about protecting and banning:</span></strong><br/><span style=\"color:#ffffff\">In Bracket rounds, players are able to protect a map of their choosing. The protected map </span><strong><span style=\"color:#ffffff\">cannot be banned</span></strong><span style=\"color:#ffffff\">.</span><br/>AND OBVIOUSLLY YOU CAN NOT BAN/PROTECT TIEBREAKER AND YOU CANNOT CHOOSE IT IN THE MATCH<br/><br/><span style=\"color:#ffffff\"> The player who protects first will pick the first map and start the match from there. After that, players alternate their turn to pick maps until one player gets enough points to win the match.</span><br/><span style=\"color:#ffffff\">In case of a tie, the map will be replayed.</span><br/><span style=\"color:#ffffff\">If one player lost all HP, that player </span><strong><span style=\"color:#ffffff\">automatically loses the match</span></strong><span style=\"color:#ffffff\">, even if they regained HP and/or win by score. If both players lost all HP, the loser is the one who </span><strong><span style=\"color:#ffffff\">lost all HP first</span></strong><span style=\"color:#ffffff\">.</span><br/><span style=\"color:#ffffff\">For this, we recommend all players to </span><strong><span style=\"color:#ffffff\">equip NF before each map</span></strong><span style=\"color:#ffffff\">.</span><br/><span style=\"color:#ffffff\">Each player has </span><strong><span style=\"color:#ffffff\">2 minutes</span></strong><span style=\"color:#ffffff\"> to choose their pick. If they exceed that limit, a random map will be chosen.</span><br/><br/><span style=\"color:#ffffff\"> If both players are one point away from winning, there will be a short break before the tiebreaker is played, determining the winner.</span></div></details></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Prizes</span></span><br/><br/><strong><span style=\"color:#f9ff00\">1st Place</span></strong><span style=\"color:#ffffff\">: 12 months of osu!supporter or 28 USD split between all teammates</span><br/><strong><span style=\"color:#c6c6c6\">2nd Place</span></strong><span style=\"color:#c6c6c6\">:</span><span style=\"color:#ffffff\"> 8 months of osu!supporter or 20 USD split between all teammates</span><br/><strong><span style=\"color:#ed7d0f\">3rd Place</span></strong><span style=\"color:#ffffff\">: 4 month of osu!supporter or 12 USD split between all teammates</span></div><div class=\"well\"><span style=\"font-size:150%\"><span style=\"color:#ff0300\">STAFF</span></span><br/><br/>Hosts: <a href=\"https://osu.ppy.sh/users/35396410\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">4blits</a><br/>Co-host: <a href=\"https://osu.ppy.sh/users/22765206\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Soundie</a><br/>Sheeter: <a href=\"https://osu.ppy.sh/users/17959501\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Dragiee</a><br/>GFX:<br/>Referees:<br/>Playtester: <a href=\"https://osu.ppy.sh/users/27484367\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Itsnicki</a>,<a href=\"https://osu.ppy.sh/users/11471035\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aalis</a><br/>Mappooler:<a href=\"https://osu.ppy.sh/users/11471035\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aalis</a><br/>Mapper:<br/>Commentator: <a href=\"https://osu.ppy.sh/users/22522951\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Kissu8</a>, <a href=\"https://osu.ppy.sh/users/26690747\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aero-</a><br/>Streamer: <a href=\"https://osu.ppy.sh/users/22522951\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Kissu8</a>, <a href=\"https://osu.ppy.sh/users/26690747\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aero-</a></div></div></div>",
+      "body_css": "https://osu.ppy.sh/assets/css/app.e46b55c1.css",
+      "body_html": "<div class=\"bbcode\"><div class=\"bbcode__align-centre\"><div class=\"well\"><span style=\"font-size:200%\"><strong><span style=\"color:#ff0000\">The Reaper cup</span></strong></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSdwxcw3ZH8N0ehldAvVZ9pIxmu3sPtYjrkUIaJTeUt4FIGWUQ/viewform\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Team Regs</span></a></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSdN2EV23Mw0GWIrHyco_pDOuNAzeF5r2XupSzuIWuH2MoFGrA/viewform?usp=preview\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Staff Regs</span></a></span><br/><br/><span style=\"font-size:150%\"><a href=\"https://discord.gg/QZcsBN3mt\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff0000\">Discord</span></a></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Master sheet(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Ko-Fi(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0000\">Challonge(WIP)</span></span><br/><br/><span style=\"font-size:150%\"><span style=\"color:#ff0300\">Twitch(WIP)</span></span></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Information</span></span><br/><ol class=\"unordered\"><li><span style=\"color:#ff0000\">The reaper cup (TRC)</span> Is a <span style=\"color:#ff0000\">Team size 4 2v2 tournament</span> Hosted by me and Soundie.</li><li>This Tournament will <span style=\"color:#ff0000\">not be badged </span></li><li><span style=\"color:#ff0000\">No Rank limits</span></li><li>Scheduling will be in<span style=\"color:#ff0000\"> UTC+0</span></li><li><span style=\"color:#ff0000\">No SV </span></li><li><span style=\"color:#ff0300\">MWC+0 MAPPOOL</span></li></ol></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#f90000\">Scheduling</span></span><br/><br/><span style=\"color:#ffffff\">Player Registrations: 10/25 -&gt; 11/28</span><br/>Staff Regrestrations: 10/25<span style=\"color:#ffffff\"> -&gt; infinite we want staff!!</span><br/><span style=\"color:#ffffff\">Qualifier Showcase: 12/5</span><br/><span style=\"color:#ffffff\">Qualifiers: 12/12 -&gt; 12/13</span><br/><span style=\"color:#ffffff\">Round of 32: 12/19-&gt; 12/20</span><br/><span style=\"color:#ffffff\">Round of 16: 1/2-&gt; 1/3</span><br/><span style=\"color:#ffffff\">QuarterFinals: 1/9 -&gt; 1/10</span><br/><span style=\"color:#ffffff\">SemiFinals: 1/16 -&gt; 1/17</span><br/><span style=\"color:#ffffff\">Finals: August 1/23-&gt; 1/24</span><br/><span style=\"color:#ffffff\">Grand Finals: 1/30 -&gt; 1/31</span></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Rules</span></span><br/><details class=\"js-spoilerbox bbcode-spoilerbox\"><summary class=\"js-spoilerbox__link bbcode-spoilerbox__link\"><span class=\"bbcode-spoilerbox__link-icon\"></span><span class=\"bbcode-spoilerbox__link-text\">click if you wanna see rules</span></summary><div class=\"js-spoilerbox__body bbcode-spoilerbox__body\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Rules</span></span><br/><br/><span style=\"color:#ffffff\">There are no rank limitations.</span><br/><br/><span style=\"color:#ffffff\">Follow osu! rules (eg. do not multiacc, spam, say offensive things,...). We do not take responsibility in case your account is banned mid-tournament, and you will be </span><strong><span style=\"color:#f20000\">immediately disqualified.</span></strong><span style=\"color:#f20000\"> </span><span style=\"color:#ffffff\">This means that if your osu! account is banned, you are not allowed to register unless your appeal is successful and you get your account back.</span><br/><br/><span style=\"color:#ffffff\">We will announce upcoming matches in an exclusive Discord channel, and a referee will invite both players </span><strong><span style=\"color:#ffffff\">15 minutes before the intended match schedule</span></strong><span style=\"color:#ffffff\">.</span><br/><br/><span style=\"color:#ffffff\">For Qualifiers:</span><br/><span style=\"color:#ffffff\">- If a Team is absent for their Qualifiers lobby, they will be moved to a Special Lobby or another available lobby, and other players shall proceed with their procedures.</span><br/><span style=\"color:#ffffff\">- If that Team still cannot make it to any lobbies, either intentionally (as a form of official resignation) or d</span><strong><span style=\"color:#ff0000\">ue to negligence, they will all be eliminated from the tournament.</span></strong><br/><br/><span style=\"color:#ffffff\">For Bracket Rounds:</span><br/><span style=\"color:#ffffff\">- If the team of the players are unavailable on the intended match schedule, the referee will set </span><span style=\"color:#fd0000\">a </span><strong><span style=\"color:#fd0000\">10 minute timer</span></strong><span style=\"color:#ffffff\"> until the other Team arrives. When the timer ends and if there isn't any announcement from that Team, the present Team will </span><strong><span style=\"color:#ffffff\">win by default</span></strong><span style=\"color:#ffffff\">. Otherwise, players and the referee of the match can reach mutual agreement on schedule time by their own.</span><br/><span style=\"color:#ffffff\">+ In case one of the players/Team is considered to be uncooperative in the match schedule agreement, the winner will be decided by the referee</span><br/><span style=\"color:#ffffff\">- If both players don't show up on the intended match schedule, the referee will also set a </span><strong><span style=\"color:#ffffff\">10 minute timer</span></strong><span style=\"color:#ffffff\"> until one player or both players arrives.</span><br/><span style=\"color:#ffffff\">+ In case only one player has arrived, the timer won't be stopped and the aforementioned rules apply.</span><br/><span style=\"color:#ffffff\">+ In case the timer ran out but no player shows up, the default winner will be </span><strong><span style=\"color:#ffffff\">the player with the better Qualifiers result</span></strong><span style=\"color:#ffffff\">.</span><br/><br/><span style=\"color:#ffffff\"> You are allowed to reschedule your match, provided that you and your opponent have agreed upon a certain time.</span><br/><br/><span style=\"color:#ffffff\">Post a screenshot of your DMs regarding the matter on the respective rescheduling Discord channel.</span><br/><br/><span style=\"color:#ffffff\"> Reschedules are </span><strong><span style=\"color:#ffffff\">closed after 11:59PM Friday UTC+0 before the default schedules</span></strong><span style=\"color:#ffffff\">. However, emergency schedules after that time are accepted if you provide satisfactory reasoning to warrant one.</span><br/><br/><span style=\"color:#ffffff\">If the referee is late for the match, and there are no replacing referees available, it will be delayed.</span><br/><br/><span style=\"color:#ffffff\"> Pre-match warmups are only allowed in Bracket rounds. Each player is allowed to have </span><strong><span style=\"color:#ffffff\">one warmup match</span></strong><span style=\"color:#ffffff\"> with a length of </span><strong><span style=\"color:#ffffff\">3:15 (3 minutes and 15 seconds) or below</span></strong><span style=\"color:#ffffff\">. It is recommended to send your warmup map to your referee 15 minutes prior to avoid wasting time.</span><br/><br/><span style=\"color:#ffffff\">Note: You are allowed to skip your own warmup.</span><br/><br/><span style=\"color:#ffffff\"> In case a player disconnects within </span><strong><span style=\"color:#ffffff\">the first 30 seconds of the map</span></strong><span style=\"color:#ffffff\">, the referee can restart the match. You are allowed to quit the multi lobby if your device lags and the incident can make you lose unreasonably.</span><br/><span style=\"color:#ffffff\">- If the disconnect happens after that time frame, the player who disconnected is deemed the loser of the current map, and has to take responsibility for their poor device/connection.</span><br/><span style=\"color:#ffffff\">- If that player still hasn't reconnected 10 minutes after the incident, the referee will start a timer likewise said in </span><span style=\"color:#a4a0a7\">Section B</span><span style=\"color:#ffffff\">, </span><strong><span style=\"color:#ffffff\">SCHEDULING RULES</span></strong><span style=\"color:#ffffff\">, </span><strong><span style=\"color:#ffffff\">I</span></strong><span style=\"color:#ffffff\">, 2.</span><br/><br/><span style=\"color:#ffffff\">Each round will have one unique mappool, with progressive difficulty as the tournament goes on. Players can only protect, ban and pick maps </span><strong><span style=\"color:#ffffff\">in the respective mappool</span></strong><span style=\"color:#ffffff\"> of the round they're playing.</span><br/><br/><span style=\"color:#ffffff\">Mods:</span><br/><span style=\"color:#bfffbf\">Allowed mods:</span><br/><span style=\"color:#ffffff\">- Vision mods: HD, FI, FL, MR</span><br/><span style=\"color:#ffffff\">- NF, SD, PF</span><br/><span style=\"color:#ff0000\">Warning: If you use SD or PF and fails because of it, you lose the match. We absolutely do not recommend using these mods, so if you do decide to use them, you take full responsibilities for the worse outcomes.</span><br/><span style=\"color:#ffbfbf\">Disallowed mods:</span><br/><span style=\"color:#ffffff\">- RD</span><br/><span style=\"color:#ffffff\">- Mods that affect map stats: Keymode changing mods (1K, 2K, 3K, 4K,..), HT, DT, NC, HR, EZ, CO</span><br/><br/><span style=\"color:#ffffff\">After both players and the referee are present, the referee will ask the players to roll using the \"!roll\" command.</span><br/><br/><span style=\"color:#ffffff\">The player with the higher roll outcome will be allowed to choose whether to ban or protect first. If they ban first, they have to protect and pick second. The procedures order is as follow: Protect --&gt; Ban --&gt; Pick.</span><br/><br/><strong><span style=\"color:#ffffff\">* Notes about protecting and banning:</span></strong><br/><span style=\"color:#ffffff\">In Bracket rounds, players are able to protect a map of their choosing. The protected map </span><strong><span style=\"color:#ffffff\">cannot be banned</span></strong><span style=\"color:#ffffff\">.</span><br/>AND OBVIOUSLLY YOU CAN NOT BAN/PROTECT TIEBREAKER AND YOU CANNOT CHOOSE IT IN THE MATCH<br/><br/><span style=\"color:#ffffff\"> The player who protects first will pick the first map and start the match from there. After that, players alternate their turn to pick maps until one player gets enough points to win the match.</span><br/><span style=\"color:#ffffff\">In case of a tie, the map will be replayed.</span><br/><span style=\"color:#ffffff\">If one player lost all HP, that player </span><strong><span style=\"color:#ffffff\">automatically loses the match</span></strong><span style=\"color:#ffffff\">, even if they regained HP and/or win by score. If both players lost all HP, the loser is the one who </span><strong><span style=\"color:#ffffff\">lost all HP first</span></strong><span style=\"color:#ffffff\">.</span><br/><span style=\"color:#ffffff\">For this, we recommend all players to </span><strong><span style=\"color:#ffffff\">equip NF before each map</span></strong><span style=\"color:#ffffff\">.</span><br/><span style=\"color:#ffffff\">Each player has </span><strong><span style=\"color:#ffffff\">2 minutes</span></strong><span style=\"color:#ffffff\"> to choose their pick. If they exceed that limit, a random map will be chosen.</span><br/><br/><span style=\"color:#ffffff\"> If both players are one point away from winning, there will be a short break before the tiebreaker is played, determining the winner.</span></div></details></div><div class=\"well\"><span style=\"font-size:200%\"><span style=\"color:#ff0000\">Prizes</span></span><br/><br/><strong><span style=\"color:#f9ff00\">1st Place</span></strong><span style=\"color:#ffffff\">: 12 months of osu!supporter or 28 USD split between all teammates</span><br/><strong><span style=\"color:#c6c6c6\">2nd Place</span></strong><span style=\"color:#c6c6c6\">:</span><span style=\"color:#ffffff\"> 8 months of osu!supporter or 20 USD split between all teammates</span><br/><strong><span style=\"color:#ed7d0f\">3rd Place</span></strong><span style=\"color:#ffffff\">: 4 month of osu!supporter or 12 USD split between all teammates</span></div><div class=\"well\"><span style=\"font-size:150%\"><span style=\"color:#ff0300\">STAFF</span></span><br/><br/>Hosts: <a href=\"https://osu.ppy.sh/users/35396410\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">4blits</a><br/>Co-host: <a href=\"https://osu.ppy.sh/users/22765206\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Soundie</a><br/>Sheeter: <a href=\"https://osu.ppy.sh/users/17959501\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Dragiee</a><br/>GFX: <a href=\"https://osu.ppy.sh/users/18171966\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MemeBen</a>, <a href=\"https://osu.ppy.sh/users/18598835\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">ERA Terra</a><br/>Referees: <a href=\"https://osu.ppy.sh/users/29511004\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">-jose-</a>,<a href=\"https://osu.ppy.sh/users/32522677\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"> Ouxig</a><br/>Replayer: <a href=\"https://osu.ppy.sh/users/19233993\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rakumi</a><br/>Playtester: <a href=\"https://osu.ppy.sh/users/27484367\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Itsnicki</a>,<a href=\"https://osu.ppy.sh/users/11471035\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aalis</a>, <a href=\"https://osu.ppy.sh/users/19233993\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rakumi</a>, <a href=\"https://osu.ppy.sh/users/29024004\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Meatloaf</a>, <a href=\"https://osu.ppy.sh/users/14943370/mania\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Tomskuu</a>,<a href=\"https://osu.ppy.sh/users/32338421\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">NdgLol</a><br/>Mappooler:<a href=\"https://osu.ppy.sh/users/11471035\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aalis</a> <a href=\"https://osu.ppy.sh/users/36042814\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Gamerchris</a><br/>Mapper: <a href=\"https://osu.ppy.sh/users/36042814\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Gamerchris</a>, <a href=\"https://osu.ppy.sh/users/19233993\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rakumi</a>, <a href=\"https://osu.ppy.sh/users/32338421\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">NdgLol</a>,<a href=\"https://osu.ppy.sh/users/23427252\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">PlatinumSplash</a><br/>Commentator: <a href=\"https://osu.ppy.sh/users/22522951\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Kissu8</a>, <a href=\"https://osu.ppy.sh/users/26690747\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aero-</a> <a href=\"https://osu.ppy.sh/users/36042814\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Gamerchris</a>,<a href=\"https://osu.ppy.sh/users/32522677\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Ouxig</a><br/>Streamer: <a href=\"https://osu.ppy.sh/users/22522951\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Kissu8</a>, <a href=\"https://osu.ppy.sh/users/26690747\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Aero-</a>,<a href=\"https://osu.ppy.sh/users/29511004\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">-jose-</a></div></div></div>",
       "created_at": null,
       "deadline_iso": null,
       "deadline_raw": "Player Registrations: 10/25 -> 11/28 Staff Regrestrations: 10/25 -> infinite we want staff",
       "decision": "include",
-      "details_fetched_at": "2026-10-25T11:50:20+00:00",
+      "details_fetched_at": "2026-10-28T15:33:48+00:00",
       "discord": "https://discord.gg/QZcsBN3mt",
       "draft_sha": "a3c33db13f057be347b7417f935a2957ae38eb228cdaf2f215c77fcc41ec1cb4",
       "excerpt": "The Reaper cup Team Regs Staff Regs Discord Master sheet(WIP) Ko-Fi(WIP) Challonge(WIP) Twitch(WIP) Information The reaper cup (TRC) Is a Team size 4 2v2 tournament Hosted by me…",
@@ -3080,7 +3081,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-27T01:09:11Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -3106,7 +3107,7 @@
         "[O!M 4k][TS4 2v2][STAFF + PLAYER REGS OPEN] The Reaper Cup"
       ],
       "topic_id": 2257279,
-      "views": 1109
+      "views": 1144
     },
     "2257287": {
       "author": "dasher1505",
@@ -3123,7 +3124,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:05:19Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3149,7 +3150,7 @@
         "[STD | NZ ONLY] osu! New Zealand 5 Digit Tourney 2026 | Rank 10,000+ 1v1"
       ],
       "topic_id": 2257287,
-      "views": 291
+      "views": 307
     },
     "2257437": {
       "author": "mustifafifax",
@@ -3166,7 +3167,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T09:27:38Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3189,7 +3190,7 @@
         "[STD] [TR] Aşırı Hızlandırılmış Akademi Turnuvası #4 [KAYITLAR AÇIK]"
       ],
       "topic_id": 2257437,
-      "views": 359
+      "views": 369
     },
     "2257650": {
       "author": "Nordax21",
@@ -3205,14 +3206,14 @@
       "first_seen_utc": "2026-10-26T13:40:36+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-10-27T14:23:48Z",
-      "last_seen_utc": "2026-10-28T08:48:10+00:00",
+      "last_reply_at": "2026-10-28T12:18:56Z",
+      "last_seen_utc": "2026-10-28T15:33:48+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "Kazakhstan Tournament Mafia Draft Cup 3",
-      "posts": 7,
+      "posts": 8,
       "rank": [
         5000,
         99999
@@ -3234,7 +3235,7 @@
         "[STD][RU-speaking] Kazakhstan Tournament Mafia Draft Cup 3 [#5.000-#99.999 || 2v2 TS4 Draft]"
       ],
       "topic_id": 2257650,
-      "views": 357
+      "views": 399
     }
   }
 }
