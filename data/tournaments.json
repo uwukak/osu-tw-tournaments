@@ -3,7 +3,7 @@
   "dashboard_sha": "9db66db85d8057155f4cf863dc2f6c28d227fdb8a16bf740b1440d563f964608",
   "draft_baseline_topic_id": null,
   "heartbeat_date": "2026-10-29",
-  "last_run_utc": "2026-10-29T06:14:03+00:00",
+  "last_run_utc": "2026-10-29T13:24:35+00:00",
   "schema_version": 1,
   "tournaments": {
     "2246109": {
@@ -1163,7 +1163,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-07T06:02:14Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1186,7 +1186,7 @@
         "[STD] 6 Digit United States Cup 4 | 100k-999k [Regs Open!]"
       ],
       "topic_id": 2249670,
-      "views": 2411
+      "views": 2416
     },
     "2249879": {
       "author": "Amuro",
@@ -1203,7 +1203,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-09-29T19:51:37Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -1226,7 +1226,7 @@
         "osu!tryouts Team Argentina 2026 [#1 - #10000]"
       ],
       "topic_id": 2249879,
-      "views": 412
+      "views": 413
     },
     "2250173": {
       "author": "Teirin",
@@ -1242,7 +1242,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-12T16:15:33Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1270,7 +1270,7 @@
         "[STD] Teirin's Super Gacha Experience | 4v4 TS9 | #1-9500 No BWS (Max 3 Badges)"
       ],
       "topic_id": 2250173,
-      "views": 2151
+      "views": 2161
     },
     "2250185": {
       "author": "luxembourg",
@@ -1287,7 +1287,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-02T06:14:24Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1309,7 +1309,7 @@
         "[STD/LAN/1v1] Lion's osu! Cup - OPEN RANK [PLAYEY/STAFF REGS OPEN]"
       ],
       "topic_id": 2250185,
-      "views": 934
+      "views": 938
     },
     "2250321": {
       "author": "BurgerKing",
@@ -1325,7 +1325,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-09T02:41:20Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1353,7 +1353,7 @@
         "[STD] Fast Food Cup | #1,000 - #99,999 BWS | CN,HK,TW,MO only | 2v2 TS3 [CANCELED]"
       ],
       "topic_id": 2250321,
-      "views": 1344
+      "views": 1346
     },
     "2250369": {
       "author": "MissingNote",
@@ -1368,7 +1368,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-20T21:16:04Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1391,7 +1391,7 @@
         "[1V1] [STD] RE:Legacy Invitational | 6WC Player Invitational | Staff Registrations Open!"
       ],
       "topic_id": 2250369,
-      "views": 2210
+      "views": 2219
     },
     "2250525": {
       "author": "Sinaeb",
@@ -1409,7 +1409,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T11:17:45Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1434,7 +1434,7 @@
         "[STD]SMST 84 100K-Infinity [Closed]"
       ],
       "topic_id": 2250525,
-      "views": 1188
+      "views": 1197
     },
     "2250628": {
       "author": "AliceMargatroid",
@@ -1452,7 +1452,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-12T09:58:42Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1475,7 +1475,7 @@
         "[STD, SEA only] osu!MayniLAN 2026 | 1v1, LAN | Open Rank | Player and Staff Registrations Open"
       ],
       "topic_id": 2250628,
-      "views": 1663
+      "views": 1671
     },
     "2250673": {
       "author": "Inori-",
@@ -1493,7 +1493,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T04:50:58Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1522,7 +1522,7 @@
         "[STD][POSTPONED] Kaga Sumire Championship [55k-inf][2v2,TS3][中文]"
       ],
       "topic_id": 2250673,
-      "views": 2248
+      "views": 2252
     },
     "2251052": {
       "author": "LLIaBKa",
@@ -1537,7 +1537,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-03T21:00:00Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1571,7 +1571,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-03T21:05:09Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1607,7 +1607,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T21:36:17Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1627,7 +1627,7 @@
         "[o!m 4K] AusNZ!4K Mania Tournament 2026"
       ],
       "topic_id": 2251277,
-      "views": 1139
+      "views": 1144
     },
     "2251298": {
       "author": "TaikoMom",
@@ -1643,7 +1643,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-04T20:27:17Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -1666,7 +1666,7 @@
         "[osu!taiko][1v1] Beginner's Taiko Tournament 10"
       ],
       "topic_id": 2251298,
-      "views": 590
+      "views": 591
     },
     "2251304": {
       "author": "KakirM",
@@ -1681,7 +1681,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T09:49:30Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1706,7 +1706,7 @@
         "[STD] [BR ONLY] [9k-120.000] TB5-Torneio Brasileiro de 5 Dígitos 2026 [REGS CLOSED]"
       ],
       "topic_id": 2251304,
-      "views": 691
+      "views": 698
     },
     "2251396": {
       "author": "DUM4L77",
@@ -1721,7 +1721,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-05T09:51:40Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1766,14 +1766,14 @@
       "first_seen_utc": "2026-10-09T15:39:43+00:00",
       "is_staff_topic": true,
       "kind": "staff",
-      "last_reply_at": "2026-10-27T21:43:45Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_reply_at": "2026-10-29T11:28:28Z",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
       "mode_label": "osu!mania 4K",
       "name": "Bai Yu Cup 2026",
-      "posts": 11,
+      "posts": 12,
       "rank": [
         2500,
         null
@@ -1793,7 +1793,7 @@
         "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity](4k rank)"
       ],
       "topic_id": 2251606,
-      "views": 2144
+      "views": 2161
     },
     "2251619": {
       "author": "yimasu",
@@ -1811,7 +1811,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T00:12:24Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1837,7 +1837,7 @@
         "[STD] (Regs Closed) Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)"
       ],
       "topic_id": 2251619,
-      "views": 2649
+      "views": 2652
     },
     "2251657": {
       "author": "Pixelbee",
@@ -1854,7 +1854,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-10-19T13:25:55Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1877,7 +1877,7 @@
         "[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, ETX<6, STD]"
       ],
       "topic_id": 2251657,
-      "views": 949
+      "views": 953
     },
     "2251780": {
       "author": "Katan24",
@@ -1892,7 +1892,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-06T17:30:19Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1911,7 +1911,7 @@
         "Lazer std tournaments"
       ],
       "topic_id": 2251780,
-      "views": 710
+      "views": 712
     },
     "2252361": {
       "author": "Sinaeb",
@@ -1929,7 +1929,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T16:27:10Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1954,7 +1954,7 @@
         "[STD]SMST 84 50K-100K [Closed]"
       ],
       "topic_id": 2252361,
-      "views": 774
+      "views": 781
     },
     "2252576": {
       "author": "tigiexe",
@@ -1971,7 +1971,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T22:13:03Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1998,7 +1998,7 @@
         "[osu!std] Balkan Chibi Cup 2026 [2v2 TS3][#10,000-#99,999]"
       ],
       "topic_id": 2252576,
-      "views": 1568
+      "views": 1576
     },
     "2252588": {
       "author": "jas_",
@@ -2015,7 +2015,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-20T15:29:06Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2036,7 +2036,7 @@
         "[STD] Royal Danish Osu!Cup 2026"
       ],
       "topic_id": 2252588,
-      "views": 772
+      "views": 777
     },
     "2252609": {
       "author": "snowstorm345",
@@ -2053,7 +2053,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T20:57:26Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2076,7 +2076,7 @@
         "(Taiko, 1v1, Open Rank) The Taiko Poop Cup"
       ],
       "topic_id": 2252609,
-      "views": 1021
+      "views": 1028
     },
     "2252781": {
       "author": "TAXOMETP",
@@ -2094,7 +2094,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T06:55:24Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2123,7 +2123,7 @@
         "[STD | Teams/FA Regs Closed] Frost Night Cup [3v3 TS6 | 100k - 999k]"
       ],
       "topic_id": 2252781,
-      "views": 2539
+      "views": 2562
     },
     "2253171": {
       "author": "LLIaBKa",
@@ -2140,7 +2140,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:00:00Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2178,7 +2178,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:05:09Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2217,7 +2217,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T17:43:18Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2241,7 +2241,7 @@
         "YuniCup 2026 - LAN tournament in Austria [STD][1v1][Open Rank][Regs CLOSED]"
       ],
       "topic_id": 2253419,
-      "views": 794
+      "views": 802
     },
     "2253464": {
       "author": "Krocha",
@@ -2259,7 +2259,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-20T02:00:02Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2283,7 +2283,7 @@
         "[std] European Bounty Hunters ~500€ pricepool [T1 15.000-45.000, T2 45.001 - 90.000 BWS]"
       ],
       "topic_id": 2253464,
-      "views": 1908
+      "views": 1922
     },
     "2254456": {
       "author": "kitfox",
@@ -2301,7 +2301,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T18:33:08Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2325,7 +2325,7 @@
         "(o!std Solo) Wrath [Challenge Clearing Tournament] #7500-#50000"
       ],
       "topic_id": 2254456,
-      "views": 1143
+      "views": 1152
     },
     "2254527": {
       "author": "GamLite",
@@ -2343,7 +2343,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T17:52:54Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2364,7 +2364,7 @@
         "[STD][PSTU] osu! PSTU CUP 2026 | [4vs4] | [>1500pp] |"
       ],
       "topic_id": 2254527,
-      "views": 1118
+      "views": 1129
     },
     "2254618": {
       "author": "Yeury",
@@ -2381,7 +2381,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T08:17:33Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "catch",
       "mode_confidence": "high",
@@ -2402,7 +2402,7 @@
         "[Catch The Beat] Osu! Catch Malaysia Tournament Open 2026 (OCMT2026)"
       ],
       "topic_id": 2254618,
-      "views": 427
+      "views": 439
     },
     "2254678": {
       "author": "Sinaeb",
@@ -2420,7 +2420,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T11:49:27Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2445,7 +2445,7 @@
         "[STD]SMST 84 10K-50K [Closed]"
       ],
       "topic_id": 2254678,
-      "views": 636
+      "views": 640
     },
     "2255100": {
       "author": "Sparxe",
@@ -2463,7 +2463,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-18T19:02:26Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2484,7 +2484,7 @@
         "Sparxe's Two Key Event 2 (STKE2) [REGISTRATIONS OPEN]"
       ],
       "topic_id": 2255100,
-      "views": 849
+      "views": 852
     },
     "2255150": {
       "author": "[Jameson]",
@@ -2501,7 +2501,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-19T22:54:01Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2530,7 +2530,7 @@
         "[STD] [NA ONLY] 5 Digit North American Draft 2 ✧ 4v4 Team Size 8 ✧ 10K - 99K ✧ Draft ✧ REGS OPEN"
       ],
       "topic_id": 2255150,
-      "views": 1405
+      "views": 1412
     },
     "2255172": {
       "author": "duky",
@@ -2547,14 +2547,14 @@
       "first_seen_utc": "2026-10-17T19:33:40+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-10-28T02:40:39Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_reply_at": "2026-10-29T12:22:03Z",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "6DET",
-      "posts": 9,
+      "posts": 10,
       "rank": [
         100000,
         999999
@@ -2574,7 +2574,7 @@
         "[STD] 6DET [#100,000-#999,999] [TEAM & F/A & PLAYER REGS OPENED]"
       ],
       "topic_id": 2255172,
-      "views": 1279
+      "views": 1326
     },
     "2255206": {
       "author": "LLIaBKa",
@@ -2591,7 +2591,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:00:00Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2612,7 +2612,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #55 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2255206,
-      "views": 137
+      "views": 139
     },
     "2255208": {
       "author": "LLIaBKa",
@@ -2629,7 +2629,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:05:09Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2650,7 +2650,7 @@
         "[STD, SPEAK RU ONLY] #77 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2255208,
-      "views": 162
+      "views": 165
     },
     "2255349": {
       "author": "Rikuima",
@@ -2667,7 +2667,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-18T15:01:33Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2692,7 +2692,7 @@
         "[STD] [JP ONLY] Ace & Ascent Cup | Tier-Based Open Rank | 3v3 TS4 BWS [Player & Staff Regs Open]"
       ],
       "topic_id": 2255349,
-      "views": 1413
+      "views": 1445
     },
     "2255540": {
       "author": "Harunari",
@@ -2710,7 +2710,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T15:58:55Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2737,7 +2737,7 @@
         "[STD][4v4][Draft][#20K-150K] SEC S3：Subahibi Extra Cup (中文Only) 报名开放"
       ],
       "topic_id": 2255540,
-      "views": 1446
+      "views": 1469
     },
     "2255550": {
       "author": "PapitasTnT",
@@ -2755,7 +2755,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-26T04:01:39Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2776,7 +2776,7 @@
         "Staff wanted Tournament 5 digits"
       ],
       "topic_id": 2255550,
-      "views": 629
+      "views": 636
     },
     "2255940": {
       "author": "Guhh",
@@ -2794,7 +2794,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T06:14:52Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2817,7 +2817,7 @@
         "[STD] Oklahoma LAN Tournament 4 | Open rank | 1v1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2255940,
-      "views": 468
+      "views": 471
     },
     "2256165": {
       "author": "ElMick33",
@@ -2835,7 +2835,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-26T17:40:00Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2858,7 +2858,7 @@
         "[STD] Torneo Rempalago Congolombiano 3 | 1v1 Open Rank [Colombian Only]"
       ],
       "topic_id": 2256165,
-      "views": 662
+      "views": 665
     },
     "2256403": {
       "author": "Sinaeb",
@@ -2876,7 +2876,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:22:20Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2900,7 +2900,7 @@
         "[STD]SMST 84 1-10K [Open]"
       ],
       "topic_id": 2256403,
-      "views": 374
+      "views": 377
     },
     "2256926": {
       "author": "Vela_12367",
@@ -2917,7 +2917,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-29T04:11:17Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2941,7 +2941,7 @@
         "[STD][MX ONLY] 6 Digits Mexican Blitz Tournament #1 Edición 100k-999k"
       ],
       "topic_id": 2256926,
-      "views": 295
+      "views": 301
     },
     "2257046": {
       "author": "Hataya",
@@ -2959,7 +2959,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T20:51:38Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2987,7 +2987,7 @@
         "[Taiko, TS3-4, 2v2] Kaya's Taiko Tournament #1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2257046,
-      "views": 432
+      "views": 438
     },
     "2257146": {
       "author": "LLIaBKa",
@@ -3083,7 +3083,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-27T01:09:11Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -3109,7 +3109,7 @@
         "[O!M 4k][TS4 2v2][STAFF + PLAYER REGS OPEN] The Reaper Cup"
       ],
       "topic_id": 2257279,
-      "views": 1206
+      "views": 1232
     },
     "2257287": {
       "author": "dasher1505",
@@ -3126,7 +3126,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:05:19Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3152,7 +3152,7 @@
         "[STD | NZ ONLY] osu! New Zealand 5 Digit Tourney 2026 | Rank 10,000+ 1v1"
       ],
       "topic_id": 2257287,
-      "views": 335
+      "views": 346
     },
     "2257437": {
       "author": "mustifafifax",
@@ -3169,7 +3169,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T09:27:38Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3192,7 +3192,7 @@
         "[STD] [TR] Aşırı Hızlandırılmış Akademi Turnuvası #4 [KAYITLAR AÇIK]"
       ],
       "topic_id": 2257437,
-      "views": 389
+      "views": 400
     },
     "2257650": {
       "author": "Nordax21",
@@ -3209,7 +3209,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T12:18:56Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3237,7 +3237,7 @@
         "[STD][RU-speaking] Kazakhstan Tournament Mafia Draft Cup 3 [#5.000-#99.999 || 2v2 TS4 Draft]"
       ],
       "topic_id": 2257650,
-      "views": 446
+      "views": 460
     },
     "2258371": {
       "author": "Zaik0",
@@ -3254,14 +3254,14 @@
       "first_seen_utc": "2026-10-29T00:29:34+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-10-29T04:05:42Z",
-      "last_seen_utc": "2026-10-29T06:14:03+00:00",
+      "last_reply_at": "2026-10-29T06:20:26Z",
+      "last_seen_utc": "2026-10-29T13:24:35+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "SpiSix: Fall Cup",
-      "posts": 16,
+      "posts": 17,
       "rank": [
         100000,
         999999
@@ -3279,7 +3279,7 @@
         "[ESP only] [stable] SpiSix: Fall Cup (100k-999.999)"
       ],
       "topic_id": 2258371,
-      "views": 98
+      "views": 136
     }
   }
 }
