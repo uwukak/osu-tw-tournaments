@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 35 筆（收錄 30／待確認 5）
+共 36 筆（收錄 31／待確認 5）
 
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
@@ -26,6 +26,7 @@
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
+- [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜表定已截止
 - [SMST 84](2254678.md) — osu!standard｜報名已截止
 - [Frost Night Cup](2252781.md) — osu!standard｜報名已截止
