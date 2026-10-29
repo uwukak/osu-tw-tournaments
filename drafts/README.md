@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 34 筆（收錄 29／待確認 5）
+共 35 筆（收錄 30／待確認 5）
 
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
@@ -15,6 +15,7 @@
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
+- [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
 - [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
 - [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [osu! PSTU CUP 2026](2254527.md) — osu!standard｜報名狀態未標明
