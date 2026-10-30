@@ -17,6 +17,7 @@
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
+- [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜報名狀態未標明
 - [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
 - [6DET](2255172.md) — osu!standard｜報名狀態未標明
 - [osu! PSTU CUP 2026](2254527.md) — osu!standard｜報名狀態未標明
@@ -28,7 +29,6 @@
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
-- [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜表定已截止
 - [SMST 84](2254678.md) — osu!standard｜報名已截止
 - [Frost Night Cup](2252781.md) — osu!standard｜報名已截止
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
