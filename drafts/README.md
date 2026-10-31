@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 37 筆（收錄 32／待確認 5）
+共 38 筆（收錄 32／待確認 6）
 
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
@@ -27,6 +27,7 @@
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名狀態未標明
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
+- ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
 - [SMST 84](2254678.md) — osu!standard｜報名已截止
