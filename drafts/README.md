@@ -5,7 +5,6 @@
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
-- [SMST 84](2256403.md) — osu!standard｜報名開放中
 - [The Taiko Poop Cup](2252609.md) — osu!taiko｜報名開放中
 - 🙋 [Looking-Glass Mirror: bloom](2251657.md) — osu!standard｜工作人員招募中
 - [Yimasu‘s Hidden Tournament 2](2251619.md) — osu!standard｜報名開放中
@@ -30,6 +29,7 @@
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
+- [SMST 84](2256403.md) — osu!standard｜報名已截止
 - [SMST 84](2254678.md) — osu!standard｜報名已截止
 - [Frost Night Cup](2252781.md) — osu!standard｜報名已截止
 - [SMST 84](2252361.md) — osu!standard｜報名已截止
