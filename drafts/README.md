@@ -12,6 +12,7 @@
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
 - [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名開放中
+- ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
@@ -24,7 +25,6 @@
 - [Kaga Sumire Championship](2250673.md) — osu!standard｜報名狀態未標明
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
-- ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
 - [SMST 84](2256403.md) — osu!standard｜報名已截止
