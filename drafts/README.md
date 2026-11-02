@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 38 筆（收錄 32／待確認 6）
+共 39 筆（收錄 33／待確認 6）
 
+- [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名開放中
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
