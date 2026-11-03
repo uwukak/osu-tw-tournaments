@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 39 筆（收錄 33／待確認 6）
+共 40 筆（收錄 33／待確認 7）
 
 - [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名開放中
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
@@ -13,6 +13,7 @@
 - [Teirin's Super Gacha Experience](2250173.md) — osu!standard｜報名開放中
 - [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名開放中
+- ⚠️ [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
