@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 40 筆（收錄 34／待確認 6）
+共 41 筆（收錄 35／待確認 6）
 
 - [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
 - [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名開放中
@@ -17,6 +17,7 @@
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
+- [Whirling Winter Phantasy](2260291.md) — osu!standard｜報名狀態未標明
 - [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜報名狀態未標明
 - [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
