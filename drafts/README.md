@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 42 筆（收錄 35／待確認 7）
+共 43 筆（收錄 36／待確認 7）
 
+- [SMST 85](2260887.md) — osu!standard｜報名開放中
 - [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
 - [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名開放中
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
