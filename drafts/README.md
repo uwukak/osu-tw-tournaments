@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 44 筆（收錄 37／待確認 7）
+共 45 筆（收錄 38／待確認 7）
 
+- [SMST 85](2262425.md) — osu!standard｜報名開放中
 - [DLC Season 0](2261026.md) — osu!standard｜報名開放中
 - [SMST 85](2260887.md) — osu!standard｜報名開放中
 - [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
