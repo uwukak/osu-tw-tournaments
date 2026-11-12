@@ -1,9 +1,9 @@
 {
   "custom_draft_sha": {},
-  "dashboard_sha": "330a830b153ca5a054b65d8d8d047bd7ba7e368029e6a67c88c880f22cf18cd2",
+  "dashboard_sha": "623f81986bcb54e300cdf917884e7a716ecf21e68c376087555c0b10a37e14be",
   "draft_baseline_topic_id": null,
-  "heartbeat_date": "2026-11-11",
-  "last_run_utc": "2026-11-11T18:47:11+00:00",
+  "heartbeat_date": "2026-11-12",
+  "last_run_utc": "2026-11-12T01:07:54+00:00",
   "schema_version": 1,
   "tournaments": {
     "2246109": {
@@ -1583,7 +1583,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-03T21:05:09Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1602,7 +1602,7 @@
         "[STD, SPEAK RU ONLY] #75 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2251055,
-      "views": 212
+      "views": 213
     },
     "2251277": {
       "author": "oct4",
@@ -1619,7 +1619,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T21:36:17Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1639,7 +1639,7 @@
         "[o!m 4K] AusNZ!4K Mania Tournament 2026"
       ],
       "topic_id": 2251277,
-      "views": 1635
+      "views": 1641
     },
     "2251298": {
       "author": "TaikoMom",
@@ -1655,7 +1655,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-04T20:27:17Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -1678,7 +1678,7 @@
         "[osu!taiko][1v1] Beginner's Taiko Tournament 10"
       ],
       "topic_id": 2251298,
-      "views": 676
+      "views": 680
     },
     "2251304": {
       "author": "KakirM",
@@ -1693,7 +1693,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T09:49:30Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1718,7 +1718,7 @@
         "[STD] [BR ONLY] [9k-120.000] TB5-Torneio Brasileiro de 5 Dígitos 2026 [REGS CLOSED]"
       ],
       "topic_id": 2251304,
-      "views": 883
+      "views": 885
     },
     "2251396": {
       "author": "DUM4L77",
@@ -1733,7 +1733,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-05T09:51:40Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1779,7 +1779,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-11-08T08:44:03Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1805,7 +1805,7 @@
         "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity](4k rank)"
       ],
       "topic_id": 2251606,
-      "views": 3051
+      "views": 3082
     },
     "2251619": {
       "author": "yimasu",
@@ -1823,7 +1823,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T00:12:24Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1849,7 +1849,7 @@
         "[STD] (Regs Closed) Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)"
       ],
       "topic_id": 2251619,
-      "views": 3147
+      "views": 3152
     },
     "2251657": {
       "author": "Pixelbee",
@@ -1866,7 +1866,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-10-19T13:25:55Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1889,7 +1889,7 @@
         "[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, ETX<6, STD]"
       ],
       "topic_id": 2251657,
-      "views": 1106
+      "views": 1110
     },
     "2251780": {
       "author": "Katan24",
@@ -1904,7 +1904,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-06T05:29:12Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1923,7 +1923,7 @@
         "Lazer std tournaments"
       ],
       "topic_id": 2251780,
-      "views": 1460
+      "views": 1473
     },
     "2252361": {
       "author": "Sinaeb",
@@ -1941,7 +1941,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T16:27:10Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1966,7 +1966,7 @@
         "[STD]SMST 84 50K-100K [Closed]"
       ],
       "topic_id": 2252361,
-      "views": 961
+      "views": 963
     },
     "2252576": {
       "author": "tigiexe",
@@ -1983,7 +1983,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T22:13:03Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2010,7 +2010,7 @@
         "[osu!std] Balkan Chibi Cup 2026 [2v2 TS3][#10,000-#99,999]"
       ],
       "topic_id": 2252576,
-      "views": 1898
+      "views": 1899
     },
     "2252588": {
       "author": "jas_",
@@ -2027,7 +2027,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-30T16:57:16Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2048,7 +2048,7 @@
         "[STD] Royal Danish Osu!Cup 2026"
       ],
       "topic_id": 2252588,
-      "views": 1072
+      "views": 1088
     },
     "2252609": {
       "author": "snowstorm345",
@@ -2065,7 +2065,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T20:57:26Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2088,7 +2088,7 @@
         "(Taiko, 1v1, Open Rank) The Taiko Poop Cup"
       ],
       "topic_id": 2252609,
-      "views": 1244
+      "views": 1247
     },
     "2252781": {
       "author": "TAXOMETP",
@@ -2106,7 +2106,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T06:55:24Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2135,7 +2135,7 @@
         "[STD | Teams/FA Regs Closed] Frost Night Cup [3v3 TS6 | 100k - 999k]"
       ],
       "topic_id": 2252781,
-      "views": 3250
+      "views": 3257
     },
     "2253171": {
       "author": "LLIaBKa",
@@ -2152,7 +2152,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:00:00Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2190,7 +2190,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:05:09Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2229,7 +2229,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T17:43:18Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2253,7 +2253,7 @@
         "YuniCup 2026 - LAN tournament in Austria [STD][1v1][Open Rank][Regs CLOSED]"
       ],
       "topic_id": 2253419,
-      "views": 1082
+      "views": 1093
     },
     "2253464": {
       "author": "Krocha",
@@ -2271,7 +2271,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-31T08:33:53Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2295,7 +2295,7 @@
         "[std] European Bounty Hunters ~500€ pricepool [T1 15.000-45.000, T2 45.001 - 90.000 BWS]"
       ],
       "topic_id": 2253464,
-      "views": 2819
+      "views": 2826
     },
     "2254456": {
       "author": "kitfox",
@@ -2313,7 +2313,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-02T08:27:01Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2337,17 +2337,17 @@
         "(o!std Solo) Wrath [Challenge Clearing Tournament] #7500-#50000"
       ],
       "topic_id": 2254456,
-      "views": 1692
+      "views": 1694
     },
     "2254527": {
       "author": "GamLite",
-      "body_css": "https://osu.ppy.sh/assets/css/app.e46b55c1.css",
-      "body_html": "<div class=\"bbcode\"><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/463b28bac51347c329da140eb8860d864ae79fa6/68747470733a2f2f696d676c696e6b2e63632f63646e2f5f795578524b394a75742e706e67\" style=\"aspect-ratio:2.4;width:1200px\"/><br/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfQkMefYBch8N5cc10NdgBaBOnvqukiCsy8VdXXxVtlVv2tYQ/viewform\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Форма регистрации</span></a> | <a href=\"https://discord.gg/DnjhENgP2f\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Discord-сервер</span></a> | <a rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Трансляция</span></a> | <a href=\"https://docs.google.com/spreadsheets/d/1XR7iM6Ldivsm-ESvNVs2lmAzFFVoDgIrDDGjthIU3P0/edit?gid=1233557187#gid=1233557187\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Spreadsheet</span></a></strong></span></div><br/><strong><em><span style=\"color:#FFD700\">osu! PSTU CUP 2026</span></em></strong> - первый в истории турнир по osu! среди учащихся Пермского Национального Исследовательского Политехнического Университета.<br/>Мероприятие проводится с целью развития киберспортивного сообщества внутри университета и выявления сильнейших игроков в формате честного командного противостояния. Турнир объединит учащихся разных факультетов для борьбы за призовой фонд и право назваться лучшей командой Политеха.</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/c95fd3bf3f5ba7f389ad7dcba2c2e2683176650f/68747470733a2f2f696d676c696e6b2e63632f63646e2f4d542d5f36477554786b2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:130%\"><strong><span style=\"color:#FFD700\">Первое место: Индивидуальные брелки турнира для всей команды </span></strong></span><br/><span style=\"font-size:110%\"><strong><span style=\"color:#C0C0C0\">Второе место: Индивидуальные брелки турнира для всей команды </span></strong></span><br/><strong><span style=\"color:#CD7F32\">Третье место: Индивидуальные брелки турнира для всей команды </span></strong><br/><br/>- В финальной части турнира будут проводиться шоуматчи среди всех участников, где можно будет выиграть <span style=\"color:#FFD700\">фирменный SayoDevice</span> в стиле ПНИПУ.<br/><br/></div></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/5e9e286027cc3a40eda5d7d3dae60ebc92c4030f/68747470733a2f2f696d676c696e6b2e63632f63646e2f377135666942475a544e2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- Турнир планируется в формате <span style=\"color:#ff66aa\">4vs4</span><br/>- Ориентировочное количество участников основной стадии — <span style=\"color:#ff66aa\">32 человека</span>.<br/>- Ограничение по уровню игры: <span style=\"color:#ff66aa\">&gt;1500pp</span>.<br/>- Все карты на турнире играются с <span style=\"color:#ff66aa\">NoFail</span> и <span style=\"color:#ff66aa\">ScoreV2</span>.<br/>- Система проведения турнира — <span style=\"color:#ff66aa\">Double Elimination</span>.<br/>- Гранд-финал играется с <span style=\"color:#ff66aa\">брекет-ресетом</span>.<br/>- Посев (seeding) игроков и балансировка команд будут производиться на основе <span style=\"color:#ff66aa\">текущего количества PP</span>.</div><br/><div class=\"well\">- В турнире могут принять участие только студенты <span style=\"color:#ff66aa\">Пермского Политеха (ПНИПУ)</span>.<br/>«Для подтверждения статуса студента ПНИПУ необходимо будет скинуть фото студенческого билета/пропуска с замазанными личными данными в специальный закрытый канал Discord».<br/>- Если игрок зарегистрировался для участия, но имеет <span style=\"color:#ff66aa\">меньше 1500pp</span> к концу регистрации, его регистрация может быть отменена.<br/>- Каждый зарегистрированный игрок должен зайти <a href=\"https://discord.gg/DnjhENgP2f\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff66aa\">на турнирный сервер Дискорда</span></a> до конца регистрации, в противном случае ваша регистрация также будет отменена.<br/>- Каждый игрок регистрируется <span style=\"color:#ff66aa\">индивидуально</span>. После окончания регистрации организаторы <span style=\"color:#ff66aa\">самостоятельно распределят участников по командам</span>, чтобы сделать матчи максимально сбалансированными и честными.<br/>- Все время на турнире указано по <span style=\"color:#ff66aa\">Пермскому времени (МСК+2 / UTC+5)</span>.</div><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/026a127d98e9df008c750d37abc1410378df0df6/68747470733a2f2f696d676c696e6b2e63632f63646e2f634d51665368645339632e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:130%\"><span style=\"color:#ff66aa\">Расписание</span></span></div><br/>- <span style=\"color:#66ff66\">Начало регистрации</span> - 19 Октября 2026<br/><br/>- <span style=\"color:#66ff66\">Конец регистрации</span> - 6 ноября 2026<br/><br/>- <span style=\"color:#66ff66\">Публикация маппула и сетки</span> - 7-8 Ноября 2026<br/><br/>- <span style=\"color:#66ff66\">Старт первых матчей</span> - 14,15 ноября 2026<br/><br/><div class=\"bbcode__align-centre\"><strong><span style=\"color:#ff66aa\">*При возникновении непредвиденных ситуаций даты могут быть перенесены</span></strong></div></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/da8b96cc64f006a17251ece6b74d85eb756e4d37/68747470733a2f2f696d676c696e6b2e63632f63646e2f5253376d794955646a672e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- Судья (Referee) создаст лобби и пригласит игроков за <span style=\"color:#ff66aa\">5-10 минут</span> до начала матча. Самостоятельное проведение матчей <span style=\"color:#ff66aa\">без рефери запрещено</span>.<br/>- У игроков есть <span style=\"color:#ff66aa\">10 минут</span> на подключение. При опоздании засчитывается техническое поражение. Перенос матча возможен только <span style=\"color:#ff66aa\">при согласии обеих сторон</span>, не позже чем за <span style=\"color:#ff66aa\">12 часов</span> до начала игры.<br/>- Игроки прописывают команду <span style=\"color:#ff66aa\">!roll</span>. Победитель ролла выбирает порядок банов или пиков.<br/>- Если участник вылетел из игры (disconnect) во время матча, который не транслируется, его счет может быть засчитан при <span style=\"color:#ff66aa\">предоставлении доказательств</span>: реплей (с точной датой и временем) или скриншот результата (сделанный в игре через Shift+F12).<br/>- Неуважительное отношение к участникам, оскорбления, спам, обсуждение политики в чате лобби или Discord — <span style=\"color:#ff66aa\">строго запрещены</span>. Наказание: предупреждение, при повторении — <span style=\"color:#ff66aa\">кик с турнира</span>. Использование читов/макросов карается моментальным баном.<br/>- В случае возникновения <span style=\"color:#ff66aa\">спорных ситуаций</span>, последнее слово всегда остается за <span style=\"color:#ff66aa\">хостами турнира</span>.</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/0a6bf3edfd1fd0010f7977f018ac91a6c6f170d8/68747470733a2f2f696d676c696e6b2e63632f63646e2f776c686f424b504c4b6d2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- <span style=\"color:#ff66aa\">Host:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a><br/><br/>- <span style=\"color:#ff66aa\">Co-Host / Admin:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/13903765\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Foruga</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18780445\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Petroschenko</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/33746700\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Pingol</a><br/><br/>- <span style=\"color:#ff66aa\">Mappoolers:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/25304576\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">nrtx</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a><br/><br/>- <span style=\"color:#ff66aa\">PlayTesters:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/26073893\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rolhalovich</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/21029428\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">konina enjoyer</a><br/><br/>- <span style=\"color:#ff66aa\">GFX designer:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18171966\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MemeBen</a><br/><br/>- <span style=\"color:#ff66aa\">Streamers / Referees:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a></div></div>",
+      "body_css": "https://osu.ppy.sh/assets/css/app.c28c04fe.css",
+      "body_html": "<div class=\"bbcode\"><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/55ddfd97b898f3765833fa06e74c684172c881fe/68747470733a2f2f696d676c696e6b2e63632f63646e2f57776c5176685649325f2e706e67\" style=\"aspect-ratio:2.4;width:1200px\"/><br/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong><a href=\"https://docs.google.com/forms/d/e/1FAIpQLSfQkMefYBch8N5cc10NdgBaBOnvqukiCsy8VdXXxVtlVv2tYQ/viewform\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Форма регистрации</span></a> | <a href=\"https://discord.gg/DnjhENgP2f\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Discord-сервер</span></a> | <a rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Трансляция</span></a> | <a href=\"https://docs.google.com/spreadsheets/d/1XR7iM6Ldivsm-ESvNVs2lmAzFFVoDgIrDDGjthIU3P0/edit?gid=1233557187#gid=1233557187\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#e61973\">Spreadsheet</span></a></strong></span></div><br/><strong><em><span style=\"color:#FFD700\">osu! PSTU CUP 2026</span></em></strong> - первый в истории турнир по osu! среди учащихся Пермского Национального Исследовательского Политехнического Университета.<br/>Мероприятие проводится с целью развития киберспортивного сообщества внутри университета и выявления сильнейших игроков в формате честного командного противостояния. Турнир объединит учащихся разных факультетов для борьбы за призовой фонд и право назваться лучшей командой Политеха.</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/c95fd3bf3f5ba7f389ad7dcba2c2e2683176650f/68747470733a2f2f696d676c696e6b2e63632f63646e2f4d542d5f36477554786b2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:130%\"><strong><span style=\"color:#FFD700\">Первое место HighTier: Индивидуальные брелки турнира для всей команды + 2 sayodevice на команду  </span></strong></span><br/><span style=\"font-size:130%\"><strong><span style=\"color:#FFD700\">Первое место LowTier: Индивидуальные брелки турнира для всей команды + месяц osu!supporter  </span></strong></span><br/><span style=\"font-size:110%\"><strong><span style=\"color:#C0C0C0\">Второе место: Индивидуальные брелки турнира для всей команды </span></strong></span><br/><strong><span style=\"color:#CD7F32\">Третье место: Индивидуальные брелки турнира для всей команды </span></strong><br/></div></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/5e9e286027cc3a40eda5d7d3dae60ebc92c4030f/68747470733a2f2f696d676c696e6b2e63632f63646e2f377135666942475a544e2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- Турнир планируется в формате <span style=\"color:#ff66aa\">2vs2</span> с двумя тирами по <span style=\"color:#ff66aa\">16 игроков</span>: первый тир — игроки с наибольшим PP, второй — остальные.<br/>- Ориентировочное количество участников основной стадии — <span style=\"color:#ff66aa\">32 человека</span>.<br/>- Ограничение по уровню игры: <span style=\"color:#ff66aa\">&gt;1500pp</span>.<br/>- Все карты на турнире играются с <span style=\"color:#ff66aa\">NoFail</span> и <span style=\"color:#ff66aa\">ScoreV2</span>.<br/>- Система проведения турнира — <span style=\"color:#ff66aa\">Double Elimination</span>, у каждого тира своя сетка.<br/>- Гранд-финал играется с <span style=\"color:#ff66aa\">брекет-ресетом</span>.<br/>- Команды формируются в каждом тире по принципу <span style=\"color:#ff66aa\">самый сильный + самый слабый</span> (1 + 16, 2 + 15 и так далее) на основе текущего количества PP.<br/>- PP игроков фиксируется на дату <span style=\"color:#ff66aa\">06.11.2026</span>.<br/>- Посев команд в сетке производится по <span style=\"color:#ff66aa\">суммарному PP</span>.</div><br/><br/><div class=\"well\">- В турнире могут принять участие только студенты <span style=\"color:#ff66aa\">Пермского Политеха (ПНИПУ)</span>.<br/>«Для подтверждения статуса студента ПНИПУ необходимо будет скинуть фото студенческого билета/пропуска с замазанными личными данными в специальный закрытый канал Discord».<br/>- Если игрок зарегистрировался для участия, но имеет <span style=\"color:#ff66aa\">меньше 1500pp</span> к концу регистрации, его регистрация может быть отменена.<br/>- Каждый зарегистрированный игрок должен зайти <a href=\"https://discord.gg/DnjhENgP2f\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#ff66aa\">на турнирный сервер Дискорда</span></a> до конца регистрации, в противном случае ваша регистрация также будет отменена.<br/>- Каждый игрок регистрируется <span style=\"color:#ff66aa\">индивидуально</span>. После окончания регистрации организаторы <span style=\"color:#ff66aa\">самостоятельно распределят участников по командам</span>, чтобы сделать матчи максимально сбалансированными и честными.<br/>- Все время на турнире указано по <span style=\"color:#ff66aa\">Пермскому времени (МСК+2 / UTC+5)</span>.</div><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/026a127d98e9df008c750d37abc1410378df0df6/68747470733a2f2f696d676c696e6b2e63632f63646e2f634d51665368645339632e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:130%\"><span style=\"color:#ff66aa\">Расписание</span></span></div><br/>- <span style=\"color:#66ff66\">Начало регистрации</span> - 19 Октября 2026<br/><br/>- <span style=\"color:#66ff66\">Конец регистрации</span> - 6 ноября 2026<br/><br/>- <span style=\"color:#66ff66\">Публикация маппула и сетки</span> - 7-8 Ноября 2026<br/><br/>- <span style=\"color:#66ff66\">Старт первых матчей</span> - 14,15 ноября 2026<br/><br/><div class=\"bbcode__align-centre\"><strong><span style=\"color:#ff66aa\">*При возникновении непредвиденных ситуаций даты могут быть перенесены</span></strong></div></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/da8b96cc64f006a17251ece6b74d85eb756e4d37/68747470733a2f2f696d676c696e6b2e63632f63646e2f5253376d794955646a672e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- Судья (Referee) создаст лобби и пригласит игроков за <span style=\"color:#ff66aa\">5-10 минут</span> до начала матча. Самостоятельное проведение матчей <span style=\"color:#ff66aa\">без рефери запрещено</span>.<br/>- У игроков есть <span style=\"color:#ff66aa\">10 минут</span> на подключение. При опоздании засчитывается техническое поражение. Перенос матча возможен только <span style=\"color:#ff66aa\">при согласии обеих сторон</span>, не позже чем за <span style=\"color:#ff66aa\">12 часов</span> до начала игры.<br/>- Игроки прописывают команду <span style=\"color:#ff66aa\">!roll</span>. Победитель ролла выбирает порядок банов или пиков.<br/>- Если участник вылетел из игры (disconnect) во время матча, который не транслируется, его счет может быть засчитан при <span style=\"color:#ff66aa\">предоставлении доказательств</span>: реплей (с точной датой и временем) или скриншот результата (сделанный в игре через Shift+F12).<br/>- Неуважительное отношение к участникам, оскорбления, спам, обсуждение политики в чате лобби или Discord — <span style=\"color:#ff66aa\">строго запрещены</span>. Наказание: предупреждение, при повторении — <span style=\"color:#ff66aa\">кик с турнира</span>. Использование читов/макросов карается моментальным баном.<br/>- В случае возникновения <span style=\"color:#ff66aa\">спорных ситуаций</span>, последнее слово всегда остается за <span style=\"color:#ff66aa\">хостами турнира</span>.</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/0a6bf3edfd1fd0010f7977f018ac91a6c6f170d8/68747470733a2f2f696d676c696e6b2e63632f63646e2f776c686f424b504c4b6d2e706e67\" style=\"aspect-ratio:7.8431;width:1200px\"/></div><div class=\"well\">- <span style=\"color:#ff66aa\">Host:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a><br/><br/>- <span style=\"color:#ff66aa\">Co-Host / Admin:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/13903765\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Foruga</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18780445\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Petroschenko</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/33746700\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Pingol</a><br/><br/>- <span style=\"color:#ff66aa\">Mappoolers:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/25304576\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">nrtx</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a><br/><br/>- <span style=\"color:#ff66aa\">PlayTesters:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/26073893\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rolhalovich</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/21029428\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">konina enjoyer</a><br/><br/>- <span style=\"color:#ff66aa\">GFX designer:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18171966\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MemeBen</a><br/><br/>- <span style=\"color:#ff66aa\">Streamers / Referees:</span> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12059910\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">buoni</a>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/28960866\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">GamLite</a></div></div>",
       "created_at": null,
       "deadline_iso": null,
       "deadline_raw": null,
       "decision": "include",
-      "details_fetched_at": "2026-11-02T21:59:30+00:00",
+      "details_fetched_at": "2026-11-12T01:07:54+00:00",
       "discord": "https://discord.gg/DnjhENgP2f",
       "draft_sha": "265922e84bae46c044c42b28e38421a8637ad474d9b8c1717ff8882a08f6af82",
       "excerpt": "Форма регистрации | Discord-сервер | Трансляция | Spreadsheet osu! PSTU CUP 2026 - первый в истории турнир по osu!…",
@@ -2355,7 +2355,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-10T14:41:00Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2377,7 +2377,7 @@
         "[STD][PSTU] osu! PSTU CUP 2026 | [2vs2] | [>1500pp] |"
       ],
       "topic_id": 2254527,
-      "views": 2065
+      "views": 2078
     },
     "2254618": {
       "author": "Yeury",
@@ -2394,7 +2394,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T08:17:33Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "catch",
       "mode_confidence": "high",
@@ -2415,7 +2415,7 @@
         "[Catch The Beat] Osu! Catch Malaysia Tournament Open 2026 (OCMT2026)"
       ],
       "topic_id": 2254618,
-      "views": 628
+      "views": 629
     },
     "2254678": {
       "author": "Sinaeb",
@@ -2433,7 +2433,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T11:49:27Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2458,7 +2458,7 @@
         "[STD]SMST 84 10K-50K [Closed]"
       ],
       "topic_id": 2254678,
-      "views": 815
+      "views": 817
     },
     "2255100": {
       "author": "Sparxe",
@@ -2476,7 +2476,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-18T19:02:26Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2498,7 +2498,7 @@
         "Sparxe's Two Key Event 2 (STKE2) [REGISTRATIONS CLOSED]"
       ],
       "topic_id": 2255100,
-      "views": 1053
+      "views": 1056
     },
     "2255150": {
       "author": "[Jameson]",
@@ -2515,7 +2515,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-03T04:58:01Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2544,7 +2544,7 @@
         "[STD] [NA ONLY] 5 Digit North American Draft 2 ✧ 4v4 Team Size 8 ✧ 10K - 99K ✧ Draft ✧ REGS OPEN"
       ],
       "topic_id": 2255150,
-      "views": 2260
+      "views": 2265
     },
     "2255172": {
       "author": "duky",
@@ -2562,7 +2562,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-03T12:51:11Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2589,7 +2589,7 @@
         "[STD] 6DET [#100,000-#999,999] [REGS CLOSED]"
       ],
       "topic_id": 2255172,
-      "views": 2321
+      "views": 2331
     },
     "2255206": {
       "author": "LLIaBKa",
@@ -2606,7 +2606,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:00:00Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2627,7 +2627,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #55 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2255206,
-      "views": 251
+      "views": 254
     },
     "2255208": {
       "author": "LLIaBKa",
@@ -2644,7 +2644,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:05:09Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2682,7 +2682,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-18T15:01:33Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2707,7 +2707,7 @@
         "[STD] [JP ONLY] Ace & Ascent Cup | Tier-Based Open Rank | 3v3 TS4 BWS [Player & Staff Regs Open]"
       ],
       "topic_id": 2255349,
-      "views": 2167
+      "views": 2172
     },
     "2255540": {
       "author": "Harunari",
@@ -2725,7 +2725,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T15:58:55Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2752,7 +2752,7 @@
         "[STD][4v4][Draft][#20K-150K] SEC S3：Subahibi Extra Cup (中文Only) 报名开放"
       ],
       "topic_id": 2255540,
-      "views": 2190
+      "views": 2192
     },
     "2255550": {
       "author": "PapitasTnT",
@@ -2770,7 +2770,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-11T06:50:53Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2791,7 +2791,7 @@
         "Staff wanted Tournament 5 digits"
       ],
       "topic_id": 2255550,
-      "views": 957
+      "views": 970
     },
     "2255940": {
       "author": "Guhh",
@@ -2809,7 +2809,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T06:14:52Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2832,7 +2832,7 @@
         "[STD] Oklahoma LAN Tournament 4 | Open rank | 1v1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2255940,
-      "views": 709
+      "views": 712
     },
     "2256165": {
       "author": "ElMick33",
@@ -2850,7 +2850,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T13:14:55Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2873,7 +2873,7 @@
         "[STD] Torneo Rempalago Congolombiano 3 | 1v1 Open Rank [Colombian Only]"
       ],
       "topic_id": 2256165,
-      "views": 1023
+      "views": 1025
     },
     "2256403": {
       "author": "Sinaeb",
@@ -2891,7 +2891,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-31T16:04:22Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2916,7 +2916,7 @@
         "[STD]SMST 84 1-10K [Closed]"
       ],
       "topic_id": 2256403,
-      "views": 627
+      "views": 630
     },
     "2256926": {
       "author": "Vela_12367",
@@ -2933,7 +2933,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-04T13:21:05Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2957,7 +2957,7 @@
         "[STD][MX ONLY] 6 Digits Mexican Blitz Tournament #1 Edición 100k-999k"
       ],
       "topic_id": 2256926,
-      "views": 644
+      "views": 652
     },
     "2257046": {
       "author": "Hataya",
@@ -2975,7 +2975,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T20:51:38Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -3003,7 +3003,7 @@
         "[Taiko, TS3-4, 2v2] Kaya's Taiko Tournament #1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2257046,
-      "views": 802
+      "views": 808
     },
     "2257146": {
       "author": "LLIaBKa",
@@ -3099,7 +3099,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-11-11T16:57:11Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -3125,7 +3125,7 @@
         "[O!M 4k][TS4 2v2][STAFF + PLAYER REGS OPEN] The Reaper Cup"
       ],
       "topic_id": 2257279,
-      "views": 2734
+      "views": 2748
     },
     "2257287": {
       "author": "dasher1505",
@@ -3142,7 +3142,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:05:19Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3168,7 +3168,7 @@
         "[STD | NZ ONLY] osu! New Zealand 5 Digit Tourney 2026 | Rank 10,000+ 1v1"
       ],
       "topic_id": 2257287,
-      "views": 621
+      "views": 626
     },
     "2257437": {
       "author": "mustifafifax",
@@ -3185,7 +3185,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-02T12:06:18Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3209,7 +3209,7 @@
         "[STD] [TR] Aşırı Hızlandırılmış Akademi Turnuvası #4 [STAFF KAYITLARI AÇIK]"
       ],
       "topic_id": 2257437,
-      "views": 825
+      "views": 832
     },
     "2257650": {
       "author": "Nordax21",
@@ -3226,7 +3226,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-09T08:59:34Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3255,7 +3255,7 @@
         "[STD][RU-speaking] Kazakhstan Tournament Mafia Draft Cup 3 [#5.000-#99.999 || 3v3 TS5 Draft]"
       ],
       "topic_id": 2257650,
-      "views": 1189
+      "views": 1197
     },
     "2258351": {
       "author": "Filoxen",
@@ -3265,7 +3265,7 @@
       "deadline_iso": null,
       "deadline_raw": "Registration : November 2nd - November 15th Tryouts Phase* : November 16th - November 29th Team Submissions : November 23rd - November 29th Screening : November 30th - Decembe",
       "decision": "include",
-      "details_fetched_at": "2026-11-08T19:49:01+00:00",
+      "details_fetched_at": "2026-11-12T01:07:54+00:00",
       "discord": "https://discord.gg/hDhj6Jb45k",
       "draft_sha": "9c27ecd5289d30fb7b9d028720cf214e170a413caba66537d589922dd5c75a97",
       "excerpt": "The 5 Digit European Cup 2027 (5EC27) is a country-based , world cup style tournament played in the osu! Standard mode, on the stable client.…",
@@ -3273,7 +3273,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T02:23:19Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3297,7 +3297,7 @@
         "[STD] 5 Digit European Cup 2027 [10k-99.9k BWS] [Registrations Open]"
       ],
       "topic_id": 2258351,
-      "views": 3251
+      "views": 3291
     },
     "2258371": {
       "author": "Zaik0",
@@ -3315,7 +3315,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-08T18:55:14Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3339,7 +3339,7 @@
         "[ESP only] [stable] SpiSix: Fall Cup (100k-999.999)"
       ],
       "topic_id": 2258371,
-      "views": 840
+      "views": 850
     },
     "2258505": {
       "author": "[SHK]T_T",
@@ -3357,7 +3357,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-30T07:41:56Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3382,7 +3382,7 @@
         "[STD][osu!Lazer][中文] Hello! Shanden Cup 2 Season 8 : Elite [4v4,TS7] [5600pp-3000pp] [ Reg Closed ]"
       ],
       "topic_id": 2258505,
-      "views": 467
+      "views": 470
     },
     "2258666": {
       "author": "Sinaeb",
@@ -3400,7 +3400,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-07T17:51:21Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3424,7 +3424,7 @@
         "[STD]SMST 85 100K-Infinity [Open]"
       ],
       "topic_id": 2258666,
-      "views": 1107
+      "views": 1123
     },
     "2258972": {
       "author": "Endless fare",
@@ -3441,14 +3441,14 @@
       "first_seen_utc": "2026-10-31T11:45:11+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-11-03T05:00:21Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_reply_at": "2026-11-11T20:22:01Z",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "HongLongCup-First voyage",
-      "posts": 5,
+      "posts": 6,
       "rank": null,
       "rank_compact": "",
       "rank_full": "",
@@ -3464,7 +3464,7 @@
         "[std]HongLongCup-First voyage(~4500pp)(Team Vs & Double-Elimination)[Regs open]"
       ],
       "topic_id": 2258972,
-      "views": 984
+      "views": 1008
     },
     "2259985": {
       "author": "adnan",
@@ -3482,7 +3482,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-04T17:45:36Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3508,7 +3508,7 @@
         "[STD] Black Vultures Open Tournament, 3v3 TS5 [REGISTRATIONS OPEN]"
       ],
       "topic_id": 2259985,
-      "views": 1932
+      "views": 1961
     },
     "2260208": {
       "author": "chantarazu",
@@ -3525,7 +3525,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T14:37:29Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3549,7 +3549,7 @@
         "[STD] [TH ONLY] Kiwi's Stella Ver.β: Aim Royale Tournament [1-9,999, 10k-99,999] [เปิดรับสมัคร]"
       ],
       "topic_id": 2260208,
-      "views": 718
+      "views": 723
     },
     "2260291": {
       "author": "Egida",
@@ -3567,7 +3567,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T23:19:45Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3591,7 +3591,7 @@
         "[STD][Draft][2 Divs] Whirling Winter Phantasy | 10k-100K BWS"
       ],
       "topic_id": 2260291,
-      "views": 2080
+      "views": 2118
     },
     "2260641": {
       "author": "I quit w",
@@ -3609,7 +3609,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-09T17:21:01Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3630,7 +3630,7 @@
         "[STAFF REGS OPEN] I have a Headache [STD]"
       ],
       "topic_id": 2260641,
-      "views": 900
+      "views": 920
     },
     "2260887": {
       "author": "Sinaeb",
@@ -3647,14 +3647,14 @@
       "first_seen_utc": "2026-11-07T01:22:45+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-11-11T13:30:25Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_reply_at": "2026-11-11T21:56:31Z",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "SMST 85",
-      "posts": 21,
+      "posts": 22,
       "rank": [
         50000,
         100000
@@ -3672,7 +3672,7 @@
         "[STD]SMST 85 50K-100K [Open]"
       ],
       "topic_id": 2260887,
-      "views": 472
+      "views": 490
     },
     "2261026": {
       "author": "Doubi_wert",
@@ -3690,7 +3690,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-10T04:14:33Z",
-      "last_seen_utc": "2026-11-11T18:47:11+00:00",
+      "last_seen_utc": "2026-11-12T01:07:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3716,7 +3716,7 @@
         "[STD] [2v2 | 中文 | 0 - 3000pp | Reg Open! ] DLC Season 0"
       ],
       "topic_id": 2261026,
-      "views": 614
+      "views": 632
     }
   }
 }
