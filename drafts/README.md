@@ -23,7 +23,7 @@
 - [Whirling Winter Phantasy](2260291.md) — osu!standard｜報名狀態未標明
 - [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜報名狀態未標明
-- [SEC S3：Subahibi Extra Cup 报名开放](2255540.md) — osu!standard｜報名狀態未標明
+- [SEC S3：Subahibi Extra Cup 报名结束](2255540.md) — osu!standard｜報名狀態未標明
 - [osu! PSTU CUP 2026](2254527.md) — osu!standard｜報名狀態未標明
 - [Wrath](2254456.md) — osu!standard｜報名狀態未標明
 - [European Bounty Hunters ~500€ pricepool](2253464.md) — osu!standard｜報名狀態未標明
