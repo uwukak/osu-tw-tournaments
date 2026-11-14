@@ -1,9 +1,9 @@
 {
   "custom_draft_sha": {},
-  "dashboard_sha": "c48dae7e21ddf59db365a92c5bd6fa55340e30b14e1d72d95d397dc776b8a510",
+  "dashboard_sha": "8783e2a5e8fda1156dc2ef7192cf315e20259e1674894f0cfe0702204d033018",
   "draft_baseline_topic_id": null,
   "heartbeat_date": "2026-11-14",
-  "last_run_utc": "2026-11-14T11:01:47+00:00",
+  "last_run_utc": "2026-11-14T17:13:54+00:00",
   "schema_version": 1,
   "tournaments": {
     "2246109": {
@@ -1626,6 +1626,7 @@
       "mode_confidence": "high",
       "mode_label": "osu!mania 4K",
       "name": "AusNZ!4K Mania Tournament 2026",
+      "off_listing_since": "2026-11-14T17:13:54+00:00",
       "posts": 10,
       "rank": null,
       "rank_compact": "",
@@ -1656,7 +1657,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-04T20:27:17Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -1679,7 +1680,7 @@
         "[osu!taiko][1v1] Beginner's Taiko Tournament 10"
       ],
       "topic_id": 2251298,
-      "views": 693
+      "views": 696
     },
     "2251304": {
       "author": "KakirM",
@@ -1694,7 +1695,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T09:49:30Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1719,7 +1720,7 @@
         "[STD] [BR ONLY] [9k-120.000] TB5-Torneio Brasileiro de 5 Dígitos 2026 [REGS CLOSED]"
       ],
       "topic_id": 2251304,
-      "views": 911
+      "views": 912
     },
     "2251396": {
       "author": "DUM4L77",
@@ -1734,7 +1735,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-05T09:51:40Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1762,7 +1763,7 @@
         "[STD][BR Only] CB6.2 - Coliseu Brasileiro de 6 Dígitos - Segunda Edição [100k - 999k][2v2 Ts2]"
       ],
       "topic_id": 2251396,
-      "views": 502
+      "views": 503
     },
     "2251606": {
       "author": "6lp",
@@ -1780,7 +1781,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-11-08T08:44:03Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -1806,7 +1807,7 @@
         "[o!m 4K][STAFF RECRUITMENT][2v2]Bai Yu Cup 2026[#2500-infinity](4k rank)"
       ],
       "topic_id": 2251606,
-      "views": 3272
+      "views": 3302
     },
     "2251619": {
       "author": "yimasu",
@@ -1824,7 +1825,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-27T00:12:24Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1850,7 +1851,7 @@
         "[STD] (Regs Closed) Yimasu‘s Hidden Tournament 2 (20.000 - 99.999 rank) (2vs2 ts3)"
       ],
       "topic_id": 2251619,
-      "views": 3191
+      "views": 3203
     },
     "2251657": {
       "author": "Pixelbee",
@@ -1867,7 +1868,7 @@
       "is_staff_topic": true,
       "kind": "staff",
       "last_reply_at": "2026-10-19T13:25:55Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1890,7 +1891,7 @@
         "[STAFF REGS] Looking-Glass Mirror: bloom | [SEA, 75K-350K, 2v2TS3, ETX<6, STD]"
       ],
       "topic_id": 2251657,
-      "views": 1132
+      "views": 1137
     },
     "2251780": {
       "author": "Katan24",
@@ -1905,7 +1906,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-06T05:29:12Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1924,7 +1925,7 @@
         "Lazer std tournaments"
       ],
       "topic_id": 2251780,
-      "views": 1541
+      "views": 1549
     },
     "2252361": {
       "author": "Sinaeb",
@@ -1942,7 +1943,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-16T16:27:10Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -1984,7 +1985,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T22:13:03Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2011,7 +2012,7 @@
         "[osu!std] Balkan Chibi Cup 2026 [2v2 TS3][#10,000-#99,999]"
       ],
       "topic_id": 2252576,
-      "views": 1934
+      "views": 1943
     },
     "2252588": {
       "author": "jas_",
@@ -2028,7 +2029,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-30T16:57:16Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2049,7 +2050,7 @@
         "[STD] Royal Danish Osu!Cup 2026"
       ],
       "topic_id": 2252588,
-      "views": 1118
+      "views": 1124
     },
     "2252609": {
       "author": "snowstorm345",
@@ -2066,7 +2067,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-21T20:57:26Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -2089,7 +2090,7 @@
         "(Taiko, 1v1, Open Rank) The Taiko Poop Cup"
       ],
       "topic_id": 2252609,
-      "views": 1281
+      "views": 1289
     },
     "2252781": {
       "author": "TAXOMETP",
@@ -2107,7 +2108,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T06:55:24Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2136,7 +2137,7 @@
         "[STD | Teams/FA Regs Closed] Frost Night Cup [3v3 TS6 | 100k - 999k]"
       ],
       "topic_id": 2252781,
-      "views": 3318
+      "views": 3332
     },
     "2253171": {
       "author": "LLIaBKa",
@@ -2153,7 +2154,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:00:00Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2174,7 +2175,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #54 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2253171,
-      "views": 223
+      "views": 225
     },
     "2253175": {
       "author": "LLIaBKa",
@@ -2191,7 +2192,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-10T21:05:09Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2212,7 +2213,7 @@
         "[STD, SPEAK RU ONLY] #76 week Shawonovo Pool cup (weekly)"
       ],
       "topic_id": 2253175,
-      "views": 240
+      "views": 241
     },
     "2253419": {
       "author": "Yasuho",
@@ -2230,7 +2231,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T17:43:18Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2254,7 +2255,7 @@
         "YuniCup 2026 - LAN tournament in Austria [STD][1v1][Open Rank][Regs CLOSED]"
       ],
       "topic_id": 2253419,
-      "views": 1130
+      "views": 1132
     },
     "2253464": {
       "author": "Krocha",
@@ -2272,7 +2273,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-31T08:33:53Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2296,7 +2297,7 @@
         "[std] European Bounty Hunters ~500€ pricepool [T1 15.000-45.000, T2 45.001 - 90.000 BWS]"
       ],
       "topic_id": 2253464,
-      "views": 2889
+      "views": 2902
     },
     "2254456": {
       "author": "kitfox",
@@ -2314,7 +2315,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-02T08:27:01Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2338,7 +2339,7 @@
         "(o!std Solo) Wrath [Challenge Clearing Tournament] #7500-#50000"
       ],
       "topic_id": 2254456,
-      "views": 1719
+      "views": 1724
     },
     "2254527": {
       "author": "GamLite",
@@ -2356,7 +2357,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-10T14:41:00Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2378,7 +2379,7 @@
         "[STD][PSTU] osu! PSTU CUP 2026 | [2vs2] | [>1500pp] |"
       ],
       "topic_id": 2254527,
-      "views": 2176
+      "views": 2196
     },
     "2254618": {
       "author": "Yeury",
@@ -2395,7 +2396,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-25T08:17:33Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "catch",
       "mode_confidence": "high",
@@ -2416,7 +2417,7 @@
         "[Catch The Beat] Osu! Catch Malaysia Tournament Open 2026 (OCMT2026)"
       ],
       "topic_id": 2254618,
-      "views": 649
+      "views": 654
     },
     "2254678": {
       "author": "Sinaeb",
@@ -2434,7 +2435,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-24T11:49:27Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2459,7 +2460,7 @@
         "[STD]SMST 84 10K-50K [Closed]"
       ],
       "topic_id": 2254678,
-      "views": 837
+      "views": 838
     },
     "2255100": {
       "author": "Sparxe",
@@ -2477,7 +2478,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-18T19:02:26Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2499,24 +2500,24 @@
         "Sparxe's Two Key Event 2 (STKE2) [REGISTRATIONS CLOSED]"
       ],
       "topic_id": 2255100,
-      "views": 1071
+      "views": 1077
     },
     "2255150": {
       "author": "[Jameson]",
-      "body_css": "https://osu.ppy.sh/assets/css/app.c28c04fe.css",
+      "body_css": "https://osu.ppy.sh/assets/css/app.139c15fb.css",
       "body_html": "<div class=\"bbcode\"><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/4185c11124553eca72812cdda63226b231a5a7a3/68747470733a2f2f692e6962622e636f2f323152664747527a2f42616e6e657276322e706e67\" style=\"aspect-ratio:1.7778;width:1920px\"/></div><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong><a href=\"https://docs.google.com/spreadsheets/d/1gGFamQXAsLtgPdA-dI24L5-KRtMYRTnMkp6mH1j9Nbc/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Main Sheet</span></a> ✧ <a href=\"https://forms.gle/mjtPksCJMCVQcZ9s8\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Player Registration</span></a> ✧ <a href=\"https://forms.gle/cE1y1Nic7YmH1GMA7\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Staff Registration</span></a> ✧ <a href=\"https://www.twitch.tv/5dnad2\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Twitch</span></a> ✧ <a href=\"https://www.youtube.com/@5DigitNorthAmericanDraft2\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Video Archive</span></a> ✧ <a href=\"https://discord.gg/qbCGVjg7qD\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Discord</span></a> ✧ <a href=\"https://docs.google.com/document/d/13TmmgBL1IERjQeKe-1y_cRyVUyc9JoFa-7aeJsH_YPo/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\"><span style=\"color:#203df8\">Rules &amp; Information</span></a> ✧ <span style=\"color:#203df8\">Bracket</span> ✧ <span style=\"color:#203df8\">Statistics</span></strong></span></div></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/fd587bc56478190b10817e2e2626bee92672784e/68747470733a2f2f692e6962622e636f2f43335947514479782f496e666f726d6174696f6e2e706e67\" style=\"aspect-ratio:5.8182;width:1920px\"/></div><div class=\"well\"><ol class=\"unordered\"><li>This is a <strong><span style=\"color:#203df8\">4v4, teams of 8</span></strong> osu!standard draft tournament.</li><li>The tournament will use an <a href=\"https://en.wikipedia.org/wiki/Swiss-system_tournament#Esports\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">eSports-styled Swiss Stage</a> into a Double Elimination bracket.</li><li>The rank range is <strong><span style=\"color:#203df8\">10,000</span></strong> to <strong><span style=\"color:#203df8\">99,999</span></strong> with BWS enforced.</li><li>Only players with <a href=\"https://www.worldometers.info/geography/7-continents/north-america/\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">North American</a> flags may register.</li><li>Exceptions are allowed for players without a North American flag if they have participated in a Badged North American region-locked tournament within the previous 2 years.</li><li>Badges obtained on or before <span style=\"color:#203df8\"><strong>October 17, 2024</strong></span> will not be counted.</li><li>Players <strong><span style=\"color:#203df8\">will be allowed</span></strong> to leave the rank range after registrations end.</li><li>The top <strong><span style=\"color:#203df8\">128</span></strong> players by qualifier results will qualify for the draft.</li><li>Staff members are <strong><span style=\"color:#203df8\">NOT</span></strong> allowed to play in the tournament with the exception of Streamers, Commentators, and Graphic Designers.</li><li>Players are <strong><span style=\"color:#203df8\">required</span></strong> to be in the discord server.</li><li>All players' discord nicknames in the discord server are <strong><span style=\"color:#203df8\">required</span></strong> to contain their osu! username.</li><li>Pools in this tournament are <strong><span style=\"color:#203df8\">NOT STANDARD</span></strong>, please read the <a href=\"https://docs.google.com/document/d/13TmmgBL1IERjQeKe-1y_cRyVUyc9JoFa-7aeJsH_YPo/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rules and Information Document</a> for the Mappool Format.</li><li>Read the <a href=\"https://docs.google.com/document/d/13TmmgBL1IERjQeKe-1y_cRyVUyc9JoFa-7aeJsH_YPo/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rules and Information Document</a> for further clarification.</li></ol></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/204ded99754bf4bfe08fca17d161dae1f946705c/68747470733a2f2f692e6962622e636f2f4c4456546a314c772f52756c65732e706e67\" style=\"aspect-ratio:5.8182;width:1920px\"/></div><div class=\"well\"><ol class=\"unordered\"><li>All players are expected to follow the <a href=\"https://osu.ppy.sh/wiki/en/Rules\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">osu! Community Guidelines</a>.</li><li>Any harassment/abuse towards staff or other players will not be tolerated.</li><li>Players must play in a qualifier lobby by <strong><span style=\"color:#203df8\">November 17, 2026 0 UTC</span></strong> in order to qualify for the draft.</li><li>No qualifier lobbies may be scheduled after this time.</li><li>Qualifier results will be calculated with a <strong><span style=\"color:#203df8\">Zipf's Law formula</span></strong>.</li><li>For each map, a score calculated by ranking all scores on each map played will be given to each player.</li><li>For more details, see <a href=\"https://osu.ppy.sh/wiki/en/Tournaments/Common_seeding_methods#zipf's-law\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">here</a>.</li><li><strong><span style=\"color:#203df8\">No Fail and ScoreV2</span></strong> will be used on every map.</li><li>Read the <a href=\"https://docs.google.com/document/d/13TmmgBL1IERjQeKe-1y_cRyVUyc9JoFa-7aeJsH_YPo/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Rules And Information Document</a> for further clarification.</li></ol></div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/1859ad6b3cbecfe9b99baf7c0c979eeee1e28b19/68747470733a2f2f692e6962622e636f2f507a685a787759392f5363686564756c652e706e67\" style=\"aspect-ratio:5.8182;width:1920px\"/></div><div class=\"well\"><strong><span style=\"color:#203df8\">Registrations Open:</span></strong> October 17, 2026<br/><strong><span style=\"color:#203df8\">Registrations Close:</span></strong> November 2, 2026 0 UTC<br/><strong><span style=\"color:#203df8\">Qualifiers:</span></strong> Weekends of November 7 and 14, 2026*<br/><strong><span style=\"color:#203df8\">Draft:</span></strong> Weekend of November 21, 2026<br/><strong><span style=\"color:#203df8\">Swiss Week 1:</span></strong> Weekend of November 28, 2026<br/><strong><span style=\"color:#203df8\">Swiss Week 2:</span></strong> Weekend of December 5, 2026<br/><strong><span style=\"color:#203df8\">Swiss Week 3:</span></strong> Weekend of December 12, 2026<br/><strong><span style=\"color:#203df8\">Swiss Week 4:</span></strong> Weekend of December 19, 2026<br/><strong><span style=\"color:#203df8\">Swiss Week 5:</span></strong> Weekend of December 26, 2026<br/><strong><span style=\"color:#203df8\">Quarterfinals:</span></strong> Weekend of January 2, 2027<br/><strong><span style=\"color:#203df8\">Semifinals:</span></strong> Weekend of January 9, 2027<br/><strong><span style=\"color:#203df8\">Finals:</span></strong> Weekend of January 16, 2027<br/><strong><span style=\"color:#203df8\">Grand Finals:</span></strong> Weekend of January 23, 2027<br/><br/>Breaks may be added for holidays if necessary.<br/><br/>* = Screening will be ongoing while Qualifiers are running, if a player plays Qualifiers but is screened out, they are ineligible to play in the rest of the tournament.</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/b61e2f0616986093d26bfc469cc180a435b29299/68747470733a2f2f692e6962622e636f2f76367853444451352f5072697a65732e706e67\" style=\"aspect-ratio:5.8182;width:1920px\"/></div><div class=\"well\"><strong><span style=\"color:#203df8\">1st Place:</span></strong> A Profile Badge<span style=\"font-size:50%\">(pending)</span> and a Profile Banner<br/><strong><span style=\"color:#203df8\">2nd Place:</span></strong> A Profile Banner<br/><strong><span style=\"color:#203df8\">3rd Place:</span></strong> A Profile Banner</div><br/><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/f14866732457c14fa86a76bb8a28d74e6da3d74a/68747470733a2f2f692e6962622e636f2f38445159465930582f53746166662e706e67\" style=\"aspect-ratio:5.8182;width:1920px\"/></div><div class=\"well\"><span style=\"color:#203df8\"><strong>Organizer: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20644852\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[Jameson]</a> <br/><span style=\"color:#203df8\"><strong>Administrators: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11292327\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Convex</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/7113149\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Gigi Murin</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12616850\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Miisted</a> <br/><span style=\"color:#203df8\"><strong>Graphic Design: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/13952164\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">aSparkle</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/15529673\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Laron</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/67c88fe1a05ecf64e937f9cff4de21f1e41f9b9e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f494e2d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/27266540\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Pilot_BFFRI</a> <br/><span style=\"color:#203df8\"><strong>Graphic Design Consultant: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/df06e9315301e94762bfae9bc95b19244b00be26/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f41552d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/8306102\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Fairy Bread</a> <br/><span style=\"color:#203df8\"><strong>Spreadsheeter: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/92ad07d2b175ecd6ad1d373fd1e463518bae520b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f435a2d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/22122799\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">foxy1919191919</a> <br/><span style=\"color:#203df8\"><strong>Mappoolers: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20644852\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[Jameson]</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/56249cd5f8f94d010f29da450561a2dfc444d71e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f43412d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/7802400\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">steamhappy</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10852203\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">yencis</a> <br/><span style=\"color:#203df8\"><strong>Playtesters: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10976433\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">AccNome</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/acf1c2920b986c5234c973cd9ed15bb07e603a95/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f504c2d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/5472693\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Agent5d</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12742221\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Celybi</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10224047\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Emerald Ages</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/56249cd5f8f94d010f29da450561a2dfc444d71e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f43412d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/15296550\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">FetherFall</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11395961\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">jstyn</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/3089026\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">kefn</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10050538\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Matzsaku</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11721736\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MouseSupremacy</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/d807ec94b545c03fc0e1cc22cdeacdf62057eadc/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f46522d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/3257847\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MyzeJD</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/19499782\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">New York</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/8112433\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">sleeping_24-7</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/14477332\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">RocketeerRover</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/e60288b6a8c51e0d6926db202eb106afb5193f47/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f53452d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/9845103\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sigge</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/21063408\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">townes</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/16161318\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">VonaAteSandwich</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20903405\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">yurimazing</a> <br/><span style=\"color:#203df8\"><strong>Referees: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20644852\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[Jameson]</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10976433\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">AccNome</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/3457063\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">bemp</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18556796\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Doremy</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/df06e9315301e94762bfae9bc95b19244b00be26/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f41552d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/24757316\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Faceie</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/15229801\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Feath3rblade</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20118070\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">idiot stick</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/4f7e515b4a97fd0bd390c91bad214382837639dc/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f434c2d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/13973026\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Isita</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/734065af210e7df27b2043fb5ec1d4429206896e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f52552d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/18927594\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Mavosiik</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11721736\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MouseSupremacy</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/25602812\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Neutromint</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11786781\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Ninomae lnanis</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/4e2b8c9650d80f81109465df67113a6e91743210/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f434f2d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/19651073\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Pinwii</a> <br/><span style=\"color:#203df8\"><strong>Streamers: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20644852\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[Jameson]</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/17153384\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Blipblo</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/15229801\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Feath3rblade</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/fe01fc9eadbed287a36cb77e3515e362c12e1864/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f46492d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/6962961\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">kimi321</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/d0b45048903a4009a3d4cb139fdfa5856ca28f3a/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4a502d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/17145993\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Peruere</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/734065af210e7df27b2043fb5ec1d4429206896e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f52552d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/13820038\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">RobotSkin_</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/14895608\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sheppsu</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/0d383a24e2b0b33d18ee110ca673c6e9379753d7/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f54482d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/4859362\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">steved</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10451872\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Thore</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10749547\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">ytsiwT</a> <br/><span style=\"color:#203df8\"><strong>Commentators: </strong></span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/9042348\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[-Sylv-]</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/20644852\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">[Jameson]</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/56249cd5f8f94d010f29da450561a2dfc444d71e/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f43412d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11255340\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">FlatPaper</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11721736\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">MouseSupremacy</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/ea9c6d93082f6a38ff2f11a871a4698133150d90/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f47422d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12139352\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">NeoPixel201</a><span style=\"color:#ffffff\"> ✧ </span><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/764f83078097510681d2dd04f7d95ed2b942049b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f55532d31352e706e67\" style=\"aspect-ratio:1;width:15px\"/> <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10451872\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Thore</a></div><br/><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong><span style=\"color:#203df8\">Tournament Reports</span></strong></span></div><br/><div class=\"bbcode__align-centre\"><u><a href=\"https://pif.ephemeral.ink/tournament-reports\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">https://pif.ephemeral.ink/tournament-reports</a></u><br/>or<br/><u><a href=\"https://tcomm.hivie.tn/reports/create\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">https://tcomm.hivie.tn/reports/create</a></u></div></div></div>",
       "created_at": null,
       "deadline_iso": "2026-10-17T23:59:00+00:00",
       "deadline_raw": "Registrations Open: October 17, 2026 Registrations Close: November 2, 2026 0 UTC Qualifiers: Weekends of November 7 and 14, 2026* Draft: Weekend of November 21, 2026 Swiss Week 1:",
       "decision": "exclude",
-      "details_fetched_at": "2026-11-11T11:18:06+00:00",
+      "details_fetched_at": "2026-11-14T17:13:54+00:00",
       "discord": "https://discord.gg/qbCGVjg7qD",
       "excerpt": "Main Sheet ✧ Player Registration ✧ Staff Registration ✧ Twitch ✧ Video Archive ✧ Discord ✧ Rules & Information ✧ Bracket ✧ Statistics This is a 4v4, teams of 8 osu!standard draft…",
       "first_seen_utc": "2026-10-17T19:33:40+00:00",
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-03T04:58:01Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2545,7 +2546,7 @@
         "[STD] [NA ONLY] 5 Digit North American Draft 2 ✧ 4v4 Team Size 8 ✧ 10K - 99K ✧ Draft ✧ REGS OPEN"
       ],
       "topic_id": 2255150,
-      "views": 2340
+      "views": 2346
     },
     "2255172": {
       "author": "duky",
@@ -2563,7 +2564,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-03T12:51:11Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2590,7 +2591,7 @@
         "[STD] 6DET [#100,000-#999,999] [REGS CLOSED]"
       ],
       "topic_id": 2255172,
-      "views": 2393
+      "views": 2415
     },
     "2255206": {
       "author": "LLIaBKa",
@@ -2607,7 +2608,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:00:00Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2628,7 +2629,7 @@
         "[STD, SPEAK RU ONLY][PP>=4000, PLAYCOUNT>=30000] #55 week Shawonovo PP cup (weekly)"
       ],
       "topic_id": 2255206,
-      "views": 260
+      "views": 262
     },
     "2255208": {
       "author": "LLIaBKa",
@@ -2645,7 +2646,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-17T21:05:09Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2683,7 +2684,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-10-18T15:01:33Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2708,7 +2709,7 @@
         "[STD] [JP ONLY] Ace & Ascent Cup | Tier-Based Open Rank | 3v3 TS4 BWS [Player & Staff Regs Open]"
       ],
       "topic_id": 2255349,
-      "views": 2307
+      "views": 2321
     },
     "2255540": {
       "author": "Harunari",
@@ -2726,7 +2727,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T15:58:55Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2754,7 +2755,7 @@
         "[STD][4v4][Draft][#20K-150K] SEC S3：Subahibi Extra Cup (中文Only) 报名结束"
       ],
       "topic_id": 2255540,
-      "views": 2287
+      "views": 2294
     },
     "2255550": {
       "author": "PapitasTnT",
@@ -2772,7 +2773,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-11T06:50:53Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "low",
@@ -2793,7 +2794,7 @@
         "Staff wanted Tournament 5 digits"
       ],
       "topic_id": 2255550,
-      "views": 1030
+      "views": 1038
     },
     "2255940": {
       "author": "Guhh",
@@ -2811,7 +2812,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T06:14:52Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2834,7 +2835,7 @@
         "[STD] Oklahoma LAN Tournament 4 | Open rank | 1v1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2255940,
-      "views": 732
+      "views": 734
     },
     "2256165": {
       "author": "ElMick33",
@@ -2852,7 +2853,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-22T13:14:55Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2875,7 +2876,7 @@
         "[STD] Torneo Rempalago Congolombiano 3 | 1v1 Open Rank [Colombian Only]"
       ],
       "topic_id": 2256165,
-      "views": 1079
+      "views": 1090
     },
     "2256403": {
       "author": "Sinaeb",
@@ -2893,7 +2894,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-31T16:04:22Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2918,7 +2919,7 @@
         "[STD]SMST 84 1-10K [Closed]"
       ],
       "topic_id": 2256403,
-      "views": 657
+      "views": 662
     },
     "2256926": {
       "author": "Vela_12367",
@@ -2935,7 +2936,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-04T13:21:05Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -2959,7 +2960,7 @@
         "[STD][MX ONLY] 6 Digits Mexican Blitz Tournament #1 Edición 100k-999k"
       ],
       "topic_id": 2256926,
-      "views": 693
+      "views": 704
     },
     "2257046": {
       "author": "Hataya",
@@ -2977,7 +2978,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-13T07:20:09Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "taiko",
       "mode_confidence": "high",
@@ -3005,7 +3006,7 @@
         "[Taiko, TS3-4, 2v2] Kaya's Taiko Tournament #1 [PLAYER REGS OPEN]"
       ],
       "topic_id": 2257046,
-      "views": 895
+      "views": 910
     },
     "2257146": {
       "author": "LLIaBKa",
@@ -3101,7 +3102,7 @@
       "is_staff_topic": false,
       "kind": "both",
       "last_reply_at": "2026-11-11T16:57:11Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": 4,
       "mode": "mania",
       "mode_confidence": "high",
@@ -3127,7 +3128,7 @@
         "[O!M 4k][TS4 2v2][STAFF + PLAYER REGS OPEN] The Reaper Cup"
       ],
       "topic_id": 2257279,
-      "views": 2999
+      "views": 3039
     },
     "2257287": {
       "author": "dasher1505",
@@ -3144,7 +3145,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-28T03:05:19Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3170,7 +3171,7 @@
         "[STD | NZ ONLY] osu! New Zealand 5 Digit Tourney 2026 | Rank 10,000+ 1v1"
       ],
       "topic_id": 2257287,
-      "views": 674
+      "views": 684
     },
     "2257437": {
       "author": "mustifafifax",
@@ -3187,7 +3188,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-02T12:06:18Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3211,7 +3212,7 @@
         "[STD] [TR] Aşırı Hızlandırılmış Akademi Turnuvası #4 [STAFF KAYITLARI AÇIK]"
       ],
       "topic_id": 2257437,
-      "views": 872
+      "views": 884
     },
     "2257650": {
       "author": "Nordax21",
@@ -3228,7 +3229,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-09T08:59:34Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3257,7 +3258,7 @@
         "[STD][RU-speaking] Kazakhstan Tournament Mafia Draft Cup 3 [#5.000-#99.999 || 3v3 TS5 Draft]"
       ],
       "topic_id": 2257650,
-      "views": 1275
+      "views": 1297
     },
     "2258351": {
       "author": "Filoxen",
@@ -3275,7 +3276,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T02:23:19Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3299,7 +3300,7 @@
         "[STD] 5 Digit European Cup 2027 [10k-99.9k BWS] [Registrations Open]"
       ],
       "topic_id": 2258351,
-      "views": 3578
+      "views": 3618
     },
     "2258371": {
       "author": "Zaik0",
@@ -3317,7 +3318,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-08T18:55:14Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3341,7 +3342,7 @@
         "[ESP only] [stable] SpiSix: Fall Cup (100k-999.999)"
       ],
       "topic_id": 2258371,
-      "views": 928
+      "views": 946
     },
     "2258505": {
       "author": "[SHK]T_T",
@@ -3359,7 +3360,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-10-30T07:41:56Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3384,17 +3385,17 @@
         "[STD][osu!Lazer][中文] Hello! Shanden Cup 2 Season 8 : Elite [4v4,TS7] [5600pp-3000pp] [ Reg Closed ]"
       ],
       "topic_id": 2258505,
-      "views": 499
+      "views": 505
     },
     "2258666": {
       "author": "Sinaeb",
-      "body_css": "https://osu.ppy.sh/assets/css/app.c28c04fe.css",
+      "body_css": "https://osu.ppy.sh/assets/css/app.139c15fb.css",
       "body_html": "<div class=\"bbcode\"><div class=\"well\"><div class=\"bbcode__align-centre\"><a href=\"https://discord.gg/6d4pF59\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Discord Link</a> | <a href=\"https://docs.google.com/spreadsheets/d/1XivjcP3pYHtmUjEQB8InPS1_GBLm7uuzIgHMZielXoY/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sheets</a> | <a href=\"https://www.twitch.tv/sinbae_\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Twitch</a></div></div><br/><div class=\"well\"><div class=\"bbcode__align-centre\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/efab8b8e04c9f30a2269f0adb619eb76de6e013b/68747470733a2f2f696d6775722d617263686976652e7070792e73682f646973636f72642f3836353337393238313731343637353731322d3930313938393439323131363832343039342d534d53545f5469746c652e706e67\" style=\"aspect-ratio:3.8671;width:2997px\"/><br/><br/><span style=\"font-size:150%\">Myon</span></div></div><div class=\"bbcode__align-centre\">Also make sure to have joined the <a href=\"https://discord.gg/6d4pF59\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">discord server</a><br/>To sign up to 1v1, answer with 1v1<br/>To usign, edit your forum post<br/><br/><br/><div class=\"well\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/ea6a20bf952973092bec9eacb60262bf331ddabf/68747470733a2f2f696d6775722d617263686976652e7070792e73682f646973636f72642f3836353337393238313731343637353731322d3839333336353933393436313032393839382d534d535432355f52756c65732e706e67\" style=\"aspect-ratio:3.8671;width:2997px\"/></div><br/>This is an osu!standard 1v1 tournament for people in the rank range of 100K+!<br/>If you are top 80 in the SMST rankings, you can only signup to the rank bracket above (ie. you're top 80 in the SMST rankings and are ranked 150k, you can only signup in the 50K-100K bracket) and please say so in your signing post <br/>This will be a fast tournament over in a few hours for both brackets at different dates.<br/>1v1 brackets will have unlimited players.<br/>1v1 brackets will be seeded by the SMST league <a href=\"https://braacket.com/league/D70B2D1B-D59B-46A9-81FF-E351CB0A4D23/ranking\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">ranking</a><br/>Players that are not listed will be considered as having a seed of 0<br/><br/>1v1 will be using <strong>Head2Head scorev2</strong>.<br/>This tourney is intended to have:<br/>Players/Teams will self-ref prior to the Semis. Semi-Finals and Grand Finals will be streamed and referee'd individually.<br/>This tourney's mappool will consists of 11 freemods, 1TB, the difficulty is adjusted from month to month according to the pooler<br/>Mappool should be released on the Sunday before the matches<br/>No-Showing the tournament in two different months will result in a ban from the tournament.<br/><br/>There will be no warmups prior to the Semi-Finals.<br/>Only 1 ban per player/team. <br/>If your match is not posted to #match-results that match is voided, and you will need to redo the match. <br/>You are allowed to pick any combination of NM,HR,HD,EZ,FL<br/>Ask your questions on the #questions channel on the <a href=\"https://discord.gg/6d4pF59\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">discord server</a> for more questions about matches.<br/><br/>1v1 has unlimited players so join all you want <img alt=\":D\" class=\"smiley\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://osu.ppy.sh/forum/images/smilies/242.gif\" title=\"Grin\"/><br/><br/>A 2K extra rank range has been allowed as a buffer for anyone who wishes to overrank. Do NOT rank up further than 98K. You have been warned.<br/><br/>Note: Any other info such as procedures and announcements will be on the discord server so be sure to join <img alt=\":)\" class=\"smiley\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://osu.ppy.sh/forum/images/smilies/50.gif\" title=\"smile\"/><br/><div class=\"well\"><strong><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/472067cf3771f0f02c4f3fd6a18796490bac8699/68747470733a2f2f696d6775722d617263686976652e7070792e73682f646973636f72642f3836353337393238313731343637353731322d3839333336353934313030343535383334362d534d535432355f5363686564756c65732e706e67\" style=\"aspect-ratio:3.8671;width:2997px\"/></strong></div>Registrations will end for both brackets at 23:59 <strong>November 6th Friday UTC+0)</strong>.<br/><strong>Bracket Schedules:</strong><br/>1v1 Will start Saturday November 7th 15UTC and should end by 20UTC on the same day<br/><br/><br/><div class=\"well\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/fb4d2c283907c6eab5cec5b1a012627eb31ce487/68747470733a2f2f696d6775722d617263686976652e7070792e73682f646973636f72642f3836353337393238313731343637353731322d3839333336353933383934353135393138382d534d535432355f5072697a65732e706e67\" style=\"aspect-ratio:3.8671;width:2997px\"/></div><br/>feel free to donate<br/><br/><div class=\"well\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/617ddbbf9705b840ee08bd3acaad449acec5f667/68747470733a2f2f696d6775722d617263686976652e7070792e73682f646973636f72642f3836353337393238313731343637353731322d3839333336353934333032363232313038362d534d535432355f53746166662e706e67\" style=\"aspect-ratio:3.8671;width:2997px\"/></div>Host: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/1576095\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sinaeb</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/839c69bec2d446b633500642561613eb6a4fd45c/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f63612e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/9739455\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">fuyumiria</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>Admins: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/8590110\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">ANuko</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/4798263\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Mestro</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/788c06a2e03a23ec9b733f270d40cfb7db354c6a/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f73652e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>Referees: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/1576095\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sinaeb</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/839c69bec2d446b633500642561613eb6a4fd45c/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f63612e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>Mappool Selectors: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/9890753\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">SirShyLordy</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>GFX: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/6658367\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">eno</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>Streamers: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/1576095\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sinaeb</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/839c69bec2d446b633500642561613eb6a4fd45c/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f63612e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/><br/>Commentators: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/3840622\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Konsy</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/839c69bec2d446b633500642561613eb6a4fd45c/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f63612e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11677546\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">KorewaSmug</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/839c69bec2d446b633500642561613eb6a4fd45c/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f63612e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/7234537\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Sekre</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/16060432\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">bread_chan</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/%40Bexi\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Bexi</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/dc3b3050fac0354b4d5bf76041bba751853406a3/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f706c2e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10430687\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">-AndyJ-</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/14396453\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">KingBaxter</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10041480\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Litten</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/10205817\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Wonder Acute</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/11099358\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Narelin</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/2143dd7ab2556bad87bb4c00546ea138ba282012/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f62722e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/12836907\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">poboi06</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/7291594\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Striiker</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/f61bca96418fab1411f5f7302bdfd9336efd9f8a/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f756b2e676966\" style=\"aspect-ratio:1.6667;width:20px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/14358605\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Zey</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/14025837\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Zormuche</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d99ee0485a611b2b915ab55d6f4d6718747f63/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f66722e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/19516462\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">LuluPlaysOzu_YT</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/fd82acacdf2de387c406355b5577c101ee5eb1ce/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f70742e676966\" style=\"aspect-ratio:1.4545;width:16px\"/> | <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/9890753\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">SirShyLordy</a><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/45d757aec7e47885333c2ee2b2cb23f525131a01/68747470733a2f2f732e7070792e73682f696d616765732f666c6167732f75732e676966\" style=\"aspect-ratio:1.4545;width:16px\"/><br/> <br/></div></div>",
       "created_at": null,
       "deadline_iso": null,
       "deadline_raw": "Registrations will end for both brackets at 23:59 November 6th Friday UTC+0)",
       "decision": "include",
-      "details_fetched_at": "2026-11-11T11:18:06+00:00",
+      "details_fetched_at": "2026-11-14T17:13:54+00:00",
       "discord": "https://discord.gg/6d4pF59",
       "draft_sha": "4feb3667b022fc992fb4f0c67be2a52540f87fbefa8c4485779047def6ab3f58",
       "excerpt": "Discord Link | Sheets | Twitch Myon Also make sure to have joined the discord server To sign up to 1v1, answer with 1v1 To usign, edit your forum post This is an osu!standard 1v1…",
@@ -3402,7 +3403,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-07T17:51:21Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3426,7 +3427,7 @@
         "[STD]SMST 85 100K-Infinity [Open]"
       ],
       "topic_id": 2258666,
-      "views": 1213
+      "views": 1225
     },
     "2258972": {
       "author": "Endless fare",
@@ -3444,7 +3445,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-11T20:22:01Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3466,7 +3467,7 @@
         "[std]HongLongCup-First voyage(~4500pp)(Team Vs & Double-Elimination)[Regs open]"
       ],
       "topic_id": 2258972,
-      "views": 1116
+      "views": 1134
     },
     "2259985": {
       "author": "adnan",
@@ -3484,7 +3485,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-04T17:45:36Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3510,7 +3511,7 @@
         "[STD] Black Vultures Open Tournament, 3v3 TS5 [REGISTRATIONS OPEN]"
       ],
       "topic_id": 2259985,
-      "views": 2148
+      "views": 2185
     },
     "2260208": {
       "author": "chantarazu",
@@ -3527,7 +3528,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T14:37:29Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3551,7 +3552,7 @@
         "[STD] [TH ONLY] Kiwi's Stella Ver.β: Aim Royale Tournament [1-9,999, 10k-99,999] [เปิดรับสมัคร]"
       ],
       "topic_id": 2260208,
-      "views": 785
+      "views": 796
     },
     "2260291": {
       "author": "Egida",
@@ -3569,7 +3570,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-05T23:19:45Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3593,7 +3594,7 @@
         "[STD][Draft][2 Divs] Whirling Winter Phantasy | 10k-100K BWS"
       ],
       "topic_id": 2260291,
-      "views": 2382
+      "views": 2412
     },
     "2260641": {
       "author": "I quit w",
@@ -3611,7 +3612,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-14T08:15:36Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3632,7 +3633,7 @@
         "[STAFF REGS OPEN] I have a Headache [STD]"
       ],
       "topic_id": 2260641,
-      "views": 1091
+      "views": 1127
     },
     "2260887": {
       "author": "Sinaeb",
@@ -3650,7 +3651,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-13T19:50:05Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3674,7 +3675,7 @@
         "[STD]SMST 85 50K-100K [Open]"
       ],
       "topic_id": 2260887,
-      "views": 665
+      "views": 690
     },
     "2261026": {
       "author": "Doubi_wert",
@@ -3692,7 +3693,7 @@
       "is_staff_topic": false,
       "kind": "player",
       "last_reply_at": "2026-11-10T04:14:33Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
@@ -3718,7 +3719,7 @@
         "[STD] [2v2 | 中文 | 0 - 3000pp | Reg Open! ] DLC Season 0"
       ],
       "topic_id": 2261026,
-      "views": 729
+      "views": 739
     },
     "2262425": {
       "author": "Sinaeb",
@@ -3735,14 +3736,14 @@
       "first_seen_utc": "2026-11-12T08:29:36+00:00",
       "is_staff_topic": false,
       "kind": "player",
-      "last_reply_at": "2026-11-14T10:35:30Z",
-      "last_seen_utc": "2026-11-14T11:01:47+00:00",
+      "last_reply_at": "2026-11-14T16:51:36Z",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
       "mania_keys": null,
       "mode": "std",
       "mode_confidence": "high",
       "mode_label": "osu!standard",
       "name": "SMST 85",
-      "posts": 12,
+      "posts": 14,
       "rank": [
         10000,
         50000
@@ -3760,7 +3761,50 @@
         "[STD]SMST 85 10K-50K [Open]"
       ],
       "topic_id": 2262425,
-      "views": 216
+      "views": 246
+    },
+    "2263006": {
+      "author": "Garalulu",
+      "body_css": "https://osu.ppy.sh/assets/css/app.139c15fb.css",
+      "body_html": "<div class=\"bbcode\"><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/20512d6d596235871c8ad7a2600a124893689959/68747470733a2f2f6c756c752e732d756c2e65752f5a42554d4e6a6463\" style=\"aspect-ratio:3;width:1500px\"/><br/><div class=\"well\"><div class=\"bbcode__align-centre\"><a href=\"https://discord.gg/DnrRwCjBPP\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">디스코드</a> | <a href=\"https://docs.google.com/spreadsheets/d/1hQV79OuVb-YcFT88FHXBG1UXoLs7LAbSXxUfRAy_peI/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">메인시트</a> | <a href=\"https://osukrc.vercel.app/\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">참가 신청</a> | <a href=\"https://docs.google.com/document/d/1LX79XuEztP3n8CuwlXMxblq1lDefX_H1pY3ZtjIhSjI/edit?usp=sharing\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">규칙</a> | <a href=\"https://forms.gle/qvzYzyUhMqyTy3hv6\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">스태프 신청</a> | 트위치 | 유튜브 | 챌론지</div></div><br/><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/aac9b9d5114836d6b4ca788898df46c7ba4c2781/68747470733a2f2f6c756c752e732d756c2e65752f346d4f4a38343437\" style=\"aspect-ratio:10;width:1500px\"/><br/><div class=\"well\"><ol class=\"unordered\"><li>본 대회는 <strong>대한민국 내 현재 거주 중인 권역</strong>을 기준으로 참가하는 지역대항전입니다. 수도권은 세부 권역으로 나누어 진행합니다.</li><li>게임 모드는 <strong>osu!standard</strong>입니다. 각 팀은 <strong>4~5명</strong>으로 구성하며 경기는 <strong>3v3, ScoreV2</strong>로 진행합니다.</li><li>플레이어 국기와 상관없이 대한민국 내 실제 거주 중인 모든 플레이어가 참가할 수 있습니다.</li><li>참가 신청은 개인 단위로 받습니다. 운영진이 권역별 선발전 주장을 선정하면 각 주장이 선발전을 진행해 팀을 구성합니다.</li><li>참가자는 <strong>현재 거주 중인 권역</strong>으로 신청해야 합니다. 의도적으로 다른 권역을 신청한 사실이 확인되면 <strong>다음 회차 토너먼트부터 참가 제한 등 불이익</strong>을 받을 수 있습니다.</li><li>권역별 유효 신청자가 <strong>3명 이하</strong>이면 <strong>인근 권역과 통합</strong>됩니다.</li><li>참가자는 신청 마감까지 대회 디스코드에 입장해야 합니다.</li><li>최종 팀 수에 따라 대회 포맷이 달라질 수 있습니다.</li><li>모든 일정은 <strong>한국 표준시(KST, UTC+9)</strong>로 진행합니다.</li><li>대회 관련 공간(Discord, 경기 로비, 공식 중계 채팅 등)에서 <strong>지역·거주지를 이유로 한 비하, 멸칭, 혐오 표현, 고정관념 조장, 악의적인 지역감정 선동</strong>을 엄격히 금지합니다.</li><li>제재는 중대성과 반복성, 고의성, 피해, 증거를 종합해 <strong>경고 → 메시지 삭제·채팅 제한 → 경기 출전 정지 → 대회 실격 및 향후 참가 제한</strong> 범위에서 적용할 수 있습니다.</li></ol></div><br/><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/a1e8bca4a3ff4f672503b78a6f2dc30b3f42c14d/68747470733a2f2f6c756c752e732d756c2e65752f3662527a446c5677\" style=\"aspect-ratio:10;width:1500px\"/><br/><div class=\"well\"><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>팀 구성 규칙</strong></span></div><ol class=\"unordered\"><li>각 팀은 <strong>4~5명</strong>으로 구성됩니다.</li><li>최종 출전 권역별로 최대 <strong>3팀(A팀·B팀·C팀)</strong>을 구성할 수 있습니다.<br/>   • <strong>B팀:</strong> 권역 신청자 <strong>9명 이상</strong>일 때 구성 가능<br/>   • <strong>C팀:</strong> 권역 신청자 <strong>14명 이상</strong>일 때 구성 가능</li><li>선행 팀이 5명으로 채워진 뒤 다음 팀을 구성하는 것을 원칙으로 합니다.</li><li>권역별로 선정한 선발전 주장이 선발전을 진행하여 팀을 구성합니다.</li></ol><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>신청 가능한 권역</strong></span></div><ol><li>서울 서북부</li><li>서울 동북부</li><li>서울 동남부</li><li>부산광역시</li><li>대구광역시</li><li>인천광역시</li><li>전남광주특별시</li><li>대전광역시</li><li>울산광역시</li><li>세종특별자치시</li><li>경기 북부</li><li>경기 서남부</li><li>경기 동남부</li><li>강원특별자치도</li><li>충청북도</li><li>충청남도</li><li>전북특별자치도</li><li>경상북도</li><li>경상남도</li><li>제주특별자치도</li></ol><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>수도권 세부 권역</strong></span></div><ol class=\"unordered\"><li><strong>서울 서북부:</strong> 강서구, 은평구, 영등포구, 마포구, 양천구, 구로구, 서대문구, 금천구</li><li><strong>서울 동북부:</strong> 노원구, 성북구, 광진구, 동대문구, 중랑구, 성동구, 도봉구, 강북구, 용산구, 종로구, 중구</li><li><strong>서울 동남부:</strong> 관악구, 송파구, 강남구, 강동구, 동작구, 서초구</li></ol><ol class=\"unordered\"><li><strong>경기 북부:</strong> 고양시, 남양주시, 파주시, 의정부시, 김포시, 하남시, 양주시, 구리시, 포천시, 양평군, 동두천시, 가평군, 연천군</li><li><strong>경기 서남부:</strong> 수원시, 부천시, 안산시, 안양시, 시흥시, 광명시, 군포시, 의왕시, 과천시</li><li><strong>경기 동남부:</strong> 용인시, 화성시, 성남시, 평택시, 광주시, 오산시, 이천시, 안성시, 여주시</li></ol>위 세부 권역은 <strong><a href=\"https://gsis.kwdi.re.kr/statHtml/statHtml.do?orgId=338&amp;tblId=DT_1AA0211R\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">2025년 주민등록인구 통계의 15~34세 인구 합계</a></strong>, 지역 인접성, 행정·생활권 정체성을 참고해 분류했습니다.<br/><br/><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>권역 통합 규정</strong></span></div><ol class=\"unordered\"><li><strong>신청 권역과 최종 출전 권역은 다를 수 있습니다.</strong> 신청 마감 후 유효 신청 인원을 확인하여 최종 출전 권역을 확정합니다.</li><li>최초 신청 권역의 <strong>유효 신청자가 3명 이하</strong>이면 통합 대상입니다.</li><li>통합 권역의 명칭에는 <strong>통합된 권역 전체</strong>를 반영합니다.</li></ol><ol><li><strong>서울특별시:</strong> 서북/동북/동남 중 인원 부족 권역은 <strong>서울특별시 안에서 통합</strong>합니다.</li><li><strong>경기도:</strong> 북부/서남/동남 권역 중 인원 부족 권역은 <strong>경기도 안에서 통합</strong>합니다.</li><li><strong>강원특별자치도:</strong> <strong>경기도 북부와 통합</strong>합니다.</li><li><strong>세종특별자치시, 대전광역시:</strong> <strong>충청남도와 통합</strong>합니다.</li><li><strong>충청권:</strong> 세종, 대전 통합 이후에도 <strong>필요한 경우 통합</strong>합니다.</li><li><strong>대구광역시:</strong> <strong>경상북도와 통합</strong>합니다.</li><li><strong>울산광역시:</strong> <strong>경상남도와 통합</strong>합니다.</li><li><strong>영남권:</strong> 대구, 울산 통합 이후에도 <strong>필요한 경우 통합</strong>합니다.</li><li><strong>제주특별자치도:</strong> <strong>전남광주특별시와 통합</strong>합니다.</li><li><strong>호남권:</strong> 제주 통합 이후에도 <strong>필요한 경우 통합</strong>합니다.</li><li><strong>인천광역시:</strong> <strong>경기도 북부와 통합</strong>합니다.</li></ol><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>경기 진행 규칙</strong></span></div><ol class=\"unordered\"><li>모든 경기는 ScoreV2로 진행합니다. 모든 맵에서 페일 스코어를 인정하며 원칙적으로 No Fail을 적용합니다. 맵 점수가 동점이면 해당 맵을 재경기합니다.</li><li>심판은 경기 시작 약 <strong>5분 전</strong> 각 팀 주장에게 로비 초대를 전달합니다.</li><li>예정 시각으로부터 <strong>10분</strong>이 지나도록 출전 가능한 선수가 <strong>3명 미만</strong>이면 해당 팀은 몰수패 처리됩니다.</li><li>경기 시작 전 !roll로 밴픽 순서를 정합니다. 높은 수가 나온 팀은 선밴·후밴을, 낮은 수가 나온 팀은 선픽·후픽을 선택합니다. 같은 수가 나오면 다시 굴립니다.</li><li>맵 픽·밴 제한 시간은 <strong>2분</strong>입니다. 제한 시간을 넘기면 해당 팀의 픽·밴은 무효가 되고 상대 팀 순서로 넘어갑니다.</li><li>팀당 2밴인 경기의 밴 순서는 <strong>ABBA</strong>입니다. 후밴 팀은 첫 번째 밴에서 나중에, 두 번째 밴에서 먼저 밴합니다.</li><li>각 팀은 매 경기 <strong>타임아웃 1회(2분)</strong>를 사용할 수 있습니다. 타이브레이커 직전 사용도 허용합니다.</li><li>각 팀은 일반 프리모드(FM) 슬롯에서 <strong>최소 2명</strong>이 모드를 걸어야 합니다. (최소 1명 HD/EZ, 최소 1명 HR/HDHR)</li><li>가능한 모드는 HD, HR, EZ입니다. EZ는 1.7배 배율이 적용됩니다.</li><li>타이브레이커(Tiebreaker)는 프리모드로 진행하며 <strong>필수 모드 조건은 없습니다.</strong> EZ는 1.7배 배율을 적용합니다.</li><li>시작 후 30초 이내 발생한 연결 끊김이나 연결 장치 오류는 심판에게 어보트를 요청해 <strong>팀당 매 경기 1회</strong> 재경기할 수 있습니다. 그 외에는 경기 영상·스크린샷·서버 기록을 기준으로 심판이 판정합니다.</li></ol><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>퀄리파이어 및 시드</strong></span></div>퀄리파이어 맵별 팀 점수는 <strong>출전 선수 3명의 점수 합계</strong>입니다. 모든 퀄리파이어 맵에서 <strong>해당 팀의 점수 ÷ 해당 맵의 전체 팀 최고 점수</strong>를 계산한 뒤 그 값을 모두 더해 시드를 정합니다. 맵별 환산 점수는 0~1이며 합계가 높은 팀이 상위 시드를 받습니다.<br/><br/><div class=\"bbcode__align-centre\">Qualifier | 5NM 2HD 2HR 2DT [6.9★]</div><br/><div class=\"bbcode__align-centre\"><span style=\"font-size:150%\"><strong>대회 포맷</strong></span></div><strong>32팀 이상</strong><br/>퀄리파이어 → 4팀씩 8개 조의 GSL 그룹 스테이지 → 16강 싱글 엘리미네이션<br/>각 조는 개막전 2경기, 승자전, 패자전, 최종전으로 진행합니다. 2연승 팀은 조 1위로 진출하고 2연패 팀은 조 4위로 탈락합니다. 승자전 패자와 패자전 승자가 최종전을 치르며 승리 팀은 조 2위로 진출하고 패배 팀은 조 3위로 탈락합니다.<br/><br/><div class=\"bbcode__align-centre\">Group Stage | 5NM 2HD 2HR 3DT 3FM 1TB [5선승제, 팀당 밴 1개, 6.6★]<br/>Ro16 | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 6.8★]<br/>QF | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 7.0★]<br/>SF | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.25★]<br/>F | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.5★]</div><br/><strong>16~31팀</strong><br/>퀄리파이어 → 최대 5라운드 스위스 스테이지 → 8강 싱글 엘리미네이션<br/><strong>3승을 거두면 8강 진출, 3패를 기록하면 탈락</strong>합니다. 진출·탈락이 확정된 팀은 남은 스위스 라운드에 참가하지 않습니다. <strong>3·4·5라운드에서 탈락 팀이 발생</strong>하며 5라운드가 끝나면 8강 진출 8팀이 결정됩니다. 스위스는 메인시트로 관리하며 8강부터 Challonge를 사용합니다.<br/><br/><div class=\"bbcode__align-centre\">Round 1, 2 | 5NM 2HD 2HR 3DT 3FM 1TB [5선승제, 팀당 밴 1개, 6.6★]<br/>Round 3, 4 | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 6.8★]<br/>Round 5, QF | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 7.0★]<br/>SF | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.25★]<br/>F | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.5★]</div><br/><strong>12~15팀</strong><br/>퀄리파이어 상위 12팀 → 점수제 스위스 5라운드 → 4강 싱글 엘리미네이션<br/>첫 라운드는 퀄리파이어 시드로 배정합니다. 이후에는 매치 결과에 따른 누적 점수, Buchholz(상대 팀들의 누적 점수 합), 최초 시드 순으로 순위를 정합니다.<br/>3·4라운드마다 하위 4팀이 탈락전을 치르며 각각 2팀이 탈락합니다. 5라운드에서는 남은 8팀 중 상위 4팀이 경기하고 승자 2팀이 바로 4강에 진출합니다. 하위 4팀 경기의 패자 2팀은 탈락하고 승자 2팀은 상위 4팀 경기의 패자 2팀과 추가 탈락전을 치릅니다. 이 추가 탈락전의 승자 2팀까지 총 4팀이 진출합니다.<br/>스위스는 <strong>모든 라운드 6선승제</strong>입니다. 경기별 순위 점수는 맵 승수 차이에 따라 계산하고 승리 팀에 0.2점을 추가합니다. 6–5는 승자 0.7점·패자 0.5점, 6–0은 승자 1.2점·패자 0점입니다. 몰수는 6–0으로 계산하며 5라운드 추가 탈락전은 점수를 부여하지 않습니다.<br/>4강은 싱글 엘리미네이션으로 진행합니다. 세부 대진 규칙은 상세 규정에 정리합니다.<br/><br/><div class=\"bbcode__align-centre\">Round 1, 2 | 5NM 2HD 2HR 3DT 3FM 1TB [6선승제, 팀당 밴 1개, 6.6★]<br/>Round 3, 4 | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 6.8★]<br/>Round 5, 추가 탈락전 | 5NM 3HD 3HR 4DT 4FM 1TB [6선승제, 팀당 밴 2개, 7.0★]<br/>SF | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.25★]<br/>F | 5NM 3HD 3HR 4DT 4FM 1TB [7선승제, 팀당 밴 2개, 7.5★]</div><br/><strong>본선 정원 및 시드 배분</strong><br/>신청 팀 수가 32팀 이상이면 퀄리파이어 상위 32팀, 16~31팀이면 상위 16팀, 12~15팀이면 상위 12팀이 본선에 진출합니다.<br/>32팀은 8개 조에 스네이크 방식으로 배정합니다. A조 1·16·17·32번, B조 2·15·18·31번, C조 3·14·19·30번, D조 4·13·20·29번, E조 5·12·21·28번, F조 6·11·22·27번, G조 7·10·23·26번, H조 8·9·24·25번 시드입니다. 각 조 개막전은 조내 1번 대 4번, 2번 대 3번 시드로 진행합니다.<br/>16팀 첫 라운드는 1번 대 16번, 2번 대 15번, …, 8번 대 9번 시드입니다. 8강 시드는 스위스 성적 3승 0패, 3승 1패, 3승 2패 순이며 같은 성적에서는 퀄리파이어 상위 시드를 우선합니다. 대진표 상단은 1번 대 8번·4번 대 5번, 하단은 2번 대 7번·3번 대 6번입니다. 8강부터 재대결을 허용합니다.<br/>12팀도 퀄리파이어 시드로 첫 대진을 정하며 이후에는 점수제 스위스 규칙을 따릅니다.<br/>싱글 엘리미네이션 포맷은 3위 결정전을 진행합니다. 3위 결정전은 각 포맷 결승과 같은 맵풀·선승 수·밴 수를 적용합니다.</div><br/><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/d01bf45f39aaf5210ba6557db8623fce8caaf650/68747470733a2f2f6c756c752e732d756c2e65752f4a41675031675a61\" style=\"aspect-ratio:10;width:1500px\"/><br/><div class=\"well\">참가 신청: 11월 14일 ~ 11월 29일 23:59<br/>선발전 주장 선정 및 로스터 확정: 11월 30일 ~ 12월 07일 20:59<br/>경기 일정: 12월 12일 ~ 01월 31일</div><br/><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/a109e7d54d4a4c1cf8804aa221a54c1b268a46d8/68747470733a2f2f6c756c752e732d756c2e65752f5745477966716333\" style=\"aspect-ratio:10;width:1500px\"/><br/><div class=\"well\">지역별 화합을 도모하고 대회를 함께한 팀원들이 모여 교류할 수 있도록 상금은 <strong>회식비 지원</strong>으로 지급합니다.<br/><br/>우승: 회식비 75,000원 지원, 프로필 배너<br/>2위: 회식비 50,000원 지원, 프로필 배너<br/>3위: 회식비 25,000원 지원, 프로필 배너<br/><br/><span style=\"font-size:90%\"><em>상품 후원을 환영합니다! 후원을 원하시면 Discord garalulu로 연락해 주세요.</em></span></div><br/><img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/a80b3cb2ddf7de4aec73a8bf97b317adc31c3cad/68747470733a2f2f6c756c752e732d756c2e65752f316535787a766744\" style=\"aspect-ratio:10;width:1500px\"/><br/><div class=\"well\"><strong>Host</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>GFX</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/8868635\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Egor</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Sheeter</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Statistician</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Mappooler</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Tester</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Referee</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/808976\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Orangeholic</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Streamer</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/><br/><strong>Commentator</strong>: <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/757783\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Garalulu</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/2946504\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Latale</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/>, <a class=\"user-name js-usercard\" href=\"https://osu.ppy.sh/users/808976\" rel=\"noopener noreferrer nofollow\" target=\"_blank\">Orangeholic</a> <img alt=\"\" class=\"js-gallery\" loading=\"lazy\" referrerpolicy=\"no-referrer\" src=\"https://i.ppy.sh/10f819c7d97c5d33a0d3a0034fe179062b732f7b/68747470733a2f2f6f7375666c6167732e6f6d6b7365727665722e6e6c2f4b522d32302e706e67\" style=\"aspect-ratio:1;width:20px\"/></div></div>",
+      "created_at": null,
+      "deadline_iso": null,
+      "deadline_raw": null,
+      "decision": "include",
+      "details_fetched_at": "2026-11-14T17:13:54+00:00",
+      "discord": "https://discord.gg/DnrRwCjBPP",
+      "draft_sha": "99d61e2c291808d3149e2e046ffc824f6bcae7e8015cd3dc21a1365086fbf823",
+      "excerpt": "디스코드 | 메인시트 | 참가 신청 | 규칙 | 스태프 신청 | 트위치 | 유튜브 | 챌론지 본 대회는 대한민국 내 현재 거주 중인 권역 을 기준으로 참가하는 지역대항전입니다. 수도권은 세부 권역으로 나누어 진행합니다. 게임 모드는 osu!standard 입니다.…",
+      "first_seen_utc": "2026-11-14T17:13:54+00:00",
+      "is_staff_topic": false,
+      "kind": "player",
+      "last_reply_at": "2026-11-14T13:45:47Z",
+      "last_seen_utc": "2026-11-14T17:13:54+00:00",
+      "mania_keys": null,
+      "mode": "std",
+      "mode_confidence": "high",
+      "mode_label": "osu!standard",
+      "name": "대한민국 지역대항전",
+      "posts": 2,
+      "rank": null,
+      "rank_compact": "",
+      "rank_full": "",
+      "reason": "no-region",
+      "signup_form": "https://docs.google.com/spreadsheets/d/1hQV79OuVb-YcFT88FHXBG1UXoLs7LAbSXxUfRAy_peI/edit?usp=sharing",
+      "status": "unknown",
+      "stream": null,
+      "team_sizes": [
+        "5"
+      ],
+      "teams": [
+        "3v3"
+      ],
+      "title": "[STD] 대한민국 지역대항전 | 3v3 ts5 | Open Rank",
+      "title_history": [
+        "[STD] 대한민국 지역대항전 | 3v3 ts5 | Open Rank"
+      ],
+      "topic_id": 2263006,
+      "views": 220
     }
   }
 }

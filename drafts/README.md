@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 45 筆（收錄 38／待確認 7）
+共 46 筆（收錄 39／待確認 7）
 
 - [SMST 85](2262425.md) — osu!standard｜報名開放中
 - [DLC Season 0](2261026.md) — osu!standard｜報名開放中
@@ -20,6 +20,7 @@
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
+- [대한민국 지역대항전](2263006.md) — osu!standard｜報名狀態未標明
 - [Whirling Winter Phantasy](2260291.md) — osu!standard｜報名狀態未標明
 - [SpiSix: Fall Cup](2258371.md) — osu!standard｜報名狀態未標明
 - [Torneo Rempalago Congolombiano 3](2256165.md) — osu!standard｜報名狀態未標明
