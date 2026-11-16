@@ -7,7 +7,6 @@
 - [DLC Season 0](2261026.md) — osu!standard｜報名開放中
 - [SMST 85](2260887.md) — osu!standard｜報名開放中
 - [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
-- [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名開放中
 - [SMST 85](2258666.md) — osu!standard｜報名開放中
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
 - [Kaya's Taiko Tournament #1](2257046.md) — osu!taiko｜報名開放中
@@ -37,6 +36,7 @@
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
+- [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名已截止
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
 - [SMST 84](2256403.md) — osu!standard｜報名已截止
 - [6DET](2255172.md) — osu!standard｜報名已截止
