@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 49 筆（收錄 42／待確認 7）
+共 50 筆（收錄 43／待確認 7）
 
 - 🙋 [Schedule Hell 2 International](2263367.md) — osu!standard｜報名開放中
 - [SMST 85](2262425.md) — osu!standard｜報名開放中
@@ -21,6 +21,7 @@
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
+- [Staff Application NGT5 Non-Gimmick Tournament 5](2263795.md) — osu!standard｜報名狀態未標明
 - [osu! MIR Cup](2263425.md) — osu!standard｜報名狀態未標明
 - [osu! MIR Cup](2263424.md) — osu!standard｜報名狀態未標明
 - [대한민국 지역대항전](2263006.md) — osu!standard｜報名狀態未標明
