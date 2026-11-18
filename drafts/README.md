@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 50 筆（收錄 43／待確認 7）
+共 51 筆（收錄 43／待確認 8）
 
 - 🙋 [Schedule Hell 2 International](2263367.md) — osu!standard｜報名開放中
 - [SMST 85](2262425.md) — osu!standard｜報名開放中
@@ -36,6 +36,7 @@
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名狀態未標明
+- ⚠️ [PIVO CUP 4 STAFF REG RU/ENG](2264129.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名已截止
 - [Hello! Shanden Cup 2 Season 8 : Elite](2258505.md) — osu!standard｜報名已截止
