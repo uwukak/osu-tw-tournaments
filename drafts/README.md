@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 53 筆（收錄 45／待確認 8）
+共 54 筆（收錄 46／待確認 8）
 
+- [TAL4K26 FUN TOURNAMENT](2264580.md) — osu!standard｜報名開放中
 - [SMST 85](2264467.md) — osu!standard｜報名開放中
 - 🙋 [Baltic Duoiji Duo Sign-ups](2264443.md) — osu!standard｜報名開放中
 - 🙋 [Schedule Hell 2 International](2263367.md) — osu!standard｜報名開放中
