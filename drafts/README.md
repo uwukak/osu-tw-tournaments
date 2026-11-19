@@ -19,7 +19,6 @@
 - [purl's interstellar tales](2249349.md) — osu!standard｜報名開放中
 - ⚠️ [I have a Headache](2260641.md) — osu!standard｜報名開放中
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
-- ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
 - [Staff Application NGT5 Non-Gimmick Tournament 5](2263795.md) — osu!standard｜報名狀態未標明
 - [osu! MIR Cup](2263425.md) — osu!standard｜報名狀態未標明
@@ -53,5 +52,6 @@
 - 🙋 [Hidden Cup: Chapter Golden Lily](2248268.md) — osu!standard｜報名已截止
 - [Sonus Scope 2](2247819.md) — osu!standard｜報名已截止
 - [SMST 83](2246109.md) — osu!standard｜報名已截止
+- ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名已截止
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名已截止
 - ⚠️ [YuniCup 2026 - LAN tournament in Austria](2253419.md) — osu!standard｜報名已截止
