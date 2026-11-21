@@ -7,7 +7,6 @@
 - [SMST 85](2264467.md) — osu!standard｜報名開放中
 - 🙋 [Baltic Duoiji Duo Sign-ups](2264443.md) — osu!standard｜報名開放中
 - 🙋 [Schedule Hell 2 International](2263367.md) — osu!standard｜報名開放中
-- [SMST 85](2262425.md) — osu!standard｜報名開放中
 - [DLC Season 0](2261026.md) — osu!standard｜報名開放中
 - [Black Vultures Open Tournament](2259985.md) — osu!standard｜報名開放中
 - 🙋 [The Reaper Cup](2257279.md) — osu!mania 4K｜報名開放中
@@ -39,6 +38,7 @@
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名狀態未標明
 - ⚠️ [PIVO CUP 4 STAFF REG RU/ENG](2264129.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
+- [SMST 85](2262425.md) — osu!standard｜報名已截止
 - [SMST 85](2260887.md) — osu!standard｜報名已截止
 - [5 Digit European Cup 2027](2258351.md) — osu!standard｜報名已截止
 - [SMST 85](2258666.md) — osu!standard｜報名已截止
