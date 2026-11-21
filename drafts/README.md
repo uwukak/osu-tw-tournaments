@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 54 筆（收錄 46／待確認 8）
+共 55 筆（收錄 47／待確認 8）
 
+- [Moon Cup](2264912.md) — osu!mania 4K｜報名開放中
 - [TAL4K26 FUN TOURNAMENT](2264580.md) — osu!standard｜報名開放中
 - [SMST 85](2264467.md) — osu!standard｜報名開放中
 - 🙋 [Baltic Duoiji Duo Sign-ups](2264443.md) — osu!standard｜報名開放中
