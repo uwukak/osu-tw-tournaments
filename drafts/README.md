@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 55 筆（收錄 47／待確認 8）
+共 56 筆（收錄 48／待確認 8）
 
 - [Moon Cup](2264912.md) — osu!mania 4K｜報名開放中
 - [TAL4K26 FUN TOURNAMENT](2264580.md) — osu!standard｜報名開放中
@@ -21,6 +21,7 @@
 - ⚠️ [I have a Headache](2260641.md) — osu!standard｜報名開放中
 - ⚠️ [HongLongCup-First voyage](2258972.md) — osu!standard｜報名開放中
 - ⚠️ 🙋 [RE:Legacy Invitational 6WC Player Invitational](2250369.md) — osu!standard｜報名開放中
+- [5ac 5 Digit Apple Cup $500 prize pool](2265535.md) — osu!standard｜報名狀態未標明
 - [Staff Application NGT5 Non-Gimmick Tournament 5](2263795.md) — osu!standard｜報名狀態未標明
 - [osu! MIR Cup](2263425.md) — osu!standard｜報名狀態未標明
 - [osu! MIR Cup](2263424.md) — osu!standard｜報名狀態未標明
