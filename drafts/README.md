@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 57 筆（收錄 49／待確認 8）
+共 56 筆（收錄 48／待確認 8）
 
 - [6 DIGIT CRASHOUT CUP](2265716.md) — osu!standard｜報名開放中
 - [Moon Cup](2264912.md) — osu!mania 4K｜報名開放中
@@ -55,7 +55,6 @@
 - [Advanced TCT](2248645.md) — osu!taiko｜表定已截止
 - 🙋 [Hidden Cup: Chapter Golden Lily](2248268.md) — osu!standard｜報名已截止
 - [Sonus Scope 2](2247819.md) — osu!standard｜報名已截止
-- [SMST 83](2246109.md) — osu!standard｜報名已截止
 - ⚠️ [Oklahoma LAN Tournament 4](2255940.md) — osu!standard｜報名已截止
 - ⚠️ [Sparxe's Two Key Event 2](2255100.md) — osu!standard｜報名已截止
 - ⚠️ [YuniCup 2026 - LAN tournament in Austria](2253419.md) — osu!standard｜報名已截止
