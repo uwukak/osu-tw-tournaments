@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 57 筆（收錄 48／待確認 9）
+共 58 筆（收錄 49／待確認 9）
 
+- [TourDeMK CUP](2266140.md) — osu!standard｜報名開放中
 - [6 DIGIT CRASHOUT CUP](2265716.md) — osu!standard｜報名開放中
 - [Moon Cup](2264912.md) — osu!mania 4K｜報名開放中
 - [TAL4K26 FUN TOURNAMENT](2264580.md) — osu!standard｜報名開放中
