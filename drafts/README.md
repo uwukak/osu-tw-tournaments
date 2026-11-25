@@ -1,6 +1,6 @@
 # 待發送的貼文草稿
 
-共 56 筆（收錄 48／待確認 8）
+共 57 筆（收錄 48／待確認 9）
 
 - [6 DIGIT CRASHOUT CUP](2265716.md) — osu!standard｜報名開放中
 - [Moon Cup](2264912.md) — osu!mania 4K｜報名開放中
@@ -38,6 +38,7 @@
 - [Fast Food Cup](2250321.md) — osu!standard｜報名狀態未標明
 - [Mavo's Blitz Brawl Rewind](2246985.md) — osu!standard｜報名狀態未標明
 - [Newcomers Mania World Cup 2026](2246833.md) — osu!mania 4K｜報名狀態未標明
+- ⚠️ [o!std Torneo Fugaz Argentino 8: Filler Episode TV Size Pools 2vs2 2 Divisiones](2266075.md) — osu!standard｜報名狀態未標明
 - ⚠️ [PIVO CUP 4 STAFF REG RU/ENG](2264129.md) — osu!standard｜報名狀態未標明
 - ⚠️ [Staff wanted Tournament 5 digits](2255550.md) — osu!standard｜報名狀態未標明
 - [SMST 85](2262425.md) — osu!standard｜報名已截止
