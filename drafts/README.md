@@ -1,7 +1,8 @@
 # 待發送的貼文草稿
 
-共 59 筆（收錄 50／待確認 9）
+共 60 筆（收錄 51／待確認 9）
 
+- [OPEN OOPS! Oops, All Lunexia](2266769.md) — osu!standard｜報名開放中
 - [SMST 86](2266686.md) — osu!standard｜報名開放中
 - [TourDeMK CUP](2266140.md) — osu!standard｜報名開放中
 - [6 DIGIT CRASHOUT CUP](2265716.md) — osu!standard｜報名開放中
